@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lststrlen.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/09 14:39:54 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/10 18:43:50 by dcid-san         ###   ########.fr       */
+/*   Created: 2025/05/21 21:20:27 by dcid-san          #+#    #+#             */
+/*   Updated: 2025/05/21 21:21:45 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "libft.h"
 
-int	main(int ac, char *av[])
+int	ft_lststrlen(char **lst)
 {
-	/* 
-		- PARSER -> yA ESTAN LOS STRUCTS CREADOS DE file.rt
-		- CARGAR MINILIBX -> Ventanas, imagen, poder dibujar algo, hooks.
-		- Setear la camara.
-		- Calcular ajustes de renderizado 
-		- C
-	*/	
+	int	i;
+
+	i = 0;
+	if (lst != NULL)
+	{
+		while (lst[i])
+			i++;
+	}
+	return (i);
 }

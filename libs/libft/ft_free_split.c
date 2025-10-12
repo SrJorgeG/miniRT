@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/09 14:39:54 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/10 18:43:50 by dcid-san         ###   ########.fr       */
+/*   Created: 2025/05/20 17:50:42 by dcid-san          #+#    #+#             */
+/*   Updated: 2025/05/20 17:52:55 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include <stdlib.h>
 
-int	main(int ac, char *av[])
+void	ft_free_split(char **arr)
 {
-	/* 
-		- PARSER -> yA ESTAN LOS STRUCTS CREADOS DE file.rt
-		- CARGAR MINILIBX -> Ventanas, imagen, poder dibujar algo, hooks.
-		- Setear la camara.
-		- Calcular ajustes de renderizado 
-		- C
-	*/	
+	char	**tmp;
+
+	if (arr != NULL)
+	{
+		tmp = arr;
+		while (*tmp != NULL)
+		{
+			free(*tmp);
+			tmp++;
+		}
+		free(arr);
+	}
 }

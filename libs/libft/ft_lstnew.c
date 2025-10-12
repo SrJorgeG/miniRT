@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/09 14:39:54 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/10 18:43:50 by dcid-san         ###   ########.fr       */
+/*   Created: 2024/09/27 15:24:29 by dcid-san          #+#    #+#             */
+/*   Updated: 2025/10/12 12:27:03 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int	main(int ac, char *av[])
+t_list	*ft_lstnew(void *content)
 {
-	/* 
-		- PARSER -> yA ESTAN LOS STRUCTS CREADOS DE file.rt
-		- CARGAR MINILIBX -> Ventanas, imagen, poder dibujar algo, hooks.
-		- Setear la camara.
-		- Calcular ajustes de renderizado 
-		- C
-	*/	
+	t_list	*list;
+
+	list = (t_list *)malloc(sizeof(t_list));
+	if (list == NULL)
+		return (NULL);
+	list -> content = content;
+	list -> next = NULL;
+	return (list);
 }

@@ -1,0 +1,8 @@
+{
+	"files.associations": {
+		"minirt.h": "c",
+		"libft.h": "c",
+		"mlx42.h": "c",
+		"stdlib.h": "c"
+	}
+}

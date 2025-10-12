@@ -1,24 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/09 14:39:54 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/10 18:43:50 by dcid-san         ###   ########.fr       */
+/*   Created: 2025/06/03 14:36:48 by dcid-san          #+#    #+#             */
+/*   Updated: 2025/06/09 14:07:33 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minirt.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int	main(int ac, char *av[])
+char	*ft_strndup(const char *s, size_t x)
 {
-	/* 
-		- PARSER -> yA ESTAN LOS STRUCTS CREADOS DE file.rt
-		- CARGAR MINILIBX -> Ventanas, imagen, poder dibujar algo, hooks.
-		- Setear la camara.
-		- Calcular ajustes de renderizado 
-		- C
-	*/	
+	size_t	i;
+	size_t	len;
+	char	*dup;
+
+	i = 0;
+	len = 0;
+	if (!s)
+		return (NULL);
+	while (s[len] && len < x)
+		len++;
+	dup = (char *)malloc(sizeof(char) * (len + 1));
+	if (!dup)
+		return (NULL);
+	while (i < len)
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
 }

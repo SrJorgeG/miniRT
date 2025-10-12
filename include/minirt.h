@@ -3,16 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/09 14:36:50 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/10/12 13:03:54 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #if !defined(MINIRT_H)
 #define MINIRT_H
 
+# include "../libs/libft/libft.h"
+# include "../libs/MLX42/include/MLX42/MLX42.h"
+# include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
 
 typedef struct s_coord
 {
@@ -24,9 +29,9 @@ typedef struct s_coord
 
 typedef struct s_vector
 {
-	long 		x;
-	long 		y;
-	long 		z;
+	unsigned char	x;
+	unsigned char	y;
+	unsigned char	z;
 
 }	t_vector;
 
@@ -93,5 +98,26 @@ typedef struct s_cylinder
 	float 		height;
 
 }	t_cylinder;
+
+typedef struct s_map
+{
+	t_camera	*camera;
+	t_stack		*planes;
+	t_stack		*cylinders;
+	t_stack		*spheres;
+	t_light		*light;
+	t_amb_light	*amb_ligt;
+}	t_map;
+
+
+void	exit_error(char *err_msg, void *free_data);
+
+/* VECTOR UTILS - src/utils/vector.c */
+int ft_str_is_vector(char *str);
+t_vector	*create_vector(char *vector_str);
+
+/* COLOR UTILS - src/utils/color.c */
+int ft_str_is_color(char *str);
+t_color	*create_color(char *color_str);
 
 #endif 

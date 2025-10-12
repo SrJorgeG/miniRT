@@ -1,0 +1,61 @@
+NAME = miniRT
+COMPILER = CC
+FLAGS = -Wall -Wextra -Werror -Iincludes
+MLX_DIR = libs/MLX42
+BUILD_DIR = $(MLX_DIR)/build
+LIBFT_DIR = libs/libft
+LIBFT_NAME = libft
+LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT_DIR) -l:libft.a
+
+CFILES = src/main.c src/exit.c \
+src/parser/parser.c \
+src/utils/vector.c src/utils/color.c
+COBJ = $(CFILES:.c=.o)
+
+
+
+
+# Regla por defecto: compila el ejecutable
+all: mlx_setup $(LIBFT_NAME) $(NAME)
+
+# Para compilar el ejecutable, dependemos de que se hayan generado libft
+$(NAME): $(COBJ) $(LIBFT_LIB)
+	$(CC) $(CFLAGS) -o $(NAME) $(COBJ) $(LIBS)
+
+# Regla para compilar la libft
+$(LIBFT_NAME):
+	$(MAKE) -C $(LIBFT_DIR)
+
+mlx_setup:
+	@if [ ! -d "$(MLX_DIR)" ]; then git clone "https://github.com/codam-coding-college/MLX42.git"; fi
+	@cmake -S $(MLX_DIR) -B $(BUILD_DIR)
+	@$(MAKE) -C $(BUILD_DIR) -j4 all
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(COBJ)
+	$(MAKE) clean -C $(LIBFT_DIR)
+	$(MAKE) clean -C $(MLX_DIR)
+
+fclean: clean
+	rm -f $(NAME)
+	$(MAKE) fclean -C $(LIBFT_DIR)
+	$(MAKE) fclean -C $(MLX_DIR)
+
+re: fclean all
+
+bonus:
+	@echo "No se han definido reglas para bonus aún.
+
+valgrind:
+	
+	make re CFLAGS="-Wall -Werror -Wextra -g3"
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=no --suppressions=readline.sup ./minishell
+
+valgrind_s:
+	make
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=no --gen-suppressions=yes --suppressions=readline.sup ./minishell
+
+.PHONY: all clean fclean re bonus mlx
