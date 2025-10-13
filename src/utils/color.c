@@ -16,18 +16,25 @@ t_color	*create_color(char *color_str)
 {
 	char	**color_split;
 	t_color	*color;
+	long			rgb[3];
 	
-	color_split = ft_split(color_str, ',');
+	
 	color = malloc(sizeof(t_color));
 	if (!color)
-		return (NULL);
-	color->r = ft_atoi(color_split[0]);	
-	color->g = ft_atoi(color_split[1]);	
-	color->b = ft_atoi(color_split[2]);
-	if (color->r > 255 && color->g > 255 && color->b > 255)
-		return (free(color), NULL);
+		return (perror("malloc: "), NULL);
+	color_split = ft_split(color_str, ',');
+	rgb[0] = ft_atol(color_split[0]);	
+	rgb[1] = ft_atol(color_split[1]);	
+	rgb[2] = ft_atol(color_split[2]);
+	ft_free_split(color_split);
+	if ((rgb[0] > 255 || rgb[0] < 0) && (rgb[1] > 255 || rgb[1] < 0) && (rgb[2] > 255 || rgb[2] < 0))
+		return (free(color),perror("color_range: "), NULL);
+	color->r = (unsigned char)rgb[0];
+	color->g = (unsigned char)rgb[1];
+	color->b = (unsigned char)rgb[2];
 	return (color);
 }
+
 
 int ft_str_is_color(char *str)
 {
@@ -38,9 +45,7 @@ int ft_str_is_color(char *str)
         return (0);
     while (*str)
     {
-        if (ft_isdigit(*str) && ((digit_len == 0 && *str <= '2')
-			|| (digit_len == 1 && *str <= '5')
-			|| (digit_len == 2 && *str <= '5')))
+        if (ft_isdigit(*str))
         {
             if (digit_len >= 3)
                 return (0);

@@ -7,9 +7,10 @@ LIBFT_DIR = libs/libft
 LIBFT_NAME = libft
 LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT_DIR) -l:libft.a
 
-CFILES = src/main.c src/exit.c \
+CFILES = src/main.c src/exit.c src/init.c src/free_functions.c \
 src/parser/parser.c \
-src/utils/vector.c src/utils/color.c
+src/utils/vector.c src/utils/color.c \
+src/debug/debug_parser.c
 COBJ = $(CFILES:.c=.o)
 
 
@@ -20,7 +21,7 @@ all: mlx_setup $(LIBFT_NAME) $(NAME)
 
 # Para compilar el ejecutable, dependemos de que se hayan generado libft
 $(NAME): $(COBJ) $(LIBFT_LIB)
-	$(CC) $(CFLAGS) -o $(NAME) $(COBJ) $(LIBS)
+	$(CC) $(FLAGS) -o $(NAME) $(COBJ) $(LIBS)
 
 # Regla para compilar la libft
 $(LIBFT_NAME):
@@ -32,17 +33,17 @@ mlx_setup:
 	@$(MAKE) -C $(BUILD_DIR) -j4 all
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	rm -f $(COBJ)
 	$(MAKE) clean -C $(LIBFT_DIR)
-	$(MAKE) clean -C $(MLX_DIR)
+	@$(MAKE) clean -C $(MLX_DIR)/build
 
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) fclean -C $(LIBFT_DIR)
-	$(MAKE) fclean -C $(MLX_DIR)
+	rm -rf $(MLX_DIR)/build
 
 re: fclean all
 
@@ -51,11 +52,11 @@ bonus:
 
 valgrind:
 	
-	make re CFLAGS="-Wall -Werror -Wextra -g3"
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=no --suppressions=readline.sup ./minishell
+	make FLAGS="-Wall -Werror -Wextra -g3"
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./miniRT examples/example.rt
 
 valgrind_s:
 	make
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=no --gen-suppressions=yes --suppressions=readline.sup ./minishell
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --gen-suppressions=yes ./miniRT examples/example.rt
 
 .PHONY: all clean fclean re bonus mlx

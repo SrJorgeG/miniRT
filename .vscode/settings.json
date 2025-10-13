@@ -3,6 +3,10 @@
 		"minirt.h": "c",
 		"libft.h": "c",
 		"mlx42.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"vector": "c",
+		"array": "c",
+		"string": "c",
+		"string_view": "c"
 	}
 }
