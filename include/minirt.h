@@ -6,7 +6,7 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/14 19:02:34 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/10/17 15:28:50 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <fcntl.h>
 # include <math.h>
 
+# define RAY_T_MIN 0.0001f
+# define RAY_T_MAX 1.0e30f
 typedef struct s_vector
 {
 	double		x;
@@ -28,6 +30,7 @@ typedef struct s_vector
 	
 }	t_vector;
 
+typedef struct s_vector t_point;
 typedef struct s_color
 {
 	unsigned char 		r; 
@@ -38,8 +41,8 @@ typedef struct s_color
 
 typedef struct s_rayo
 {
-	long 		origin;
-	long 		direction;
+	t_point		*origin;
+	t_vector 	*direction;
 
 }	t_rayo;
 
@@ -109,6 +112,22 @@ void	exit_error(char *err_msg, void *free_data);
 int ft_str_is_vector(char *str);
 t_vector	*create_vector(char *vector_str);
 int is_normalized_vec(t_vector *vector);
+t_vector	*vector_constructor(long x, long y, long z);
+inline void	vector_destructor(t_vector	*vector);
+
+/* VECTOR_BASIC - src/utils/vector_basic.c */
+t_vector	*vector_sum(t_vector *v1, t_vector *v2);
+t_vector	*vector_rest(t_vector *v1, t_vector *v2);
+t_vector	*vector_multiplication(t_vector *v1, long num);
+t_vector	*vector_division(t_vector *v1, long num);
+t_vector	*vector_dup(t_vector *vec);
+
+/* VECTOR_AUX - src/utils/vector_aux.c */
+inline double	vector_lenght_square(t_vector *vec);
+inline double	vector_lenght(t_vector *vec);
+t_vector	*vector_normalize(t_vector *vec);
+double		vector_dot_prod(t_vector *v1, t_vector *v2);
+t_vector	*vector_cross_prod(t_vector *v1, t_vector *v2);
 
 /* COLOR UTILS - src/utils/color.c */
 int ft_str_is_color(char *str);

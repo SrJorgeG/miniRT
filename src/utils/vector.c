@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 13:44:47 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/10/13 15:45:48 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/10/17 15:30:17 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+
+t_vector	*vector_constructor(long x, long y, long z)
+{
+	t_vector	*vector;
+	
+	vector = malloc(sizeof(t_vector));
+	if (!vector)
+		return (NULL);
+	vector->x = x;	
+	vector->y = y;	
+	vector->z = z;
+	return (vector);
+}
+
+inline void	vector_destructor(t_vector	*vector)
+{
+	free(vector);
+}
 
 t_vector	*create_vector(char *vector_str)
 {

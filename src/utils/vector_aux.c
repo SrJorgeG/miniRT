@@ -6,23 +6,26 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 18:58:42 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/14 19:27:00 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/10/17 15:29:00 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
-inline double	lenght2(t_vector *vec)
+// DEVUELVE LA LONGITUD AL CUADRADO DE UN VECTOR
+inline double	vector_lenght_square(t_vector *vec)
 {
-	return (sqrt(vec->x) + sqrt(vec->y) + sqrt(vec->z));
+	return (vec->x * vec->x + vec->y * vec->y + vec->z * vec->z);
 }
 
-inline double	lenght(t_vector *vec)
+// DEVUELVE LA LONGITUD DE UN VECTOR
+inline double	vector_lenght(t_vector *vec)
 {
-	return (sqrt(lenght2(vec)));
+	return (sqrt(vector_lenght_square(vec)));
 }
 
-t_vector	*normalize(t_vector *vec)
+// DEVUELVE UN VECTOR NORMALIZADO
+t_vector	*vector_normalize(t_vector *vec)
 {
 	t_vector	*vector;
 	double		len;
@@ -39,12 +42,15 @@ t_vector	*normalize(t_vector *vec)
 	return (vector);
 }
 
-double	dot_prod(t_vector *v1, t_vector *v2)
+// DEVUELVE EL DOT PRODUCT 
+// (La suma de las tres coordenadas de ambos vectores multiplicadas)
+double		vector_dot_prod(t_vector *v1, t_vector *v2)
 {
 	return (v1->x * v2->x + v1->y * v2->y + v1->z * v2->z);	
 }
 
-t_vector	*cross_prod(t_vector *v1, t_vector *v2)
+// DEVUELVE EL CROSS PRODUCT DE DOS VECTORES
+t_vector	*vector_cross_prod(t_vector *v1, t_vector *v2)
 {
 	t_vector	*vector;
 
