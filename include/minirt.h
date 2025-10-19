@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/17 15:28:50 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/10/19 16:48:48 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
+#include <stdlib.h>
+#include <memory.h>
+/* 				MLX DEFINES			 */
+#define HEIGHT 800
+#define WIDTH 800
+#define TITLE "MiniRT - De tu padre"
 
 # define RAY_T_MIN 0.0001f
 # define RAY_T_MAX 1.0e30f

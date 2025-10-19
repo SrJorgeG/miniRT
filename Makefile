@@ -32,6 +32,11 @@ mlx_setup:
 	@cmake -S $(MLX_DIR) -B $(BUILD_DIR)
 	@$(MAKE) -C $(BUILD_DIR) -j4 all
 
+mlx_debug:
+	@if [ ! -d "$(MLX_DIR)" ]; then git clone "https://github.com/codam-coding-college/MLX42.git"; fi
+	@cmake -DDEBUG=1 -DGLFW_FETCH=0 -S $(MLX_DIR) -B $(BUILD_DIR)
+	@$(MAKE) -C $(BUILD_DIR) -j4 all
+
 %.o: %.c
 	$(CC) $(FLAGS) -c $< -o $@
 
@@ -59,4 +64,6 @@ valgrind_s:
 	make
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --gen-suppressions=yes ./miniRT examples/example.rt
 
+debug: fclean mlx_debug $(LIBFT_NAME) $(NAME)
+	@echo "Compiled in debug mode"
 .PHONY: all clean fclean re bonus mlx
