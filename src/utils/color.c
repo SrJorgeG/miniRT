@@ -35,7 +35,6 @@ t_color	*create_color(char *color_str)
 	return (color);
 }
 
-
 int ft_str_is_color(char *str)
 {
     int component_count = 0;
@@ -66,3 +65,4 @@ int ft_str_is_color(char *str)
         return (1);
     return (0);
 }
+

@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/12 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/10/13 15:42:33 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/10/15 13:20:57 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ t_map	*init_map()
 	map->light = NULL;
 	map->cylinders = ft_stack_new();
 	if (!map->cylinders)
-		exit_error("Error. malloc. \n", NULL);
+		exit_error("Error. malloc. \n", map);
 	map->spheres = ft_stack_new();
 	if (!map->spheres)
-		exit_error("Error. malloc. \n", NULL);
+		exit_error("Error. malloc. \n", map);
 	map->planes = ft_stack_new();
 	if (!map->planes)
-		exit_error("Error. malloc. \n", NULL);
+		exit_error("Error. malloc. \n", map);
 	return (map);
 }

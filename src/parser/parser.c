@@ -213,7 +213,9 @@ t_map	*parser(char *filename)
 		parse_line(line, map);
 		line = get_next_line(fd);
 	}
+	
 	close(fd);
+	/* SI map no completo free map y devuelvo null */
 	return(map);
 	
 }
