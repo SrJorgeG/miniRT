@@ -17,12 +17,6 @@ void	free_plane(void	*plane)
 	t_plane	*pl;
 
 	pl = (t_plane *)plane;
-	if (pl->point)
-		free(pl->point);
-	if (pl->vector)
-		free(pl->vector);
-	if (pl->color_range)
-		free(pl->color_range);
 	free(pl);
 }
 
@@ -31,12 +25,6 @@ void	free_cylinder(void *cylinder)
 	t_cylinder	*cy;
 
 	cy = (t_cylinder *)cylinder;
-	if (cy->center)
-		free(cy->center);
-	if (cy->axys)
-		free(cy->axys);
-	if (cy->color_range)
-		free(cy->color_range);
 	free(cy);
 }
 
@@ -45,10 +33,6 @@ void	free_sphere(void *sphere)
 	t_sphere *sp;
 
 	sp = (t_sphere *)sphere;
-	if (sp->center)
-		free(sp->center);
-	if (sp->color_range)
-		free(sp->color_range);
 	free(sp);
 }
 
@@ -57,28 +41,6 @@ void	free_sphere(void *sphere)
 */
 void	free_map(t_map *map)
 {
-	if (map->amb_ligt)
-	{
-		if (map->amb_ligt->amb_col)
-			free(map->amb_ligt->amb_col);
-		free(map->amb_ligt);
-	}
-	if (map->camera)
-	{
-		if (map->camera->view_point)
-			free(map->camera->view_point);
-		if (map->camera->orientation_nor)
-			free(map->camera->orientation_nor);
-		free(map->camera);
-	}
-	if (map->light)
-	{
-		if (map->light->light_point)
-			free(map->light->light_point);
-		if (map->light->color_range)
-			free(map->light->color_range);
-		free(map->light);
-	}
 	if (map->objects)
 	{
 		ft_stack_clear(map->objects, free_plane);

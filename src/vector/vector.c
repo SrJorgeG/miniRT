@@ -36,21 +36,16 @@ inline void	v_free(t_vec	*vector)
 	free(vector);
 }
 
-t_vec	*create_vector(char *vector_str)
+t_vec	create_vector(char *vector_str)
 {
 	char	**vector_split;
-	t_vec	*vector;
+	t_vec	vector;
 
-	vector = malloc(sizeof(t_vec));
-	if (!vector)
-		return (NULL);
 	vector_split = ft_split(vector_str, ',');
-	vector->x = ft_atoi(vector_split[0]);
-	vector->y = ft_atoi(vector_split[1]);
-	vector->z = ft_atoi(vector_split[2]);
+	vector.x = ft_atoi(vector_split[0]);
+	vector.y = ft_atoi(vector_split[1]);
+	vector.z = ft_atoi(vector_split[2]);
 	ft_free_split(vector_split);
-	if (vector->x > 255 && vector->y > 255 && vector->z > 255)
-		return (free(vector), NULL);
 	return (vector);
 }
 

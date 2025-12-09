@@ -10,7 +10,6 @@ int	check_map(char *filename)
 		cpy++;
 	if (ft_strcmp(cpy, ".rt") != 0)
 		exit_error("Error, invalid filename\n", NULL);
-
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		exit_error("Error, invalid map file\n", NULL);
@@ -28,13 +27,12 @@ void	parse_ambient_light(char **args, t_map *map)
 		exit_error("Error. Invalid map data, incompleted ambient_light row.\n", map);
 	if(!ft_strisdbl(args[1]) || !ft_str_is_color(args[2]) )
 		exit_error("Error invalid map data, wrong data in ambient_light row.\n", map);
-	amb_light->amb_col = create_color(args[2]);
-	amb_light->amb_ratio = ft_atodbl(args[1]);
-	if (!amb_light->amb_col)
+	map->amb_ligt.amb_ratio = ft_atodbl(args[1]);
+	if (!create_color(args[2], &map->amb_ligt.amb_col))
 		exit_error("Error. Ambient light color: ", map);
-	if (amb_light->amb_ratio < 0.0 || amb_light->amb_ratio > 1.0)
+	if (map->amb_ligt.amb_ratio < 0.0 || map->amb_ligt.amb_ratio > 1.0)
 		exit_error("Error. Invalid range for ambient light ratio.", map);
-	map->amb_ligt = amb_light;
+
 }
 
 void	parse_camera(char **args, t_map *map)
@@ -48,19 +46,20 @@ void	parse_camera(char **args, t_map *map)
 		exit_error("Error. Invalid map data, incompleted camera row.\n", map);
 	if(!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) || (!ft_strisnum(args[3]) || ft_strlen(args[3]) > 3))
 		exit_error("Error invalid map data, wrong data in camera row.\n", map);
-	camera->view_point = create_vector(args[1]);
-	camera->orientation_nor = create_vector(args[2]);
-	camera->fov = ft_atoi(args[3]);
-	if (!is_normalized_vec(camera->orientation_nor))
+	map->camera.view_point = create_vector(args[1]);
+	map->camera.orientation_nor = create_vector(args[2]);
+	map->camera.fov = ft_atoi(args[3]);
+	if (!is_normalized_vec(&camera->orientation_nor))
 		exit_error("Error. Invalid range for camera orientation.", map);
 	if( camera->fov < 0 || camera->fov > 180)
 		exit_error("Error. Invalid range for camera FOV.", map);
-	map->camera = camera;
 }
 
 void	parse_light(char **args, t_map *map)
 {
 	t_light *light;
+	t_list	*node;
+
 
 	light = malloc(sizeof(t_light));
 	if (!light)
@@ -71,12 +70,15 @@ void	parse_light(char **args, t_map *map)
 		exit_error("Error invalid map data, wrong data in light row.\n", map);
 	light->light_point = create_vector(args[1]);
 	light->brightness = ft_atodbl(args[2]);
-	light->color_range = create_color(args[3]);
-	if (!light->color_range)
+	if (!create_color(args[3], &light->color_range))
 		exit_error("Error. Light color range: ", map);
 	if (light->brightness < 0.0 || light->brightness > 1.0)
 		exit_error("Error. Invalid range for light FOV.", map);
-	map->light = light;
+	node = ft_lstnew(light);
+	if (!node)
+		exit_error("Error. malloc\n", map);
+	ft_stack_add_back(map->lights, node);
+
 }
 
 void parse_sphere(char **args, t_map *map)
@@ -98,8 +100,7 @@ void parse_sphere(char **args, t_map *map)
 	sphere->center = create_vector(args[1]);
 	sphere->diameter = ft_atodbl(args[2]);
 	sphere->radius = sphere->diameter/2;
-	sphere->color_range = create_color(args[3]);
-	if (!sphere->color_range)
+	if (!create_color(args[3], &obj->color_range))
 		exit_error("Error. Sphere color_range: ", map);
 	if (sphere->diameter <= 0.0)
 		exit_error("Error. Invalid range for sphere diameter.", map);
@@ -127,10 +128,9 @@ void parse_plane(char **args, t_map *map)
 		exit_error("Error invalid map data, wrong data in plane row.\n", map);
 	plane->point = create_vector(args[1]);
 	plane->vector = create_vector(args[2]);
-	plane->color_range = create_color(args[3]);
-	if (!plane->color_range)
+	if (!create_color(args[3], &obj->color_range))
 		exit_error("Error. Plane color_range: ", map);
-	if (!is_normalized_vec(plane->vector))
+	if (!is_normalized_vec(&plane->vector))
 		exit_error("Error. Invalid range for plane orientation.", map);
 	node = ft_lstnew(obj);
 	if (!node)
@@ -160,10 +160,9 @@ void	parse_cylinder(char **args, t_map *map)
 	cylinder->axys = create_vector(args[2]);
 	cylinder->diameter = ft_atodbl(args[3]);
 	cylinder->height = ft_atodbl(args[4]);
-	cylinder->color_range = create_color(args[5]);
-	if (!cylinder->color_range)
+	if (!create_color(args[5], &obj->color_range))
 		exit_error("Error. Cylinder color_range: ", map);
-	if (!is_normalized_vec(cylinder->axys))
+	if (!is_normalized_vec(&cylinder->axys))
 		exit_error("Error. Invalid range for cylinder orientation.", map);
 	if (cylinder->diameter <= 0.0)
 		exit_error("Error. Invalid range for cylinder diameter.", map);

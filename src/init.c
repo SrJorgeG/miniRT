@@ -22,9 +22,7 @@ t_map	*init_map()
 	map = malloc(sizeof(t_map));
 	if (!map)
 		exit_error("Error. malloc. \n", NULL);
-	map->amb_ligt = NULL;
-	map->camera = NULL;
-	map->light = NULL;
+	map->lights = ft_stack_new();
 	map->objects = ft_stack_new();
 	if (!map->objects)
 		exit_error("Error. malloc. \n", map);

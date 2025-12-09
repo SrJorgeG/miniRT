@@ -11,28 +11,24 @@
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+#include <sys/types.h>
 
-t_color	*create_color(char *color_str)
+u_int8_t	create_color(char *color_str, t_color *color)
 {
 	char	**color_split;
-	t_color	*color;
 	long			rgb[3];
-	
-	
-	color = malloc(sizeof(t_color));
-	if (!color)
-		return (perror("malloc: "), NULL);
+
 	color_split = ft_split(color_str, ',');
-	rgb[0] = ft_atol(color_split[0]);	
-	rgb[1] = ft_atol(color_split[1]);	
+	rgb[0] = ft_atol(color_split[0]);
+	rgb[1] = ft_atol(color_split[1]);
 	rgb[2] = ft_atol(color_split[2]);
 	ft_free_split(color_split);
 	if ((rgb[0] > 255 || rgb[0] < 0) && (rgb[1] > 255 || rgb[1] < 0) && (rgb[2] > 255 || rgb[2] < 0))
-		return (free(color),perror("color_range: "), NULL);
+		return (0);
 	color->r = (unsigned char)rgb[0];
 	color->g = (unsigned char)rgb[1];
 	color->b = (unsigned char)rgb[2];
-	return (color);
+	return (1);
 }
 
 int ft_str_is_color(char *str)
@@ -66,3 +62,44 @@ int ft_str_is_color(char *str)
     return (0);
 }
 
+
+// Multiplica dos colores componente a componente normalizando a [0,1], y multiplicando vuelve a [0,255]
+t_color color_multiply(t_color c1, t_color c2)
+{
+    t_color result;
+    result.r = (int)(((double)c1.r / 255.0) * ((double)c2.r / 255.0) * 255.0);
+    result.g = (int)(((double)c1.g / 255.0) * ((double)c2.g / 255.0) * 255.0);
+    result.b = (int)(((double)c1.b / 255.0) * ((double)c2.b / 255.0) * 255.0);
+    return result;
+}
+
+// Multiplica un color por un numero
+t_color color_scale(t_color c, double factor)
+{
+    t_color result;
+    result.r = (int)((double)c.r * factor);
+    result.g = (int)((double)c.g * factor);
+    result.b = (int)((double)c.b * factor);
+    return result;
+}
+
+// Suma dos colores
+t_color color_add(t_color c1, t_color c2)
+{
+    t_color result;
+    result.r = c1.r + c2.r;
+    result.g = c1.g + c2.g;
+    result.b = c1.b + c2.b;
+    return result;
+}
+
+// Se asegura de que los valores del color no superen 255
+t_color color_clamp(t_color c)
+{
+    if (c.r > 255) c.r = 255;
+    if (c.g > 255) c.g = 255;
+    if (c.b > 255) c.b = 255;
+    return c;
+}
+
+// Asumo que tienes un struct t_scene que contiene los punteros a la luz ambiental y la lista de luces

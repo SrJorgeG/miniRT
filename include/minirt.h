@@ -66,17 +66,17 @@ typedef struct s_ray
 
 typedef struct s_amb_light
 {
-	t_color		*amb_col;
+	t_color		amb_col;
 	float		amb_ratio;		// [0.0,1.0]
 
 }	t_amb_light;
 
 typedef struct s_camera
 {
-	t_vec	    *view_point;
-	t_vec	    *orientation_nor;
-	t_vec	    *right;
-	t_vec	    *up;
+	t_vec	    view_point;
+	t_vec	    orientation_nor;
+	t_vec	    right;
+	t_vec	    up;
 	int		        fov;
 	unsigned int	focal;
 	double          radial_fov;
@@ -85,34 +85,29 @@ typedef struct s_camera
 
 typedef struct s_light
 {
-	t_vec	*light_point;
+	t_vec	light_point;
 	float		brightness;		// [0.0,1.0]
-	t_color		*color_range;	// BONUS
+	t_color		color_range;	// BONUS
 
 }	t_light;
 
 typedef struct s_sphere
 {
-	t_vec		*center;
+	t_vec		center;
 	double 		diameter;
 	double 		radius;
-	t_color		*color_range;
-
 }	t_sphere;
 
 typedef struct s_plane
 {
-	t_vec	*point;
-	t_vec	*vector;		 // [-1,1]
-	t_color		*color_range;
-
+	t_vec	point;
+	t_vec	vector;		 // [-1,1]
 }	t_plane;
 
 typedef struct s_cylinder
 {
-	t_vec	*center;
-	t_vec	*axys; 		// [-1,1]
-	t_color		*color_range;
+	t_vec	center;
+	t_vec	axys; 		// [-1,1]
 	double 		diameter;
 	double 		height;
 
@@ -121,24 +116,25 @@ typedef struct s_cylinder
 
 typedef struct s_object
 {
-    t_object_type type;
-    void    *object;
+    t_object_type	type;
+    void		*object;
+    t_color		color_range;
 }	t_object;
 
 typedef struct s_map
 {
-	t_camera	*camera;
+	t_camera	camera;
 	t_stack		*objects;
 	t_object	*last_hit;
-	t_light		*light;
-	t_amb_light	*amb_ligt;
+	t_stack		*lights;
+	t_amb_light	amb_ligt;
 }	t_map;
 
 typedef struct s_scene
 {
     t_real  aspect;
     t_real  viewport;
-    t_map   *map;
+    t_map   map;
     int     screen_w;
     int     screen_h;
     t_real  viewport_w;
@@ -160,7 +156,7 @@ void	exit_error(char *err_msg, void *free_data);
 
 /* VECTOR UTILS - src/utils/vector.c */
 int ft_str_is_vector(char *str);
-t_vec	*create_vector(char *vector_str);
+t_vec	create_vector(char *vector_str);
 int is_normalized_vec(t_vec *vector);
 t_vec	*vector_constructor(double x, double y, double z);
 void	vector_destructor(t_vec	*vector);
@@ -184,7 +180,15 @@ int	hit_sphere(t_ray ray, t_sphere *sphere, double *obj_distance);
 
 /* COLOR UTILS - src/utils/color.c */
 int ft_str_is_color(char *str);
-t_color	*create_color(char *color_str);
+
+u_int8_t	create_color(char *color_str, t_color *color);
+
+t_color color_multiply(t_color c1, t_color c2);
+t_color color_scale(t_color c, double factor);
+t_color color_add(t_color c1, t_color c2);
+t_color color_clamp(t_color c);
+
+
 
 t_map	*init_map();
 

@@ -8,7 +8,7 @@ int	hit_sphere(t_ray ray, t_sphere *sphere, double *obj_distance)
 	t_vec	oc;
 	t_vec	equation;
 
-	oc = vector_rest(ray.origin, *sphere->center);
+	oc = vector_rest(ray.origin, sphere->center);
 	equation.y = 2.0 * vector_dot_prod(oc, ray.direction);
     equation.z = vector_dot_prod(oc, oc) - sphere->radius * sphere->radius;
     double  discriminant = equation.y * equation.y - 4.0 * equation.z;
