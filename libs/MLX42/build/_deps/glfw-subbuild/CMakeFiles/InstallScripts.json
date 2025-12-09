@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/krusty/42Course/miniRT/libs/MLX42/build/_deps/glfw-subbuild/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
