@@ -9,7 +9,9 @@ LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT
 
 CFILES = src/main.c src/exit.c src/init.c src/free_functions.c \
 src/parser/parser.c \
-src/utils/vector.c src/utils/color.c \
+src/ray/ray.c src/ray/hits.c \
+src/utils/color.c src/utils/scene.c \
+src/vector/vector.c src/vector/vector_aux.c src/vector/vector_basic.c \
 src/debug/debug_parser.c
 COBJ = $(CFILES:.c=.o)
 
@@ -56,7 +58,7 @@ bonus:
 	@echo "No se han definido reglas para bonus aún.
 
 valgrind:
-	
+
 	make FLAGS="-Wall -Werror -Wextra -g3"
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./miniRT examples/example.rt
 

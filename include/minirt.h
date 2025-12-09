@@ -93,8 +93,9 @@ typedef struct s_light
 
 typedef struct s_sphere
 {
-	t_vec	*center;
-	float 		diameter;
+	t_vec		*center;
+	double 		diameter;
+	double 		radius;
 	t_color		*color_range;
 
 }	t_sphere;
@@ -112,8 +113,8 @@ typedef struct s_cylinder
 	t_vec	*center;
 	t_vec	*axys; 		// [-1,1]
 	t_color		*color_range;
-	float 		diameter;
-	float 		height;
+	double 		diameter;
+	double 		height;
 
 }	t_cylinder;
 
@@ -162,21 +163,24 @@ int ft_str_is_vector(char *str);
 t_vec	*create_vector(char *vector_str);
 int is_normalized_vec(t_vec *vector);
 t_vec	*vector_constructor(double x, double y, double z);
-inline void	vector_destructor(t_vec	*vector);
+void	vector_destructor(t_vec	*vector);
 
 /* VECTOR_BASIC - src/utils/vector_basic.c */
 t_vec	vector_sum(t_vec v1, t_vec v2);
 t_vec	vector_rest(t_vec v1, t_vec v2);
-t_vec	vector_multiplication(t_vec *v1, double num);
-t_vec	vector_division(t_vec *v1, double num);
+t_vec	vector_multiplication(t_vec v1, double num);
+t_vec	vector_division(t_vec v1, double num);
 t_vec	*vector_dup(t_vec vec);
 
 /* VECTOR_AUX - src/utils/vector_aux.c */
-inline double	vector_lenght_square(t_vec *vec);
-inline double	vector_lenght(t_vec *vec);
+double	vector_lenght_square(t_vec *vec);
+double	vector_lenght(t_vec *vec);
 t_vec	vector_normalize(t_vec vec);
-double		vector_dot_prod(t_vec *v1, t_vec *v2);
-t_vec	vector_cross_prod(t_vec *v1, t_vec *v2);
+double		vector_dot_prod(t_vec v1, t_vec v2);
+t_vec	vector_cross_prod(t_vec v1, t_vec v2);
+
+/*	 Hit functionss 	*/
+int	hit_sphere(t_ray ray, t_sphere *sphere, double *obj_distance);
 
 /* COLOR UTILS - src/utils/color.c */
 int ft_str_is_color(char *str);

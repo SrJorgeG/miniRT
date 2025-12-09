@@ -19,16 +19,20 @@ t_ray get_ray_from_pixel(t_scene *scene, t_vec image_center, t_vec pixel_center)
     t_vec pixel_world;
     t_ray ray;
 
-    x_offset = vector_multiplication(scene->map->camera->right, pixel_center.x);
-    y_offset = vector_multiplication(scene->map->camera->up, pixel_center.y);
-    pixel_world = vector_sum(*image_center, vector_sum(x_offset, y_offset));
+    x_offset = vector_multiplication(*scene->map->camera->right, pixel_center.x);
+    y_offset = vector_multiplication(*scene->map->camera->up, pixel_center.y);
+    pixel_world = vector_sum(image_center, vector_sum(x_offset, y_offset));
     return ((t_ray) {*scene->map->camera->view_point, vector_normalize(vector_rest(pixel_world, *scene->map->camera->view_point))});
 }
 
 int hit_object(t_ray ray, t_object *object, double *obj_distance)
 {
 	if (object->type == SPHERE)
-		return (hit_sphere(t_ray ray, t_object *object, double *obj_distance));
+		return (hit_sphere(ray, object->object, obj_distance));
+	else if (object->type == CYLINDER)
+		return (hit_sphere(ray, object->object, obj_distance));
+	else if (object->type == PLANE)
+		return (hit_sphere(ray, object->object, obj_distance));
 
 }
 }

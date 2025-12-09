@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/krusty/42Course/miniRT/libs/MLX42/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

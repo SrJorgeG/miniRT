@@ -18,7 +18,7 @@ t_vec   v(double x, double y, double z)
 	return ((t_vec) {x, y, z});
 }
 
-t_vec	*v_malloc(double x, double y, double z)
+t_vec	*vector_constructor(double x, double y, double z)
 {
 	t_vec	*vector;
 

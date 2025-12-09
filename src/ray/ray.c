@@ -19,8 +19,8 @@ t_ray	*ray_constructor(t_point *origin ,t_vec *direction)
 	ray = malloc(sizeof(t_ray));
 	if (!ray)
 		return (NULL);
-	ray->origin = origin;
-	ray->direction = direction;
+	ray->origin = *origin;
+	ray->direction = *direction;
 	return (ray);
 }
 
@@ -30,20 +30,7 @@ void	ray_destructor(t_ray *ray)
 }
 
 // CALCULAR / GENERAR PUNTOS EN UN RAYO A PARTIR DE UNA VARIABLE T
-t_point	*ray_generate_points(t_ray *ray, long t)
+t_vec	ray_generate_points(t_ray ray, long t)
 {
-	t_vec	a;
-	t_point		*b;
-
-	a = vector_multiplication(&ray->direction, t);
-	if (!a)
-		return (NULL);
-	b = vector_sum(ray->origin, a);
-	if (!b)
-	{
-		free(a);
-		return (NULL);
-	}
-	free(a);
-	return (b);
+	return (vector_sum(ray.origin, vector_multiplication(ray.direction, t)));
 }

@@ -97,6 +97,7 @@ void parse_sphere(char **args, t_map *map)
 		exit_error("Error invalid map data, wrong data in sphere row.\n", map);
 	sphere->center = create_vector(args[1]);
 	sphere->diameter = ft_atodbl(args[2]);
+	sphere->radius = sphere->diameter/2;
 	sphere->color_range = create_color(args[3]);
 	if (!sphere->color_range)
 		exit_error("Error. Sphere color_range: ", map);

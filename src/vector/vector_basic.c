@@ -63,14 +63,14 @@ t_vec	vector_rest(t_vec v1, t_vec v2)
 //	return (mult);
 //}
 
-t_vec	vector_multiplication(t_vec *v1, double num)
+t_vec	vector_multiplication(t_vec v1, double num)
 {
-    return ((t_vec) {v1->x * num, v1->y * num, v1->z * num});
+    return ((t_vec) {v1.x * num, v1.y * num, v1.z * num});
 }
 
-t_vec	vector_division(t_vec *v1, double num)
+t_vec	vector_division(t_vec v1, double num)
 {
-    return ((t_vec) {v1->x * num, v1->y * num, v1->z * num});
+    return ((t_vec) {v1.x * num, v1.y * num, v1.z * num});
 }
 // DIVISION DE UN VECTOR POR UN ESCALAR
 //t_vec	vector_division(t_vec *v1, long num)

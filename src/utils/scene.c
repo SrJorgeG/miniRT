@@ -24,13 +24,13 @@ void setup_camera(t_camera *camera)
     // CASO ESPECIAL: Si la cámara mira justo hacia arriba o abajo, forward y world_up son paralelos.
     // Su producto vectorial sería cero, lo cual es un error.
     // Si eso pasa, usamos un 'world_up' temporal diferente para evitar el problema.
-     if (fabs(vector_dot_prod(camera->orientation_nor, world_up)) > 0.999)
+     if (fabs(vector_dot_prod(*camera->orientation_nor, *world_up)) > 0.999)
      {
          free(world_up);
          world_up = vector_constructor(0.0, 0.0, 1.0); // Usamos el eje Z como referencia temporal
      }
-    camera->right = vector_dup(vector_normalize(vector_cross_prod(camera->orientation_nor, world_up)));
-    camera->up = vector_dup(vector_cross_prod(camera->right, camera->orientation_nor));
+    camera->right = vector_dup(vector_normalize(vector_cross_prod(*camera->orientation_nor, *world_up)));
+    camera->up = vector_dup(vector_cross_prod(*camera->right, *camera->orientation_nor));
 
 }
 

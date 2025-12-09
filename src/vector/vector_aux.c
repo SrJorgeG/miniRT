@@ -50,9 +50,9 @@ t_vec vector_normalize(t_vec vec)
 
 // DEVUELVE EL DOT PRODUCT
 // (La suma de las tres coordenadas de ambos vectores multiplicadas)
-double		vector_dot_prod(t_vec *v1, t_vec *v2)
+double		vector_dot_prod(t_vec v1, t_vec v2)
 {
-	return (v1->x * v2->x + v1->y * v2->y + v1->z * v2->z);
+	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
 // DEVUELVE EL CROSS PRODUCT DE DOS VECTORES
@@ -69,7 +69,7 @@ double		vector_dot_prod(t_vec *v1, t_vec *v2)
 //	return (vector);
 //}
 
-t_vec	vector_cross_prod(t_vec *v1, t_vec *v2)
+t_vec	vector_cross_prod(t_vec v1, t_vec v2)
 {
-    return ((t_vec) {v1->y * v2->z - v1->z * v2->y,v1->z * v2->x - v1->x * v2->z, v1->x * v2->y - v1->y * v2->x });
+    return ((t_vec) {v1.y * v2.z - v1.z * v2.y,v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x });
 }
