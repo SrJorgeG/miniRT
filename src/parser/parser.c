@@ -49,9 +49,9 @@ void	parse_camera(char **args, t_map *map)
 	if(!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) || (!ft_strisnum(args[3]) || ft_strlen(args[3]) > 3))
 		exit_error("Error invalid map data, wrong data in camera row.\n", map);
 	camera->view_point = create_vector(args[1]);
-	camera->vector = create_vector(args[2]);
+	camera->orientation_nor = create_vector(args[2]);
 	camera->fov = ft_atoi(args[3]);
-	if (!is_normalized_vec(camera->vector))
+	if (!is_normalized_vec(camera->orientation_nor))
 		exit_error("Error. Invalid range for camera orientation.", map);
 	if( camera->fov < 0 || camera->fov > 180)
 		exit_error("Error. Invalid range for camera FOV.", map);
@@ -81,12 +81,16 @@ void	parse_light(char **args, t_map *map)
 
 void parse_sphere(char **args, t_map *map)
 {
+    t_object   *obj;
 	t_sphere *sphere;
 	t_list	*node;
 
+	obj = malloc(sizeof(t_object));
 	sphere = malloc(sizeof(t_sphere));
-	if (!sphere)
+	if (!sphere || !obj)
 		exit_error("Error. malloc\n", map);
+	obj->object = sphere;
+	obj->type = SPHERE;
 	if (ft_strlst_len(args) != 4)
 		exit_error("Error. Invalid map data, incompleted sphere row.\n", map);
 	if(!ft_str_is_vector(args[1]) || !ft_strisdbl(args[2]) || !ft_str_is_color(args[3]))
@@ -98,20 +102,24 @@ void parse_sphere(char **args, t_map *map)
 		exit_error("Error. Sphere color_range: ", map);
 	if (sphere->diameter <= 0.0)
 		exit_error("Error. Invalid range for sphere diameter.", map);
-	node = ft_lstnew(sphere);
+	node = ft_lstnew(obj);
 	if (!node)
 		exit_error("Error. malloc\n", map);
-	ft_stack_add_back(map->spheres, node);
+	ft_stack_add_back(map->objects, node);
 }
 
 void parse_plane(char **args, t_map *map)
 {
-	t_plane *plane;
+    t_object    *obj;
+    t_plane *plane;
 	t_list	*node;
 
+	obj = malloc(sizeof(t_object));
 	plane = malloc(sizeof(t_plane));
-	if (!plane)
+	if (!plane || !obj)
 		exit_error("Error. malloc\n", map);
+	obj->object = plane;
+	obj->type = PLANE;
 	if (ft_strlst_len(args) != 4)
 		exit_error("Error. Invalid map data, incompleted plane row.\n", map);
 	if(!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) || !ft_str_is_color(args[3]))
@@ -123,24 +131,28 @@ void parse_plane(char **args, t_map *map)
 		exit_error("Error. Plane color_range: ", map);
 	if (!is_normalized_vec(plane->vector))
 		exit_error("Error. Invalid range for plane orientation.", map);
-	node = ft_lstnew(plane);
+	node = ft_lstnew(obj);
 	if (!node)
 		exit_error("Error. malloc\n", map);
-	ft_stack_add_back(map->planes, node);
+	ft_stack_add_back(map->objects, node);
 }
 
 void	parse_cylinder(char **args, t_map *map)
 {
+    t_object *obj;
 	t_cylinder *cylinder;
 	t_list	*node;
 
+	obj = malloc(sizeof(t_object));
 	cylinder = malloc(sizeof(t_cylinder));
-	if (!cylinder)
+	if (!cylinder || obj)
 		exit_error("Error. malloc\n", map);
+	obj->object = cylinder;
+	obj->type = CYLINDER;
 	if (ft_strlst_len(args) != 6)
 		exit_error("Error. Invalid map data, incompleted cylinder row.\n", map);
-	if(!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) 
-		|| (!ft_strisdbl(args[3])) || (!ft_strisdbl(args[4])) 
+	if(!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2])
+		|| (!ft_strisdbl(args[3])) || (!ft_strisdbl(args[4]))
 		|| (!ft_str_is_color(args[5])))
 		exit_error("Error invalid map data, wrong data in cylinder row.\n", map);
 	cylinder->center = create_vector(args[1]);
@@ -156,10 +168,10 @@ void	parse_cylinder(char **args, t_map *map)
 		exit_error("Error. Invalid range for cylinder diameter.", map);
 	if (cylinder->height <= 0.0)
 		exit_error("Error. Invalid range for cylinder height.", map);
-	node = ft_lstnew(cylinder);
+	node = ft_lstnew(obj);
 	if (!node)
 		exit_error("Error. malloc\n", map);
-	ft_stack_add_back(map->cylinders, node);
+	ft_stack_add_back(map->objects, node);
 }
 
 void	parse_line(char *line, t_map *map)
@@ -213,9 +225,9 @@ t_map	*parser(char *filename)
 		parse_line(line, map);
 		line = get_next_line(fd);
 	}
-	
+
 	close(fd);
 	/* SI map no completo free map y devuelvo null */
 	return(map);
-	
+
 }

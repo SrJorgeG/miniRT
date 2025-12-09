@@ -28,48 +28,64 @@
 
 # define RAY_T_MIN 0.0001f
 # define RAY_T_MAX 1.0e30f
+#define FOCAL 1
+typedef double t_real;
+
+typedef enum e_object_type
+{
+    SPHERE,
+    PLANE,
+    CYLINDER
+} t_object_type;
+
+
 typedef struct s_vector
 {
 	double		x;
 	double		y;
 	double		z;
-	
-}	t_vector;
+
+}	t_vec;
+
 
 typedef struct s_vector t_point;
 typedef struct s_color
 {
-	unsigned char 		r; 
+	unsigned char 		r;
 	unsigned char 		g;
 	unsigned char 		b;
 
 }	t_color; // [0-255]
 
-typedef struct s_rayo
+typedef struct s_ray
 {
-	t_point		*origin;
-	t_vector 	*direction;
+	t_vec       origin;
+	t_vec       direction;
 
-}	t_rayo;
+}	t_ray;
 
 typedef struct s_amb_light
 {
-	t_color		*amb_col; 
+	t_color		*amb_col;
 	float		amb_ratio;		// [0.0,1.0]
 
 }	t_amb_light;
 
 typedef struct s_camera
 {
-	t_vector	*view_point;
-	t_vector	*vector; 		// [-1,1]
-	long		fov;			// [0,180]
+	t_vec	    *view_point;
+	t_vec	    *orientation_nor;
+	t_vec	    *right;
+	t_vec	    *up;
+	int		        fov;
+	unsigned int	focal;
+	double          radial_fov;
 
 }	t_camera;
 
 typedef struct s_light
 {
-	t_vector	*light_point;
+	t_vec	*light_point;
 	float		brightness;		// [0.0,1.0]
 	t_color		*color_range;	// BONUS
 
@@ -77,63 +93,90 @@ typedef struct s_light
 
 typedef struct s_sphere
 {
-	t_vector	*center;
+	t_vec	*center;
 	float 		diameter;
-	t_color		*color_range; 
+	t_color		*color_range;
 
 }	t_sphere;
 
 typedef struct s_plane
 {
-	t_vector	*point;
-	t_vector	*vector;		 // [-1,1]
+	t_vec	*point;
+	t_vec	*vector;		 // [-1,1]
 	t_color		*color_range;
 
 }	t_plane;
 
 typedef struct s_cylinder
 {
-	t_vector	*center;
-	t_vector	*axys; 		// [-1,1]
+	t_vec	*center;
+	t_vec	*axys; 		// [-1,1]
 	t_color		*color_range;
 	float 		diameter;
 	float 		height;
 
 }	t_cylinder;
 
+
+typedef struct s_object
+{
+    t_object_type type;
+    void    *object;
+}	t_object;
+
 typedef struct s_map
 {
 	t_camera	*camera;
-	t_stack		*planes;
-	t_stack		*cylinders;
-	t_stack		*spheres;
+	t_stack		*objects;
+	t_object	*last_hit;
 	t_light		*light;
 	t_amb_light	*amb_ligt;
 }	t_map;
 
+typedef struct s_scene
+{
+    t_real  aspect;
+    t_real  viewport;
+    t_map   *map;
+    int     screen_w;
+    int     screen_h;
+    t_real  viewport_w;
+    t_real  viewport_h;
+} t_scene;
+
+/* Struct usado para guardar informacion del choque de un t_ray */
+typedef struct s_hit
+{
+    int			hit;          // 1 si hubo choque, 0 si no
+    double 		t;            // La distancia al punto de choque
+    t_vec  		p;            // El punto exacto de la intersección (P = Origen + t * Dirección)
+    t_vec  		normal;       // La normal de la superficie en el punto 'p'
+    t_color		color;        // El color del objeto golpeado
+    t_object	*object;
+} t_hit;
 
 void	exit_error(char *err_msg, void *free_data);
 
 /* VECTOR UTILS - src/utils/vector.c */
 int ft_str_is_vector(char *str);
-t_vector	*create_vector(char *vector_str);
-int is_normalized_vec(t_vector *vector);
-t_vector	*vector_constructor(long x, long y, long z);
-inline void	vector_destructor(t_vector	*vector);
+t_vec	*create_vector(char *vector_str);
+int is_normalized_vec(t_vec *vector);
+t_vec	*vector_constructor(double x, double y, double z);
+inline void	vector_destructor(t_vec	*vector);
 
 /* VECTOR_BASIC - src/utils/vector_basic.c */
-t_vector	*vector_sum(t_vector *v1, t_vector *v2);
-t_vector	*vector_rest(t_vector *v1, t_vector *v2);
-t_vector	*vector_multiplication(t_vector *v1, long num);
-t_vector	*vector_division(t_vector *v1, long num);
-t_vector	*vector_dup(t_vector *vec);
+t_vec	vector_sum(t_vec v1, t_vec v2);
+t_vec	vector_rest(t_vec v1, t_vec v2);
+t_vec	vector_multiplication(t_vec *v1, double num);
+t_vec	vector_division(t_vec *v1, double num);
+t_vec	*vector_dup(t_vec vec);
 
 /* VECTOR_AUX - src/utils/vector_aux.c */
-inline double	vector_lenght_square(t_vector *vec);
-inline double	vector_lenght(t_vector *vec);
-t_vector	*vector_normalize(t_vector *vec);
-double		vector_dot_prod(t_vector *v1, t_vector *v2);
-t_vector	*vector_cross_prod(t_vector *v1, t_vector *v2);
+inline double	vector_lenght_square(t_vec *vec);
+inline double	vector_lenght(t_vec *vec);
+t_vec	vector_normalize(t_vec vec);
+double		vector_dot_prod(t_vec *v1, t_vec *v2);
+t_vec	vector_cross_prod(t_vec *v1, t_vec *v2);
 
 /* COLOR UTILS - src/utils/color.c */
 int ft_str_is_color(char *str);
@@ -149,4 +192,4 @@ void	debug_map(t_map *map);
 void	free_map(t_map *map);
 
 
-#endif 
+#endif

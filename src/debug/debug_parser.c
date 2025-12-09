@@ -38,28 +38,23 @@ void	debug_cylinder(t_cylinder *cylinder)
 void	debug_map(t_map *map)
 {
 	t_list	*current;
+	t_object    *obj;
 
 	if (map->amb_ligt)
 		printf("Ambient Light: Ratio: %.2f, Color: (R: %d, G: %d, B: %d)\n", map->amb_ligt->amb_ratio, map->amb_ligt->amb_col->r, map->amb_ligt->amb_col->g, map->amb_ligt->amb_col->b);
 	if (map->camera)
-		printf("Camera: View Point: (%.2f, %.2f, %.2f), Vector: (%.2f, %.2f, %.2f), FOV: %ld\n", map->camera->view_point->x, map->camera->view_point->y, map->camera->view_point->z, map->camera->vector->x, map->camera->vector->y, map->camera->vector->z, map->camera->fov);
-	
-	current = map->planes->first;
+		printf("Camera: View Point: (%.2f, %.2f, %.2f), Orientation: (%.2f, %.2f, %.2f), FOV: %d\n", map->camera->view_point->x, map->camera->view_point->y, map->camera->view_point->z, map->camera->orientation_nor->x, map->camera->orientation_nor->y, map->camera->orientation_nor->z, map->camera->fov);
+
+	current = map->objects->first;
+	obj = map->objects->first->content;
 	while (current)
 	{
-		debug_plane((t_plane *)current->content);
-		current = current->next;
-	}
-	current = map->spheres->first;
-	while (current)
-	{
-		debug_sphere((t_sphere *)current->content);
-		current = current->next;
-	}
-	current = map->cylinders->first;
-	while (current)
-	{
-		debug_cylinder((t_cylinder *)current->content);
+		if (obj->type == PLANE)
+					debug_plane((t_plane *)obj);
+		else if (obj->type == SPHERE)
+					debug_sphere((t_sphere *)obj);
+		else if (obj->type == CYLINDER)
+					debug_cylinder((t_cylinder *)obj);
 		current = current->next;
 	}
 }

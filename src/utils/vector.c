@@ -12,35 +12,41 @@
 
 #include "../../include/minirt.h"
 
-t_vector	*vector_constructor(long x, long y, long z)
+
+t_vec   v(double x, double y, double z)
 {
-	t_vector	*vector;
-	
-	vector = malloc(sizeof(t_vector));
+	return ((t_vec) {x, y, z});
+}
+
+t_vec	*v_malloc(double x, double y, double z)
+{
+	t_vec	*vector;
+
+	vector = malloc(sizeof(t_vec));
 	if (!vector)
 		return (NULL);
-	vector->x = x;	
-	vector->y = y;	
+	vector->x = x;
+	vector->y = y;
 	vector->z = z;
 	return (vector);
 }
 
-inline void	vector_destructor(t_vector	*vector)
+inline void	v_free(t_vec	*vector)
 {
 	free(vector);
 }
 
-t_vector	*create_vector(char *vector_str)
+t_vec	*create_vector(char *vector_str)
 {
 	char	**vector_split;
-	t_vector	*vector;
-	
-	vector = malloc(sizeof(t_vector));
+	t_vec	*vector;
+
+	vector = malloc(sizeof(t_vec));
 	if (!vector)
 		return (NULL);
 	vector_split = ft_split(vector_str, ',');
-	vector->x = ft_atoi(vector_split[0]);	
-	vector->y = ft_atoi(vector_split[1]);	
+	vector->x = ft_atoi(vector_split[0]);
+	vector->y = ft_atoi(vector_split[1]);
 	vector->z = ft_atoi(vector_split[2]);
 	ft_free_split(vector_split);
 	if (vector->x > 255 && vector->y > 255 && vector->z > 255)
@@ -75,7 +81,7 @@ int ft_str_is_vector(char *str)
     return (0);
 }
 
-int is_normalized_vec(t_vector *vector)
+int is_normalized_vec(t_vec *vector)
 {
 	if (vector->x < -1 || vector->x > 1)
 		return (0);
