@@ -7,7 +7,7 @@ LIBFT_DIR = libs/libft
 LIBFT_NAME = libft
 LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT_DIR) -l:libft.a
 
-CFILES = src/main.c src/exit.c src/init.c src/free_functions.c \
+CFILES = src/main.c src/exit.c src/init.c src/free_functions.c src/render.c \
 src/parser/parser.c \
 src/ray/ray.c src/ray/hits.c \
 src/utils/color.c src/utils/scene.c \
@@ -59,8 +59,8 @@ bonus:
 
 valgrind:
 
-	make FLAGS="-Wall -Werror -Wextra -g3"
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./miniRT examples/example.rt
+	make FLAGS="-Wall -Werror -Wextra -Iincludes -g"
+	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./miniRT examples/sphere.rt
 
 valgrind_s:
 	make

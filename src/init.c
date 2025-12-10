@@ -15,16 +15,11 @@
 /*
 	-PENDIENTE LIBERAR BIEN LOS MALLOC, SE LE PASARÁ PROBABLEMENTE UN T_DATA GENERAL A EXIT_ERROR Y SE LIBERARÁ TODO LO ALOCADO AHÍ.
 */
-t_map	*init_map()
+void	init_map(t_map *map)
 {
-	t_map	*map;
 
-	map = malloc(sizeof(t_map));
-	if (!map)
-		exit_error("Error. malloc. \n", NULL);
 	map->lights = ft_stack_new();
 	map->objects = ft_stack_new();
 	if (!map->objects)
 		exit_error("Error. malloc. \n", map);
-	return (map);
 }

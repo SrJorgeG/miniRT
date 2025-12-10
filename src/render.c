@@ -17,7 +17,6 @@ t_ray get_ray_from_pixel(t_scene *scene, t_vec image_center, t_vec pixel_center)
     t_vec x_offset;
     t_vec y_offset;
     t_vec pixel_world;
-    t_ray ray;
 
     x_offset = vector_multiplication(scene->map.camera.right, pixel_center.x);
     y_offset = vector_multiplication(scene->map.camera.up, pixel_center.y);
@@ -42,12 +41,13 @@ t_vec	get_hit_normal(t_hit *hit)
 	if (hit->object->type == SPHERE)
 	{
 		sphere = hit->object->object;
-		return (vector_normalize(vector_rest(hit->p, sphere->center));
+		return (vector_normalize(vector_rest(hit->p, sphere->center)));
 	}
+	return ((t_vec) {0,0,0});
 
 }
 
-int	fill_hit_info(t_hit *closest, double obj_distance, t_ray ray, t_object *last_hit)
+void	fill_hit_info(t_hit *closest, double obj_distance, t_object *last_hit)
 {
 	closest->object = last_hit;
 	closest->color = last_hit->color_range;
@@ -70,15 +70,15 @@ t_hit get_hits(t_scene *scene, t_ray ray)
         if (hit_object(ray, scene->map.last_hit, &obj_distance) && obj_distance < closest.t)
         {
             if (obj_distance < closest.t)
-                fill_hit_info(&closest, obj_distance, ray, scene->map.last_hit);
+                fill_hit_info(&closest, obj_distance, scene->map.last_hit);
         }
     }
-	current = scene->map.objects.first;
+	current = scene->map.objects->first;
 	while (current)
 	{
 		obj = current->content;
 		if (obj != scene->map.last_hit && hit_object(ray, obj, &obj_distance) && obj_distance < closest.t)
-                fill_hit_info(&closest, obj_distance, ray, obj);
+                fill_hit_info(&closest, obj_distance, obj);
 		current = current->next;
 	}
 	if (closest.hit)
@@ -105,6 +105,7 @@ t_color calculate_lighting(t_hit *hit, t_scene *scene)
 {
     t_color final_color;
     t_light *current_light;
+    t_list *current;
 
     // --- PASO 1: Componente Ambiental ---
     // Es el color del objeto afectado por la luz ambiental global.
@@ -112,10 +113,11 @@ t_color calculate_lighting(t_hit *hit, t_scene *scene)
     final_color = color_multiply(hit->color, scene->map.amb_ligt.amb_col);
     final_color = color_scale(final_color, scene->map.amb_ligt.amb_ratio);
 
+    current = scene->map.lights->first;
     // --- PASO 2: Iterar sobre todas las luces para la Componente Difusa ---
-    current_light = scene->map.lights; // Asumo que scene->lights es el inicio de tu lista de luces
-    while (current_light)
+    while (current)
     {
+    	current_light = scene->map.lights->first->content; // Asumo que scene->lights es el inicio de tu lista de luces
         // Vector desde el punto de impacto HACIA la luz
         t_vec light_dir = vector_normalize(vector_rest(current_light->light_point, hit->p));
 
@@ -140,13 +142,15 @@ t_color calculate_lighting(t_hit *hit, t_scene *scene)
         // Añadir la contribución de esta luz al color final
         final_color = color_add(final_color, diffuse_for_this_light);
 
-        current_light = current_light->next; // Avanzar a la siguiente luz
+        current = current->next; // Avanzar a la siguiente luz
     }
 
     // --- PASO 3: Clamping ---
     // Asegurarse de que el color final no exceda los límites (ej: 255, 255, 255)
     return (color_clamp(final_color));
 }
+
+
 
 void render(t_scene *scene, mlx_t *mlx, mlx_image_t* img)
 {
@@ -155,8 +159,9 @@ void render(t_scene *scene, mlx_t *mlx, mlx_image_t* img)
 	t_hit	hit;
 	t_vec pixel_center;
 	t_vec image_center;
+	t_color	pixel_color = (t_color){255,255,255};
 
-	image_center = vector_sum(*scene->map->camera->view_point, *scene->map->camera->orientation_nor);
+	image_center = vector_sum(scene->map.camera.view_point, scene->map.camera.orientation_nor);
     while (y < scene->screen_h)
 	{
 		x = 0;
@@ -164,8 +169,9 @@ void render(t_scene *scene, mlx_t *mlx, mlx_image_t* img)
 		{
             pixel_center = find_pixel_on_viewport(x, y, scene); //Ahora (px, py) son las coordenadas 2D del píxel dentro de la ventana virtual. px va de -viewport_width/2 a +viewport_width/2
             hit = get_hits(scene, get_ray_from_pixel(scene, image_center, pixel_center));
-            calculate_lighting(hit, scene);
-            mlx_put_pixel(img, x, y, pixel_color);
+            //pixel_color = calculate_lighting(&hit, scene);
+            hit = hit;
+            mlx_put_pixel(img, x, y, color_to_int_no_alpha(pixel_color));
 			x++;
 		}
 		y++;

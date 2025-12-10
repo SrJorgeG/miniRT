@@ -19,15 +19,19 @@ int get_rgba(int r, int g, int b, int a)
 
 int	main(int ac, char *av[])
 {
-	t_map *map;
+	t_scene *scene;
+
 	mlx_t	*mlx;
 	mlx_image_t* img;
 
 	if(ac != 2)
 		exit_error("Error, invalid number of arguments\n", NULL);
 
-	map = parser(av[1]);
-	debug_map(map);
+	scene = malloc(sizeof(t_scene));
+	parser(av[1], &scene->map);
+//	debug_map(&scene->map);
+	setup_camera(&scene->map.camera);
+
 
 	mlx = mlx_init(WIDTH, HEIGHT, TITLE, 0);
 	if (!mlx)
@@ -35,7 +39,7 @@ int	main(int ac, char *av[])
 	img = mlx_new_image(mlx, WIDTH, HEIGHT);
 	if (!img)
 		exit_error("Error. mlx_new_image\n", NULL);
-
+	render(scene, mlx, img);
 
 
 
@@ -48,5 +52,5 @@ int	main(int ac, char *av[])
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
 	mlx_terminate(mlx);
-	free_map(map);
+	free_map(&scene->map);
 }

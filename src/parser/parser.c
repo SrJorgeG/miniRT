@@ -180,6 +180,11 @@ void	parse_line(char *line, t_map *map)
 
 	args = ft_split(line, '\t');
 	free(line);
+	if (!args || !args[0])
+	{
+		ft_free_split(args);
+		return;
+	}
 	if (!ft_strcmp(*args, "A"))
 		parse_ambient_light(args, map);
 	else if (!ft_strcmp(*args, "C"))
@@ -210,24 +215,25 @@ void	trim_new_line(char *str)
 	}
 }
 
-t_map	*parser(char *filename)
+int	parser(char *filename, t_map *map)
 {
 	int fd;
 	char *line;
-	t_map *map;
 
 	fd = check_map(filename);
-	map = init_map();
+	init_map(map);
 	line = get_next_line(fd);
 	while (line)
 	{
 		trim_new_line(line);
+		if (line)
+		{
 		parse_line(line, map);
+		}
 		line = get_next_line(fd);
 	}
 
 	close(fd);
-	/* SI map no completo free map y devuelvo null */
-	return(map);
+	return(1);
 
 }

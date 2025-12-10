@@ -51,9 +51,9 @@ typedef struct s_vector
 typedef struct s_vector t_point;
 typedef struct s_color
 {
-	unsigned char 		r;
-	unsigned char 		g;
-	unsigned char 		b;
+	int 		r;
+	int 		g;
+	int 		b;
 
 }	t_color; // [0-255]
 
@@ -187,13 +187,17 @@ t_color color_multiply(t_color c1, t_color c2);
 t_color color_scale(t_color c, double factor);
 t_color color_add(t_color c1, t_color c2);
 t_color color_clamp(t_color c);
+int color_to_int_no_alpha(t_color color);
 
 
 
-t_map	*init_map();
+void	init_map(t_map *map);
+void	render(t_scene *scene, mlx_t *mlx, mlx_image_t* img);
+void	setup_camera(t_camera *camera);
+void	setup_scene(t_scene *scene, t_camera *camera);
 
 
-t_map	*parser(char *filename);
+int	parser(char *filename, t_map *map);
 void	debug_map(t_map *map);
 
 /* FREE FUCNTIONS */
