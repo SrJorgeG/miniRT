@@ -31,7 +31,7 @@ int hit_object(t_ray ray, t_object *object, double *obj_distance)
 	else if (object->type == CYLINDER)
 		return (hit_sphere(ray, object->object, obj_distance));
 	else if (object->type == PLANE)
-		return (hit_sphere(ray, object->object, obj_distance));
+		return (hit_plane(ray, object->object, obj_distance));
 	return (0);
 }
 
@@ -175,7 +175,7 @@ void render(t_scene *scene, mlx_t *mlx, mlx_image_t* img)
 			x++;
 		}
 		y++;
-        
+
 	}
     printf("Termino de dibujar la imagen\n");
     if (mlx_image_to_window(mlx, img, 0, 0) < 0)

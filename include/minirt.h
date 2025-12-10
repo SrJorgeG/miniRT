@@ -177,6 +177,7 @@ t_vec	vector_cross_prod(t_vec v1, t_vec v2);
 
 /*	 Hit functionss 	*/
 int	hit_sphere(t_ray ray, t_sphere *sphere, double *obj_distance);
+int hit_plane(t_ray ray, t_plane *plane, double *obj_distance);
 
 /* COLOR UTILS - src/utils/color.c */
 int ft_str_is_color(char *str);

@@ -30,3 +30,16 @@ int	hit_sphere(t_ray ray, t_sphere *sphere, double *obj_distance)
     }
     return (0);
 }
+
+int hit_plane(t_ray ray, t_plane *plane, double *obj_distance)
+{
+	double denom;
+
+	denom = vector_dot_prod(ray.direction, plane->vector);
+	if (denom > 0.0001)
+	{
+		*obj_distance = vector_dot_prod(vector_rest(plane->point, ray.origin), plane->vector) / denom;
+		return (*obj_distance > 0);
+	}
+	return (0);
+}
