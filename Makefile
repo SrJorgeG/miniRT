@@ -5,6 +5,9 @@ MLX_DIR = libs/MLX42
 BUILD_DIR = $(MLX_DIR)/build
 LIBFT_DIR = libs/libft
 LIBFT_NAME = libft
+
+WAYLAND_LIBS = -lwayland-client -lwayland-cursor -lwayland-egl -lxkbcommon
+#LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw $(WAYLAND_LIBS) -pthread -lm -L$(LIBFT_DIR) -l:libft.a
 LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT_DIR) -l:libft.a
 
 CFILES = src/main.c src/exit.c src/init.c src/free_functions.c src/render.c \

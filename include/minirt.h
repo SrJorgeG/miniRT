@@ -157,7 +157,7 @@ void	exit_error(char *err_msg, void *free_data);
 /* VECTOR UTILS - src/utils/vector.c */
 int ft_str_is_vector(char *str);
 t_vec	create_vector(char *vector_str);
-int is_normalized_vec(t_vec *vector);
+int is_normalized_vec(t_vec vector);
 t_vec	*vector_constructor(double x, double y, double z);
 void	vector_destructor(t_vec	*vector);
 

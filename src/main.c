@@ -31,6 +31,7 @@ int	main(int ac, char *av[])
 	parser(av[1], &scene->map);
 //	debug_map(&scene->map);
 	setup_camera(&scene->map.camera);
+	setup_scene(scene, &scene->map.camera);
 
 
 	mlx = mlx_init(WIDTH, HEIGHT, TITLE, 0);

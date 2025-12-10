@@ -159,7 +159,6 @@ void render(t_scene *scene, mlx_t *mlx, mlx_image_t* img)
 	t_hit	hit;
 	t_vec pixel_center;
 	t_vec image_center;
-	t_color	pixel_color = (t_color){255,255,255};
 
 	image_center = vector_sum(scene->map.camera.view_point, scene->map.camera.orientation_nor);
     while (y < scene->screen_h)
@@ -169,14 +168,16 @@ void render(t_scene *scene, mlx_t *mlx, mlx_image_t* img)
 		{
             pixel_center = find_pixel_on_viewport(x, y, scene); //Ahora (px, py) son las coordenadas 2D del píxel dentro de la ventana virtual. px va de -viewport_width/2 a +viewport_width/2
             hit = get_hits(scene, get_ray_from_pixel(scene, image_center, pixel_center));
-            //pixel_color = calculate_lighting(&hit, scene);
-            hit = hit;
-            mlx_put_pixel(img, x, y, color_to_int_no_alpha(pixel_color));
+            if (hit.hit)
+                mlx_put_pixel(img, x, y, color_to_int_no_alpha(calculate_lighting(&hit, scene)));
+            else
+                mlx_put_pixel(img, x, y, color_to_int_no_alpha((t_color) {255, 255, 255}));
 			x++;
 		}
 		y++;
-
+        
 	}
+    printf("Termino de dibujar la imagen\n");
     if (mlx_image_to_window(mlx, img, 0, 0) < 0)
        	exit_error("Error. mlx_image_to_window\n", NULL);
 }

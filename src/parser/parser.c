@@ -37,11 +37,6 @@ void	parse_ambient_light(char **args, t_map *map)
 
 void	parse_camera(char **args, t_map *map)
 {
-	t_camera *camera;
-
-	camera = malloc(sizeof(t_camera));
-	if (!camera)
-		exit_error("Error. malloc\n", map);
 	if (ft_strlst_len(args) != 4)
 		exit_error("Error. Invalid map data, incompleted camera row.\n", map);
 	if(!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) || (!ft_strisnum(args[3]) || ft_strlen(args[3]) > 3))
@@ -49,9 +44,9 @@ void	parse_camera(char **args, t_map *map)
 	map->camera.view_point = create_vector(args[1]);
 	map->camera.orientation_nor = create_vector(args[2]);
 	map->camera.fov = ft_atoi(args[3]);
-	if (!is_normalized_vec(&camera->orientation_nor))
+	if (!is_normalized_vec(map->camera.orientation_nor))
 		exit_error("Error. Invalid range for camera orientation.", map);
-	if( camera->fov < 0 || camera->fov > 180)
+	if (map->camera.fov < 0 || map->camera.fov > 180)
 		exit_error("Error. Invalid range for camera FOV.", map);
 }
 
@@ -130,7 +125,7 @@ void parse_plane(char **args, t_map *map)
 	plane->vector = create_vector(args[2]);
 	if (!create_color(args[3], &obj->color_range))
 		exit_error("Error. Plane color_range: ", map);
-	if (!is_normalized_vec(&plane->vector))
+	if (!is_normalized_vec(plane->vector))
 		exit_error("Error. Invalid range for plane orientation.", map);
 	node = ft_lstnew(obj);
 	if (!node)
@@ -162,7 +157,7 @@ void	parse_cylinder(char **args, t_map *map)
 	cylinder->height = ft_atodbl(args[4]);
 	if (!create_color(args[5], &obj->color_range))
 		exit_error("Error. Cylinder color_range: ", map);
-	if (!is_normalized_vec(&cylinder->axys))
+	if (!is_normalized_vec(cylinder->axys))
 		exit_error("Error. Invalid range for cylinder orientation.", map);
 	if (cylinder->diameter <= 0.0)
 		exit_error("Error. Invalid range for cylinder diameter.", map);

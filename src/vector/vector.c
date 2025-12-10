@@ -76,13 +76,13 @@ int ft_str_is_vector(char *str)
     return (0);
 }
 
-int is_normalized_vec(t_vec *vector)
+int is_normalized_vec(t_vec vector)
 {
-	if (vector->x < -1 || vector->x > 1)
+	if (vector.x < -1 || vector.x > 1)
 		return (0);
-	if (vector->y < -1 || vector->y > 1)
+	if (vector.y < -1 || vector.y > 1)
 		return (0);
-	if (vector->z < -1 || vector->z > 1)
+	if (vector.z < -1 || vector.z > 1)
 		return (0);
 	return (1);
 }

@@ -36,6 +36,9 @@ void setup_camera(t_camera *camera)
 
 void setup_scene(t_scene *scene, t_camera *camera)
 {
+    scene->screen_h = HEIGHT;
+    scene->screen_w = WIDTH;
+
     scene->aspect = (t_real)scene->screen_w / (t_real)scene->screen_h;
     scene->viewport_w = 2.0 * tan(camera->radial_fov * 2.0);
     scene->viewport_h = scene->viewport_w / scene->aspect;
