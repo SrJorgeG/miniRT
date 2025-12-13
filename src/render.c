@@ -38,11 +38,17 @@ int hit_object(t_ray ray, t_object *object, double *obj_distance)
 t_vec	get_hit_normal(t_hit *hit)
 {
 	t_sphere	*sphere;
+	t_plane     *plane;
 	if (hit->object->type == SPHERE)
 	{
 		sphere = hit->object->object;
 		return (vector_normalize(vector_rest(hit->p, sphere->center)));
 	}
+    else if (hit->object->type == PLANE)
+    {
+        plane = hit->object->object;
+		return (plane->vector);
+    }
 	return ((t_vec) {0,0,0});
 
 }
@@ -84,7 +90,7 @@ t_hit get_hits(t_scene *scene, t_ray ray)
 	if (closest.hit)
 	{
 		scene->map.last_hit = closest.object;
-		closest.p = vector_sum(ray.origin, vector_multiplication(ray.direction, obj_distance));
+		closest.p = vector_sum(ray.origin, vector_multiplication(ray.direction, closest.t));
 		closest.normal = get_hit_normal(&closest);
 	}
 	return (closest);
@@ -171,7 +177,7 @@ void render(t_scene *scene, mlx_t *mlx, mlx_image_t* img)
             if (hit.hit)
                 mlx_put_pixel(img, x, y, color_to_int_no_alpha(calculate_lighting(&hit, scene)));
             else
-                mlx_put_pixel(img, x, y, color_to_int_no_alpha((t_color) {255, 255, 255}));
+                mlx_put_pixel(img, x, y, color_to_int_no_alpha((t_color) {0, 0, 0}));
 			x++;
 		}
 		y++;

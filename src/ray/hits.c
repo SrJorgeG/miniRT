@@ -33,13 +33,21 @@ int	hit_sphere(t_ray ray, t_sphere *sphere, double *obj_distance)
 
 int hit_plane(t_ray ray, t_plane *plane, double *obj_distance)
 {
-	double denom;
+    double denom;
+    double t;
+    const double EPS = 1e-6;
 
-	denom = vector_dot_prod(ray.direction, plane->vector);
-	if (denom > 0.0001)
-	{
-		*obj_distance = vector_dot_prod(vector_rest(plane->point, ray.origin), plane->vector) / denom;
-		return (*obj_distance > 0);
-	}
-	return (0);
+    denom = vector_dot_prod(ray.direction, plane->vector);
+    /* Si denom ~ 0 -> rayo paralelo al plano */
+    if (fabs(denom) > EPS)
+    {
+        t = vector_dot_prod(vector_rest(plane->point, ray.origin), plane->vector) / denom;
+        /* Sólo aceptamos intersecciones “adelante” del origen del rayo */
+        if (t > EPS)
+        {
+            *obj_distance = t;
+            return 1;
+        }
+    }
+    return 0;
 }
