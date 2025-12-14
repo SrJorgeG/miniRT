@@ -35,21 +35,22 @@ int hit_object(t_ray ray, t_object *object, double *obj_distance)
 	return (0);
 }
 
-t_vec	get_hit_normal(t_hit *hit)
+void	get_hit_normal(t_hit *hit, t_ray ray)
 {
 	t_sphere	*sphere;
 	t_plane     *plane;
 	if (hit->object->type == SPHERE)
 	{
 		sphere = hit->object->object;
-		return (vector_normalize(vector_rest(hit->p, sphere->center)));
+		hit->normal = vector_normalize(vector_rest(hit->p, sphere->center));
 	}
     else if (hit->object->type == PLANE)
     {
         plane = hit->object->object;
-		return (plane->vector);
+        hit->normal = plane->vector;
+        if (vector_dot_prod(ray.direction, hit->normal) > 0)
+            hit->normal = vector_multiplication(hit->normal, -1.0);
     }
-	return ((t_vec) {0,0,0});
 
 }
 
@@ -91,7 +92,7 @@ t_hit get_hits(t_scene *scene, t_ray ray)
 	{
 		scene->map.last_hit = closest.object;
 		closest.p = vector_sum(ray.origin, vector_multiplication(ray.direction, closest.t));
-		closest.normal = get_hit_normal(&closest);
+		get_hit_normal(&closest, ray);
 	}
 	return (closest);
 }
@@ -104,7 +105,8 @@ t_vec find_pixel_on_viewport(int x, int y, t_scene *scene)
     u = (x + 0.5) / (t_real)scene->screen_w;
     v = (y + 0.5) / (t_real)scene->screen_h;
 
-    return ((t_vec) {(u - 0.5) * scene->viewport_w , (0.5 - v) * scene->viewport_h, 0});
+    // TESTEAR SI EN EL CLUSTER HAY QUE INVERTIR EJE Y O NO, EN MI PC FUNCIOONA ASI BIEN.
+    return ((t_vec) {(u - 0.5) * scene->viewport_w , (v - 0.5) * scene->viewport_h, 0});
 }
 
 t_color calculate_lighting(t_hit *hit, t_scene *scene)

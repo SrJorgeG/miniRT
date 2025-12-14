@@ -38,11 +38,10 @@ int hit_plane(t_ray ray, t_plane *plane, double *obj_distance)
     const double EPS = 1e-6;
 
     denom = vector_dot_prod(ray.direction, plane->vector);
-    /* Si denom ~ 0 -> rayo paralelo al plano */
+  
     if (fabs(denom) > EPS)
     {
         t = vector_dot_prod(vector_rest(plane->point, ray.origin), plane->vector) / denom;
-        /* Sólo aceptamos intersecciones “adelante” del origen del rayo */
         if (t > EPS)
         {
             *obj_distance = t;
@@ -51,3 +50,10 @@ int hit_plane(t_ray ray, t_plane *plane, double *obj_distance)
     }
     return 0;
 }
+
+
+/*int hit_cylinder(t_ray ray, t_cylinder *cylinder, double *obj_distance)
+{
+
+}*/
+

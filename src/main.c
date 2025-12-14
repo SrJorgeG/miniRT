@@ -24,7 +24,7 @@ int	main(int ac, char *av[])
 	mlx_t	*mlx;
 	mlx_image_t* img;
 
-	if(ac != 2)
+	if (ac != 2)
 		exit_error("Error, invalid number of arguments\n", NULL);
 
 	scene = malloc(sizeof(t_scene));
