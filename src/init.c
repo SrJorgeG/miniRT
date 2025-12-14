@@ -17,7 +17,9 @@
 */
 void	init_map(t_map *map)
 {
-
+	map->has_amb_ligt = 0;
+	map->has_camera = 0;
+	map->has_lights = 0;
 	map->lights = ft_stack_new();
 	map->objects = ft_stack_new();
 	if (!map->objects)

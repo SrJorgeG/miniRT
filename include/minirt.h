@@ -128,6 +128,9 @@ typedef struct s_map
 	t_object	*last_hit;
 	t_stack		*lights;
 	t_amb_light	amb_ligt;
+	uint8_t		has_camera;
+	uint8_t		has_amb_ligt;
+	uint8_t		has_lights;
 }	t_map;
 
 typedef struct s_scene
@@ -198,7 +201,7 @@ void	setup_camera(t_camera *camera);
 void	setup_scene(t_scene *scene, t_camera *camera);
 
 
-int	parser(char *filename, t_map *map);
+int	parser(char *filename, t_scene *scene);
 void	debug_map(t_map *map);
 
 /* FREE FUCNTIONS */

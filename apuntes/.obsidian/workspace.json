@@ -51,12 +51,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Basics.md",
+                "file": "Plan de Trabajo miniRT - Estructura Modular.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Basics"
+              "title": "Plan de Trabajo miniRT - Estructura Modular"
             }
           }
         ],
@@ -210,8 +210,8 @@
   },
   "active": "5f4d7e7843e30667",
   "lastOpenFiles": [
-    "README.md",
     "Basics.md",
+    "README.md",
     "MINILIBX CODAM.md",
     "Plan de Trabajo miniRT - Estructura Modular.md",
     "📚 Recursos Fundamentales.md",
