@@ -52,5 +52,5 @@ void	free_map(t_map *map)
 void	free_scene(t_scene *scene)
 {
 	free_map(&scene->map);
-	fre(scene);
+	free(scene);
 }

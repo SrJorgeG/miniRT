@@ -28,7 +28,7 @@ int	main(int ac, char *av[])
 		exit_error("Error, invalid number of arguments\n", NULL);
 
 	scene = malloc(sizeof(t_scene));
-	parser(av[1], &scene->map);
+	parser(av[1], scene);
 //	debug_map(&scene->map);
 	setup_camera(&scene->map.camera);
 	setup_scene(scene, &scene->map.camera);

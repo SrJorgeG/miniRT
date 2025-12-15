@@ -51,12 +51,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Plan de Trabajo miniRT - Estructura Modular.md",
+                "file": "docs/Textures.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Plan de Trabajo miniRT - Estructura Modular"
+              "title": "Textures"
             }
           }
         ],
@@ -210,16 +210,19 @@
   },
   "active": "5f4d7e7843e30667",
   "lastOpenFiles": [
-    "Basics.md",
-    "README.md",
-    "MINILIBX CODAM.md",
-    "Plan de Trabajo miniRT - Estructura Modular.md",
-    "📚 Recursos Fundamentales.md",
-    "Untitled.base",
-    "docs/index.md",
+    "docs/Shaders.md",
+    "docs/Input.md",
     "docs/Basics.md",
     "docs/42.md",
+    "Plan de Trabajo miniRT - Estructura Modular.md",
+    "subject.pdf",
+    "Untitled.base",
+    "README.md",
+    "Basics.md",
     "en.subject.pdf",
+    "MINILIBX CODAM.md",
+    "📚 Recursos Fundamentales.md",
+    "docs/index.md",
     "en.subject.pdf.crdownload",
     "CHECKLIST.md"
   ]

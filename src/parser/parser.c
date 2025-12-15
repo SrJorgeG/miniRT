@@ -150,7 +150,7 @@ void	parse_cylinder(char **args, t_scene *scene)
 
 	obj = malloc(sizeof(t_object));
 	cylinder = malloc(sizeof(t_cylinder));
-	if (!cylinder || obj)
+	if (!cylinder || !obj)
 		exit_error("Error. malloc\n", scene);
 	obj->object = cylinder;
 	obj->type = CYLINDER;
@@ -226,7 +226,7 @@ int	parser(char *filename, t_scene *scene)
 	char *line;
 
 	fd = check_map(filename);
-	init_map(scene);
+	init_map(&scene->map);
 	line = get_next_line(fd);
 	while (line)
 	{
