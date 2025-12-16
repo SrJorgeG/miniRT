@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/12/16 17:36:48 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:12:07 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ typedef struct s_scene
 	int					screen_w;
 	int					screen_h;
 	int					cache_count;
-	int					*pixel_cache;
+	t_obj_cache			*pixel_cache;
 	t_real				viewport_w;
 	t_real				viewport_h;
 }						t_scene;
@@ -216,6 +216,9 @@ void					setup_scene(t_scene *scene, t_camera *camera);
 
 int						parser(char *filename, t_scene *scene);
 void					debug_map(t_map *map);
+
+/* Cache functions */
+void					init_cache(t_scene *scene);
 
 /* FREE FUCNTIONS */
 void					free_map(t_map *map);
