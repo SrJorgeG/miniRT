@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:39:54 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/19 17:22:11 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/16 16:55:38 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int get_rgba(int r, int g, int b, int a)
 int	main(int ac, char *av[])
 {
 	t_scene *scene;
-
 	mlx_t	*mlx;
 	mlx_image_t* img;
 
@@ -42,12 +41,7 @@ int	main(int ac, char *av[])
 		exit_error("Error. mlx_new_image\n", NULL);
 	render(scene, mlx, img);
 
-
-
-
-
-
-
+	mlx_key_hook(mlx, custom_key_hook, &(t_hook_data){scene, mlx, img});
 
 
 	mlx_loop(mlx);

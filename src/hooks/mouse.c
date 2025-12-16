@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   mouse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/12 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/16 17:37:25 by dcid-san         ###   ########.fr       */
+/*   Created: 2025/12/16 17:07:57 by dcid-san          #+#    #+#             */
+/*   Updated: 2025/12/16 17:37:29 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minirt.h"
+#include "../../include/minirt.h"
 
-/*
-	-PENDIENTE LIBERAR BIEN LOS MALLOC,
-		SE LE PASARÁ PROBABLEMENTE UN T_DATA GENERAL A EXIT_ERROR Y SE LIBERARÁ TODO LO ALOCADO AHÍ.
-*/
-void	init_map(t_map *map)
+void	object_selector_hook(mlx_key_data_t keydata, t_hook_data *data)
 {
-	map->has_amb_ligt = 0;
-	map->has_camera = 0;
-	map->has_lights = 0;
-	map->lights = ft_stack_new();
-	map->objects = ft_stack_new();
-	if (!map->objects)
-		exit_error("Error. malloc. \n", map);
+	int32_t	x;
+	int32_t	y;
+
+	mlx_get_mouse_pos(data->mlx, &x, &y);
 }

@@ -1,0 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keyboard.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/16 16:38:58 by dcid-san          #+#    #+#             */
+/*   Updated: 2025/12/16 17:37:46 by dcid-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minirt.h"
+
+void	camera_keys(mlx_key_data_t keydata, t_camera *camera)
+{
+	if (keydata.key == MLX_KEY_UP && (keydata.action == MLX_PRESS
+			|| keydata.action == MLX_REPEAT))
+		camera->view_point.y += 5;
+	else if (keydata.key == MLX_KEY_DOWN && (keydata.action == MLX_PRESS
+			|| keydata.action == MLX_REPEAT))
+		camera->view_point.y -= 5;
+	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_PRESS
+			|| keydata.action == MLX_REPEAT))
+		camera->view_point.x += 5;
+	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_PRESS
+			|| keydata.action == MLX_REPEAT))
+		camera->view_point.x -= 5;
+}
+
+void	custom_key_hook(mlx_key_data_t keydata, void *param)
+{
+	t_hook_data *data;
+
+	data = param;
+	camera_keys(keydata, &data->scene->map.camera);
+	render(data->scene, data->mlx, data->image);
+}
