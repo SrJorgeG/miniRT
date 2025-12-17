@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/10/19 16:48:48 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/17 02:23:09 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../libs/libft/libft.h"
 # include "../libs/MLX42/include/MLX42/MLX42.h"
+# include "geo_trans.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -111,6 +112,8 @@ typedef struct s_cylinder
 	double 		diameter;
 	double 		height;
 
+	t_mat4  transform;          // Forward transform
+    t_mat4  inverse_transform;  // Backward transform
 }	t_cylinder;
 
 
