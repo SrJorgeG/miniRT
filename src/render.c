@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/16 17:37:23 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/16 20:23:33 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ t_hit	get_hits(t_scene *scene, t_ray ray)
 	}
 	return (closest);
 }
-
+/* TESTEAR SI EN EL CLUSTER HAY QUE INVERTIR EJE Y O NO,
+	EN MI PC FUNCIOONA ASI BIEN. */
 t_vec	find_pixel_on_viewport(int x, int y, t_scene *scene)
 {
 	t_real	u;
@@ -109,9 +110,8 @@ t_vec	find_pixel_on_viewport(int x, int y, t_scene *scene)
 
 	u = (x + 0.5) / (t_real)scene->screen_w;
 	v = (y + 0.5) / (t_real)scene->screen_h;
-	// TESTEAR SI EN EL CLUSTER HAY QUE INVERTIR EJE Y O NO,
-	EN MI PC FUNCIOONA ASI BIEN.return ((t_vec){(u - 0.5) * scene->viewport_w,
-		(v - 0.5) * scene->viewport_h, 0});
+	return ((t_vec){(u - 0.5) * scene->viewport_w, (v - 0.5)
+		* scene->viewport_h, 0});
 }
 
 t_color	calculate_lighting(t_hit *hit, t_scene *scene)
@@ -141,10 +141,10 @@ t_color	calculate_lighting(t_hit *hit, t_scene *scene)
 		// Es el producto escalar (coseno del ángulo) entre la normal y la dirección de la luz.
 		// El 'dot product' nos dice cuánto "mira" la superficie hacia la luz.
 		diffuse_factor = vector_dot_prod(hit->normal, light_dir);
-		// Si el factor es negativo,
+		/* Si el factor es negativo,
 		significa que la luz está detrás de la superficie.
-			// En ese caso, no contribuye con luz. Lo clamping a 0.
-			if (diffuse_factor < 0)
+			En ese caso, no contribuye con luz. Lo clamping a 0.*/
+		if (diffuse_factor < 0)
 		{
 			diffuse_factor = 0;
 		}
@@ -159,8 +159,8 @@ t_color	calculate_lighting(t_hit *hit, t_scene *scene)
 		current = current->next; // Avanzar a la siguiente luz
 	}
 	// --- PASO 3: Clamping ---
-	// Asegurarse de que el color final no exceda los límites (ej: 255, 255,
-		255)
+	/*Asegurarse de que el color final no exceda los límites (ej: 255, 255,
+		255) */
 	return (color_clamp(final_color));
 }
 
@@ -181,19 +181,19 @@ void	render(t_scene *scene, mlx_t *mlx, mlx_image_t *img)
 		x = 0;
 		while (x < scene->screen_w)
 		{
-			pixel_center = find_pixel_on_viewport(x, y, scene); // Ahora (px,
+			pixel_center = find_pixel_on_viewport(x, y, scene);
+			/*Ahora (px,
 					py) son las coordenadas 2D del píxel dentro de la ventana virtual. px va de
-				-viewport_width/2 a +viewport_width/2
+				-viewport_width/2 a +viewport_width/2 */
 			hit = get_hits(scene, get_ray_from_pixel(scene, image_center,
 						pixel_center));
-					if (hit.hit)
-						mlx_put_pixel(img, x, y,
-							color_to_int_no_alpha(calculate_lighting(&hit,
-									scene)));
-					else
-						mlx_put_pixel(img, x, y,
-							color_to_int_no_alpha((t_color){0, 0, 0}));
-					x++;
+			if (hit.hit)
+				mlx_put_pixel(img, x, y,
+					color_to_int_no_alpha(calculate_lighting(&hit, scene)));
+			else
+				mlx_put_pixel(img, x, y, color_to_int_no_alpha((t_color){0, 0,
+						0}));
+			x++;
 		}
 		y++;
 	}

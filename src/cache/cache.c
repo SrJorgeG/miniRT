@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:23:08 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/16 19:38:44 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/16 20:38:25 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,22 @@ void	init_cache(t_scene *scene)
 	}
 }
 
-void	add_pixel_to_cache(t_obj_cache *cache, int x, int y)
+int	add_pixel_to_cache(t_obj_cache *cache, int x, int y)
 {
 	int *new_coords;
 	int new_capacity;
 
 	if (cache->pixel_count <= cache->capacity)
 	{
-		ft_realloc(cache->pixels, cache->capacity, cache->capacity * 2);
+		new_coords = ft_realloc(cache->pixels, cache->capacity, cache->capacity
+				* 2);
+		if (!new_coords)
+			return (0);
 		cache->capacity = cache->capacity * 2;
+		cache->pixels = new_coords;
 	}
+	cache->pixels[cache->pixel_count * 2] = x;
+	cache->pixels[(cache->pixel_count * 2) + 1] = y;
+	cache->pixel_count++;
+	return (1);
 }
