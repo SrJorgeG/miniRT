@@ -1,8 +1,8 @@
 #include "../../include/minirt.h"
 
-int	check_map(char *filename)
+int check_map(char *filename)
 {
-	int	fd;
+	int fd;
 	char *cpy;
 
 	cpy = filename;
@@ -16,37 +16,41 @@ int	check_map(char *filename)
 	return (fd);
 }
 
-void	parse_ambient_light(char **args, t_scene *scene)
+void parse_ambient_light(char **args, t_scene *scene)
 {
 	t_amb_light *amb_light;
 
 	if (scene->map.has_amb_ligt)
 		exit_error("Error. Duplicated Ambient Light\n", scene);
-	
+
 	amb_light = malloc(sizeof(t_amb_light));
 	if (!amb_light)
 		exit_error("Error. malloc\n", scene);
 	if (ft_strlst_len(args) != 3)
-		exit_error("Error. Invalid map data, incompleted ambient_light row.\n", scene);
-	if(!ft_strisdbl(args[1]) || !ft_str_is_color(args[2]) )
-		exit_error("Error invalid map data, wrong data in ambient_light row.\n", scene);
+		exit_error("Error. Invalid map data, incompleted ambient_light row.\n",
+		           scene);
+	if (!ft_strisdbl(args[1]) || !ft_str_is_color(args[2]))
+		exit_error("Error invalid map data, wrong data in ambient_light row.\n",
+		           scene);
 	scene->map.amb_ligt.amb_ratio = ft_atodbl(args[1]);
 	if (!create_color(args[2], &scene->map.amb_ligt.amb_col))
 		exit_error("Error. Ambient light color: ", scene);
-	if (scene->map.amb_ligt.amb_ratio < 0.0 || scene->map.amb_ligt.amb_ratio > 1.0)
+	if (scene->map.amb_ligt.amb_ratio < 0.0 ||
+	    scene->map.amb_ligt.amb_ratio > 1.0)
 		exit_error("Error. Invalid range for ambient light ratio.", scene);
 	scene->map.has_amb_ligt = 1;
 }
 
-void	parse_camera(char **args, t_scene *scene)
+void parse_camera(char **args, t_scene *scene)
 {
-
 	if (scene->map.has_camera)
 		exit_error("Error. Duplicated Camera\n", scene);
 	if (ft_strlst_len(args) != 4)
 		exit_error("Error. Invalid map data, incompleted camera row.\n", scene);
-	if(!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) || (!ft_strisnum(args[3]) || ft_strlen(args[3]) > 3))
-		exit_error("Error invalid map data, wrong data in camera row.\n", scene);
+	if (!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) ||
+	    (!ft_strisnum(args[3]) || ft_strlen(args[3]) > 3))
+		exit_error("Error invalid map data, wrong data in camera row.\n",
+		           scene);
 	scene->map.camera.view_point = create_vector(args[1]);
 	scene->map.camera.orientation_nor = create_vector(args[2]);
 	scene->map.camera.fov = ft_atoi(args[3]);
@@ -57,11 +61,10 @@ void	parse_camera(char **args, t_scene *scene)
 	scene->map.has_camera = 1;
 }
 
-void	parse_light(char **args, t_scene *scene)
+void parse_light(char **args, t_scene *scene)
 {
 	t_light *light;
-	t_list	*node;
-
+	t_list *node;
 
 	if (scene->map.has_lights)
 		exit_error("Error. Duplicated Light\n", scene);
@@ -70,7 +73,8 @@ void	parse_light(char **args, t_scene *scene)
 		exit_error("Error. malloc\n", scene);
 	if (ft_strlst_len(args) != 4)
 		exit_error("Error. Invalid map data, incompleted light row.\n", scene);
-	if(!ft_str_is_vector(args[1]) || !ft_strisdbl(args[2]) || !ft_str_is_color(args[3]))
+	if (!ft_str_is_vector(args[1]) || !ft_strisdbl(args[2]) ||
+	    !ft_str_is_color(args[3]))
 		exit_error("Error invalid map data, wrong data in light row.\n", scene);
 	light->light_point = create_vector(args[1]);
 	light->brightness = ft_atodbl(args[2]);
@@ -82,14 +86,13 @@ void	parse_light(char **args, t_scene *scene)
 	if (!node)
 		exit_error("Error. malloc\n", scene);
 	ft_stack_add_back(scene->map.lights, node);
-
 }
 
 void parse_sphere(char **args, t_scene *scene)
 {
-    t_object   *obj;
+	t_object *obj;
 	t_sphere *sphere;
-	t_list	*node;
+	t_list *node;
 
 	obj = malloc(sizeof(t_object));
 	sphere = malloc(sizeof(t_sphere));
@@ -97,13 +100,16 @@ void parse_sphere(char **args, t_scene *scene)
 		exit_error("Error. malloc\n", scene);
 	obj->object = sphere;
 	obj->type = SPHERE;
+	obj->id = scene->map.objects->size;
 	if (ft_strlst_len(args) != 4)
 		exit_error("Error. Invalid map data, incompleted sphere row.\n", scene);
-	if(!ft_str_is_vector(args[1]) || !ft_strisdbl(args[2]) || !ft_str_is_color(args[3]))
-		exit_error("Error invalid map data, wrong data in sphere row.\n", scene);
+	if (!ft_str_is_vector(args[1]) || !ft_strisdbl(args[2]) ||
+	    !ft_str_is_color(args[3]))
+		exit_error("Error invalid map data, wrong data in sphere row.\n",
+		           scene);
 	sphere->center = create_vector(args[1]);
 	sphere->diameter = ft_atodbl(args[2]);
-	sphere->radius = sphere->diameter/2;
+	sphere->radius = sphere->diameter / 2;
 	if (!create_color(args[3], &obj->color_range))
 		exit_error("Error. Sphere color_range: ", scene);
 	if (sphere->diameter <= 0.0)
@@ -116,9 +122,9 @@ void parse_sphere(char **args, t_scene *scene)
 
 void parse_plane(char **args, t_scene *scene)
 {
-    t_object    *obj;
-    t_plane *plane;
-	t_list	*node;
+	t_object *obj;
+	t_plane *plane;
+	t_list *node;
 
 	obj = malloc(sizeof(t_object));
 	plane = malloc(sizeof(t_plane));
@@ -126,9 +132,11 @@ void parse_plane(char **args, t_scene *scene)
 		exit_error("Error. malloc\n", scene);
 	obj->object = plane;
 	obj->type = PLANE;
+	obj->id = scene->map.objects->size;
 	if (ft_strlst_len(args) != 4)
 		exit_error("Error. Invalid map data, incompleted plane row.\n", scene);
-	if(!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) || !ft_str_is_color(args[3]))
+	if (!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) ||
+	    !ft_str_is_color(args[3]))
 		exit_error("Error invalid map data, wrong data in plane row.\n", scene);
 	plane->point = create_vector(args[1]);
 	plane->vector = create_vector(args[2]);
@@ -142,11 +150,11 @@ void parse_plane(char **args, t_scene *scene)
 	ft_stack_add_back(scene->map.objects, node);
 }
 
-void	parse_cylinder(char **args, t_scene *scene)
+void parse_cylinder(char **args, t_scene *scene)
 {
-    t_object *obj;
+	t_object *obj;
 	t_cylinder *cylinder;
-	t_list	*node;
+	t_list *node;
 
 	obj = malloc(sizeof(t_object));
 	cylinder = malloc(sizeof(t_cylinder));
@@ -154,12 +162,15 @@ void	parse_cylinder(char **args, t_scene *scene)
 		exit_error("Error. malloc\n", scene);
 	obj->object = cylinder;
 	obj->type = CYLINDER;
+	obj->id = scene->map.objects->size;
 	if (ft_strlst_len(args) != 6)
-		exit_error("Error. Invalid map data, incompleted cylinder row.\n", scene);
-	if(!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2])
-		|| (!ft_strisdbl(args[3])) || (!ft_strisdbl(args[4]))
-		|| (!ft_str_is_color(args[5])))
-		exit_error("Error invalid map data, wrong data in cylinder row.\n", scene);
+		exit_error("Error. Invalid map data, incompleted cylinder row.\n",
+		           scene);
+	if (!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) ||
+	    (!ft_strisdbl(args[3])) || (!ft_strisdbl(args[4])) ||
+	    (!ft_str_is_color(args[5])))
+		exit_error("Error invalid map data, wrong data in cylinder row.\n",
+		           scene);
 	cylinder->center = create_vector(args[1]);
 	cylinder->axys = create_vector(args[2]);
 	cylinder->diameter = ft_atodbl(args[3]);
@@ -178,9 +189,9 @@ void	parse_cylinder(char **args, t_scene *scene)
 	ft_stack_add_back(scene->map.objects, node);
 }
 
-void	parse_line(char *line, t_scene *scene)
+void parse_line(char *line, t_scene *scene)
 {
-	char	**args;
+	char **args;
 
 	args = ft_split(line, '\t');
 	free(line);
@@ -206,7 +217,7 @@ void	parse_line(char *line, t_scene *scene)
 	ft_free_split(args);
 }
 
-void	trim_new_line(char *str)
+void trim_new_line(char *str)
 {
 	char *cpy;
 
@@ -219,8 +230,9 @@ void	trim_new_line(char *str)
 	}
 }
 
-/* ◦ Elements defined by a capital letter can only be declared once in the scene. */
-int	parser(char *filename, t_scene *scene)
+/* ◦ Elements defined by a capital letter can only be declared once in the
+ * scene. */
+int parser(char *filename, t_scene *scene)
 {
 	int fd;
 	char *line;
@@ -231,13 +243,13 @@ int	parser(char *filename, t_scene *scene)
 	while (line)
 	{
 		trim_new_line(line);
-		if (line)
+		if (line && ft_strlen(line) > 0)
 		{
-		parse_line(line, scene);
+			parse_line(line, scene);
 		}
 		line = get_next_line(fd);
 	}
 
 	close(fd);
-	return(1);
+	return (1);
 }

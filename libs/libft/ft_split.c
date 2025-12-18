@@ -10,14 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
 #include <stdio.h>
+#include <stdlib.h>
+
+#include "libft.h"
 
 /* This function returns th index of the first ocurrence of c in the string s*/
-static size_t	ft_findchr(char const *s, char c)
+static size_t ft_findchr(char const *s, char c)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (s[i] && s[i] != c)
@@ -25,10 +26,10 @@ static size_t	ft_findchr(char const *s, char c)
 	return (i);
 }
 
-static size_t	ft_count_words(char const *s, char c)
+static size_t ft_count_words(char const *s, char c)
 {
-	size_t			count;
-	unsigned int	add;
+	size_t count;
+	unsigned int add;
 
 	count = 0;
 	add = 0;
@@ -48,12 +49,12 @@ static size_t	ft_count_words(char const *s, char c)
 	return (count);
 }
 
-char	**ft_split(char const *s, char c)
+char **ft_split(char const *s, char c)
 {
-	size_t	words;
-	size_t	i;
-	char	**list;
-	size_t	wordsize;
+	size_t words;
+	size_t i;
+	char **list;
+	size_t wordsize;
 
 	words = ft_count_words(s, c);
 	list = malloc((words + 1) * sizeof(char *));

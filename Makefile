@@ -16,7 +16,8 @@ src/ray/ray.c src/ray/hits.c \
 src/utils/color.c src/utils/scene.c \
 src/vector/vector.c src/vector/vector_aux.c src/vector/vector_basic.c \
 src/hooks/keyboard.c \
-src/debug/debug_parser.c
+src/debug/debug_parser.c \
+src/cache/cache.c
 COBJ = $(CFILES:.c=.o)
 
 
