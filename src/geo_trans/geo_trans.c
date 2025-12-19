@@ -6,13 +6,52 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 01:28:48 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/12/17 03:05:14 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/12/18 19:29:02 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minirt.h"
-#include "../include/geo_trans.h"
+#include "../../include/minirt.h"
+#include "../../include/geo_trans.h"
 #include <string.h>
+
+/* ========================================================================== */
+/*              CONVERSIÓN ENTRE VEC3 Y VEC4                                  */
+/* ========================================================================== */
+
+// Convertir vec3 a vec4 (añadiendo componente w)
+t_vec4  vec3_to_vec4(t_vec v, float w)
+{
+    t_vec4  result;
+
+    result.x = v.x;
+    result.y = v.y;
+    result.z = v.z;
+    result.w = w;
+    
+    return (result);
+}
+
+// Convertir vec4 a vec3 (dividiendo por w si es necesario)
+t_vec  vec4_to_vec3(t_vec4 v)
+{
+    t_vec  result;
+
+    // Normalización homogénea: dividir por w
+    if (v.w != 0.0f && v.w != 1.0f)
+    {
+        result.x = v.x / v.w;
+        result.y = v.y / v.w;
+        result.z = v.z / v.w;
+    }
+    else
+    {
+        result.x = v.x;
+        result.y = v.y;
+        result.z = v.z;
+    }
+    
+    return (result);
+}
 
 /* ========================================================================== */
 /*                           MATRIZ IDENTIDAD                                 */
@@ -210,7 +249,7 @@ t_mat4	mat4_rotate_axis(t_vec axis, float angle_rad)
 	float	s;
 	float	t;
 
-	a = vec3_normalize(axis);
+	a = vector_normalize(axis);
 	c = cosf(angle_rad);
 	s = sinf(angle_rad);
 	t = 1.0f - c;
@@ -289,8 +328,6 @@ t_mat4	mat4_transpose(t_mat4 m)
 t_mat4	mat4_inverse(t_mat4 m)
 {
 	t_mat4	inv;
-	float	det;
-	int		i;
 
 	// Esta es una implementación simplificada para matrices de transformación
 	// Para una inversa completa necesitarías el método de Gauss-Jordan
@@ -371,7 +408,7 @@ t_vec  mat4_transform_normal(t_mat4 m, t_vec n)
     result = mat4_transform_direction(inverse_transpose, n);
     
     // Normalizar el resultado
-    return (vec3_normalize(result));
+    return (vector_normalize(result));
 }
 /* ========================================================================== */
 /*          CONSTRUIR BASE ORTONORMAL DESDE UN EJE                            */
@@ -385,21 +422,21 @@ void    build_orthonormal_basis(t_vec forward, t_vec *right, t_vec *up)
     t_vec  temp_up;
 
     // Normalizar el eje forward
-    forward = vec3_normalize(forward);
+    forward = vector_normalize(forward);
 
     // Elegir un vector temporal que NO sea paralelo a forward
     // Si forward apunta principalmente en Y, usar X como referencia
-    if (fabsf(forward.y) < 0.99f)
+    if (fabs(forward.y) < 0.99f)
         temp_up = (t_vec){0, 1, 0};
     else
         temp_up = (t_vec){1, 0, 0};
 
     // Calcular right (perpendicular a forward y temp_up)
-    *right = vec3_cross(temp_up, forward);
-    *right = vec3_normalize(*right);
+    *right = vector_cross_prod(temp_up, forward);
+    *right = vector_normalize(*right);
 
     // Calcular up (perpendicular a forward y right)
-    *up = vec3_cross(forward, *right);
+    *up = vector_cross_prod(forward, *right);
     // No hace falta normalizar, ya es ortonormal
 }
 
@@ -452,7 +489,8 @@ t_mat4  cylinder_build_transform(t_vec center, t_vec axis, float height)
     t_mat4  result;
     t_vec  right;
     t_vec  up;
-
+	(void)height;
+	
     // 1. Construir base ortonormal desde el eje
     build_orthonormal_basis(axis, &right, &up);
 

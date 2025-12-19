@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/10/06 13:20:57 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/19 01:39:44 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	get_hit_normal(t_hit *hit, t_ray ray)
 {
 	t_sphere	*sphere;
 	t_plane     *plane;
+	t_plane     *cylinder;
+
 	if (hit->object->type == SPHERE)
 	{
 		sphere = hit->object->object;
@@ -51,7 +53,10 @@ void	get_hit_normal(t_hit *hit, t_ray ray)
         if (vector_dot_prod(ray.direction, hit->normal) > 0)
             hit->normal = vector_multiplication(hit->normal, -1.0);
     }
-
+    else if (hit->object->type == CYLINDER)
+    {
+        cylinder = hit->object->object; 
+    }
 }
 
 void	fill_hit_info(t_hit *closest, double obj_distance, t_object *last_hit)
