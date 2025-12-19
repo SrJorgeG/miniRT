@@ -25,8 +25,9 @@ void init_cache(t_scene *scene)
 		exit_error("Error. malloc\n", NULL);
 	while (i < scene->map.objects->size)
 	{
-		scene->pixel_cache[i].capacity = 1024;
-		scene->pixel_cache[i].pixels = malloc(1024 * sizeof(int) * 2);
+		scene->pixel_cache[i].capacity = 1024 * 2;
+		scene->pixel_cache[i].pixels =
+		    malloc(scene->pixel_cache[i].capacity * sizeof(int));
 		if (!scene->pixel_cache[i].pixels)
 			exit_error("Error. malloc\n", scene);
 		scene->pixel_cache[i].pixel_count = 0;
@@ -45,8 +46,8 @@ int add_pixel_to_cache(t_obj_cache *cache, int x, int y)
 		printf("cache->capacity: %d", cache->capacity);
 		// new_coords = ft_realloc(cache->pixels, cache->capacity,
 		//                       sizeof(int) * cache->capacity * 2);
-		new_coords = realloc(cache->pixels,
-		                     (uint32_t) sizeof(int) * cache->capacity * 2);
+		new_coords =
+		    realloc(cache->pixels, (uint32_t) sizeof(int) * cache->capacity);
 		if (!new_coords)
 			return (0);
 		cache->pixels = new_coords;

@@ -59,7 +59,7 @@ typedef struct s_color
 
 typedef struct s_ray
 {
-	t_vec orign;
+	t_vec origin;
 	t_vec direction;
 
 } t_ray;
