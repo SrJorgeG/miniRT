@@ -6,7 +6,7 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/19 01:39:44 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/12/21 16:26:50 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,26 @@ int hit_object(t_ray ray, t_object *object, double *obj_distance)
 	if (object->type == SPHERE)
 		return (hit_sphere(ray, object->object, obj_distance));
 	else if (object->type == CYLINDER)
-		return (hit_sphere(ray, object->object, obj_distance));
+		return (hit_cylinder(ray, object->object, obj_distance));
 	else if (object->type == PLANE)
 		return (hit_plane(ray, object->object, obj_distance));
 	return (0);
 }
 
-void	get_hit_normal(t_hit *hit, t_ray ray)
+void get_hit_normal(t_hit *hit, t_ray ray)
 {
-	t_sphere	*sphere;
-	t_plane     *plane;
-	t_plane     *cylinder;
+    t_sphere    *sphere;
+    t_plane     *plane;
+    t_cylinder  *cylinder;
+    t_ray       local_ray;
+    t_vec       local_point;
+    t_vec       local_normal;
 
-	if (hit->object->type == SPHERE)
-	{
-		sphere = hit->object->object;
-		hit->normal = vector_normalize(vector_rest(hit->p, sphere->center));
-	}
+    if (hit->object->type == SPHERE)
+    {
+        sphere = hit->object->object;
+        hit->normal = vector_normalize(vector_rest(hit->p, sphere->center));
+    }
     else if (hit->object->type == PLANE)
     {
         plane = hit->object->object;
@@ -55,7 +58,42 @@ void	get_hit_normal(t_hit *hit, t_ray ray)
     }
     else if (hit->object->type == CYLINDER)
     {
-        cylinder = hit->object->object; 
+        cylinder = hit->object->object;
+        
+        // Transformar rayo a espacio local
+        local_ray.origin = mat4_transform_point(cylinder->inverse_transform, 
+                                                ray.origin);
+        local_ray.direction = mat4_transform_direction(cylinder->inverse_transform, 
+                                                       ray.direction);
+        local_ray.direction = vector_normalize(local_ray.direction);
+        
+        // Calcular punto de impacto en espacio local
+        // Asumiendo que hit->t contiene la distancia
+        local_point = vector_sum(local_ray.origin, 
+                                vector_multiplication(local_ray.direction, hit->t));
+        
+        // Determinar si es cuerpo o tapa
+        if (fabs(local_point.z - 1.0) < 0.001)
+        {
+            // Tapa superior
+            local_normal = (t_vec){0, 0, 1};
+        }
+        else if (fabs(local_point.z + 1.0) < 0.001)
+        {
+            // Tapa inferior
+            local_normal = (t_vec){0, 0, -1};
+        }
+        else
+        {
+            // Cuerpo del cilindro
+            // Normal perpendicular al eje Z, apuntando hacia afuera
+            local_normal = (t_vec){local_point.x, local_point.y, 0};
+            local_normal = vector_normalize(local_normal);
+        }
+        
+        // Transformar normal al espacio mundial
+        hit->normal = mat4_transform_normal(cylinder->transform, local_normal);
+        hit->normal = vector_normalize(hit->normal);
     }
 }
 
