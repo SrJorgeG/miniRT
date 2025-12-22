@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:38:58 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/16 17:37:46 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:50:45 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	camera_keys(mlx_key_data_t keydata, t_camera *camera)
 	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_PRESS
 			|| keydata.action == MLX_REPEAT))
 		camera->view_point.x -= 5;
+	
 }
 
 void	custom_key_hook(mlx_key_data_t keydata, void *param)
@@ -33,6 +34,11 @@ void	custom_key_hook(mlx_key_data_t keydata, void *param)
 	t_hook_data *data;
 
 	data = param;
-	camera_keys(keydata, &data->scene->map.camera);
-	render(data->scene, data->mlx, data->image);
+	if (data->scene->is_rendered)
+	{
+		camera_keys(keydata, &data->scene->map.camera);
+		clear_cache(data->scene);
+		render(data->scene, data->mlx, data->image);
+	}
+	
 }

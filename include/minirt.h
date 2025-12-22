@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/12/21 17:27:28 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:49:30 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ void					debug_scene(t_scene *scene);
 /* Cache functions */
 void					init_cache(t_scene *scene);
 int						add_pixel_to_cache(t_obj_cache *cache, int x, int y);
+void					clear_cache(t_scene *scene);
 
 /* FREE FUCNTIONS */
 void					free_map(t_map *map);

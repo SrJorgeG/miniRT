@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:39:54 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/12/22 20:05:27 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:13:40 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int ac, char *av[])
 	if (!img)
 		exit_error("Error. mlx_new_image\n", NULL);
 	render(scene, mlx, img);
-	//mlx_key_hook(mlx, custom_key_hook, &(t_hook_data){scene, mlx, img});
+	mlx_key_hook(mlx, custom_key_hook, &(t_hook_data){scene, mlx, img});
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
 	//mlx_put_string();

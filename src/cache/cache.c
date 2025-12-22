@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:23:08 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/22 20:05:17 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:58:32 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	init_cache(t_scene *scene)
 			exit_error("Error. malloc\n", scene);
 		i++;
 	}
+	scene->cache_count = i;
 }
 
 int	add_pixel_to_cache(t_obj_cache *cache, int x, int y)
@@ -58,4 +59,15 @@ int	add_pixel_to_cache(t_obj_cache *cache, int x, int y)
 	return (1);
 }
 
-
+void clear_cache(t_scene *scene)
+{
+    int i;
+    if (!scene || !scene->pixel_cache)
+		return;
+	i = 0;
+    while (i < scene->cache_count)
+	{
+        scene->pixel_cache[i].pixel_count = 0;
+		i++;
+	}
+}

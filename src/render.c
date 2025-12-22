@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/21 15:49:49 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:10:51 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ void	render(t_scene *scene, mlx_t *mlx, mlx_image_t *img)
 
 	y = 0;
 	x = 0;
+	scene->is_rendered = 0;
 	image_center = vector_sum(scene->map.camera.view_point,
 			scene->map.camera.orientation_nor);
 	while (y < scene->screen_h)
@@ -204,4 +205,5 @@ void	render(t_scene *scene, mlx_t *mlx, mlx_image_t *img)
 	printf("Termino de dibujar la imagen\n");
 	if (mlx_image_to_window(mlx, img, 0, 0) < 0)
 		exit_error("Error. mlx_image_to_window\n", NULL);
+	scene->is_rendered = 1;
 }
