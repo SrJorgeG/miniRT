@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   camera.c                                           :+:      :+:    :+:   */
+/*   scene.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/10/06 13:20:57 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/21 15:44:50 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../include/minirt.h"
 #include <math.h>
 
-#include "../../include/minirt.h"
-
-void setup_camera(t_camera *camera)
+void	setup_camera(t_camera *camera)
 {
-	t_vec *world_up;
+	t_vec	*world_up;
 
 	// En principio la orientacion viene normalizada si he entendido bien con lo
 	// que no se normaliza.
@@ -30,20 +29,22 @@ void setup_camera(t_camera *camera)
 	if (fabs(vector_dot_prod(camera->orientation_nor, *world_up)) > 0.999)
 	{
 		free(world_up);
-		world_up = vector_constructor(
-		    0.0, 0.0, 1.0);  // Usamos el eje Z como referencia temporal
+		world_up = vector_constructor(0.0, 0.0, 1.0);
+		// Usamos el eje Z como referencia temporal
 	}
-	camera->right =
-	    vector_normalize(vector_cross_prod(camera->orientation_nor, *world_up));
+	camera->right = vector_normalize(vector_cross_prod(camera->orientation_nor,
+				*world_up));
 	camera->up = vector_cross_prod(camera->right, camera->orientation_nor);
 }
 
-void setup_scene(t_scene *scene, t_camera *camera)
+void	setup_scene(t_scene *scene, t_camera *camera)
 {
 	scene->screen_h = HEIGHT;
 	scene->screen_w = WIDTH;
 	scene->map.last_hit = NULL;
-	scene->aspect = (t_real) scene->screen_w / (t_real) scene->screen_h;
+	scene->cache_count = 0;
+	scene->aspect = (t_real)scene->screen_w / (t_real)scene->screen_h;
+	scene->viewport = 0.0;
 	scene->viewport_w = 2.0 * tan(camera->radial_fov * 2.0);
 	scene->viewport_h = scene->viewport_w / scene->aspect;
 }
