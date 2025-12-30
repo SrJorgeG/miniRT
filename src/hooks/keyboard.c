@@ -38,11 +38,15 @@ void	custom_key_hook(mlx_key_data_t keydata, void *param)
 		if (keydata.action == MLX_PRESS
 			|| keydata.action == MLX_REPEAT)
 		{
-			if (camera_keys(keydata, &data->scene->map.camera))
+			if (move_object(keydata, data) || resize_object(keydata, data) || camera_keys(keydata, &data->scene->map.camera))
 			{
 				clear_cache(data->scene);
 				render(data->scene, data->mlx, data->image);
+				if (data->scene->picked_obj)
+					select_object(data->scene, data->scene->picked_obj, data->image);				
 			}
+			if (keydata.key == MLX_KEY_Q && data->scene->is_obj_picked)
+				deselect_object(data->scene, data->scene->picked_obj, data->image);
 			
 			
 		}

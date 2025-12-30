@@ -116,6 +116,7 @@ typedef struct s_object
 {
 	t_object_type		type;
 	void				*object;
+	t_vec				center;
 	t_color				color_range;
 	size_t				id;
 }						t_object;
@@ -147,6 +148,7 @@ typedef struct s_scene
 	t_map				map;
 	bool				is_rendered;
 	bool				is_obj_picked;
+	t_object			*picked_obj;
 	int					screen_w;
 	int					screen_h;
 	int					cache_count;
@@ -193,6 +195,7 @@ t_vec					vector_multiplication(t_vec v1, double num);
 t_vec					vector_division(t_vec v1, double num);
 t_vec					*vector_dup(t_vec vec);
 
+
 /* VECTOR_AUX - src/utils/vector_aux.c */
 double					vector_lenght_square(t_vec *vec);
 double					vector_lenght(t_vec *vec);
@@ -219,6 +222,7 @@ t_color					color_scale(t_color c, double factor);
 t_color					color_add(t_color c1, t_color c2);
 t_color					color_clamp(t_color c);
 int						color_to_int_no_alpha(t_color color);
+t_color	calculate_lighting(t_hit *hit, t_scene *scene);
 
 void					init_map(t_map *map);
 void					render(t_scene *scene, mlx_t *mlx, mlx_image_t *img);
@@ -242,4 +246,13 @@ void					free_scene(t_scene *scene);
 void					custom_key_hook(mlx_key_data_t keydata, void *param);
 void	object_selector_hook(int32_t x, int32_t y, modifier_key_t mods, t_hook_data *data);
 void	custom_mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *data);
+
+
+
+int    move_object(mlx_key_data_t keydata, t_hook_data *data);
+int    resize_object(mlx_key_data_t keydata, t_hook_data *data);
+
+void select_object(t_scene *scene, t_object *object, mlx_image_t *image);
+void deselect_object(t_scene *scene, t_object *object, mlx_image_t *image);
+
 #endif

@@ -9,7 +9,7 @@ W
 
 
 # Resources
-
+https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg
 ## Videos
 
 ## Documentation

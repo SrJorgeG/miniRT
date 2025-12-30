@@ -27,22 +27,6 @@ int	match_idx(void *lst, void *idx)
 		return (0);
 }
 
-void select_object(t_scene *scene, t_object *object, mlx_image_t *image)
-{
-	t_obj_cache cache;
-	uint32_t i;
-
-	cache = scene->pixel_cache[object->id];
-	i = 0;
-	while (i < cache.pixel_count)
-	{
-		mlx_put_pixel(image, cache.pixels[(i * 2)], cache.pixels[(i * 2) + 1], color_to_int_no_alpha((t_color){255,255,255}));
-		i++;
-	}
-	
-
-
-}
 
 void	object_selector_hook(int32_t x, int32_t y, modifier_key_t mods, t_hook_data *data)
 {
@@ -50,14 +34,21 @@ void	object_selector_hook(int32_t x, int32_t y, modifier_key_t mods, t_hook_data
 	t_vec		pixel_center;
 
 	(void)mods;
-	pixel_center = find_pixel_on_viewport(x, y, data->scene);
-	hit = get_hits(data->scene, get_ray_from_pixel(data->scene, data->scene->image_center,
-						pixel_center));
-	if (!hit.hit)
-		return;
-	select_object(data->scene, hit.object, data->image);
-	data->scene->is_obj_picked = 1;
-	printf("Click en (%d, %d) → object_id=%lu\n", x, y, hit.object->id);
+	if (!data->scene->picked_obj)
+	{
+		pixel_center = find_pixel_on_viewport(x, y, data->scene);
+		hit = get_hits(data->scene, get_ray_from_pixel(data->scene, data->scene->image_center,
+							pixel_center));
+		if (!hit.hit)
+			return;
+		select_object(data->scene, hit.object, data->image);
+	}
+	else
+	{
+		deselect_object(data->scene, data->scene->picked_obj, data->image);
+	}
+	
+	
 	
 	
 }

@@ -44,6 +44,7 @@ void	setup_scene(t_scene *scene, t_camera *camera)
 	scene->map.last_hit = NULL;
 	scene->cache_count = 0;
 	scene->is_obj_picked = 0;
+	scene->picked_obj = NULL;
 	scene->is_rendered = 0;
 	scene->aspect = (t_real)scene->screen_w / (t_real)scene->screen_h;
 	scene->viewport = 0.0;
