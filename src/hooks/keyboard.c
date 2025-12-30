@@ -12,20 +12,19 @@
 
 #include "../../include/minirt.h"
 
-void	camera_keys(mlx_key_data_t keydata, t_camera *camera)
+int	camera_keys(mlx_key_data_t keydata, t_camera *camera)
 {
-	if (keydata.key == MLX_KEY_UP && (keydata.action == MLX_PRESS
-			|| keydata.action == MLX_REPEAT))
+	if (keydata.key == MLX_KEY_UP )
 		camera->view_point.y += 5;
-	else if (keydata.key == MLX_KEY_DOWN && (keydata.action == MLX_PRESS
-			|| keydata.action == MLX_REPEAT))
+	else if (keydata.key == MLX_KEY_DOWN )
 		camera->view_point.y -= 5;
-	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_PRESS
-			|| keydata.action == MLX_REPEAT))
+	else if (keydata.key == MLX_KEY_RIGHT )
 		camera->view_point.x += 5;
-	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_PRESS
-			|| keydata.action == MLX_REPEAT))
+	else if (keydata.key == MLX_KEY_LEFT )
 		camera->view_point.x -= 5;
+	else 
+		return (0);
+	return(1);
 	
 }
 
@@ -36,9 +35,19 @@ void	custom_key_hook(mlx_key_data_t keydata, void *param)
 	data = param;
 	if (data->scene->is_rendered)
 	{
-		camera_keys(keydata, &data->scene->map.camera);
-		clear_cache(data->scene);
-		render(data->scene, data->mlx, data->image);
+		if (keydata.action == MLX_PRESS
+			|| keydata.action == MLX_REPEAT)
+		{
+			if (camera_keys(keydata, &data->scene->map.camera))
+			{
+				clear_cache(data->scene);
+				render(data->scene, data->mlx, data->image);
+			}
+			
+			
+		}
+		
+		
 	}
 	
 }

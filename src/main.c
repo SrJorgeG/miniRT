@@ -40,6 +40,7 @@ int	main(int ac, char *av[])
 		exit_error("Error. mlx_new_image\n", NULL);
 	render(scene, mlx, img);
 	mlx_key_hook(mlx, custom_key_hook, &(t_hook_data){scene, mlx, img});
+	mlx_mouse_hook(mlx, custom_mouse_hook, &(t_hook_data){scene, mlx, img});
 	mlx_loop(mlx);
 	mlx_delete_image(mlx, img);
 	//mlx_put_string();

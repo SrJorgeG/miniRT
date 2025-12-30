@@ -60,7 +60,7 @@ void	debug_cylinder(t_cylinder *c)
 
 void	debug_object(t_object *obj)
 {
-	printf("=== OBJECT id=%d ===\n", obj->id);
+	printf("=== OBJECT id=%lu ===\n", obj->id);
 	debug_color("color", obj->color_range);
 	if (obj->type == SPHERE)
 		debug_sphere((t_sphere *)obj->object);

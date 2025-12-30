@@ -117,13 +117,13 @@ typedef struct s_object
 	t_object_type		type;
 	void				*object;
 	t_color				color_range;
-	int					id;
+	size_t				id;
 }						t_object;
 
 typedef struct s_obj_cache
 {
 	int					obj_id;
-	int					*pixels;
+	uint32_t			*pixels;
 	uint32_t			pixel_count;
 	uint32_t			capacity;
 }						t_obj_cache;
@@ -146,12 +146,14 @@ typedef struct s_scene
 	t_real				viewport;
 	t_map				map;
 	bool				is_rendered;
+	bool				is_obj_picked;
 	int					screen_w;
 	int					screen_h;
 	int					cache_count;
 	t_obj_cache			*pixel_cache;
 	t_real				viewport_w;
 	t_real				viewport_h;
+	t_vec				image_center;
 }						t_scene;
 
 typedef struct s_hook_data
@@ -203,7 +205,10 @@ int						hit_sphere(t_ray ray, t_sphere *sphere,
 							double *obj_distance);
 int						hit_plane(t_ray ray, t_plane *plane,
 							double *obj_distance);
-
+t_hit	get_hits(t_scene *scene, t_ray ray);
+t_ray	get_ray_from_pixel(t_scene *scene, t_vec image_center,
+		t_vec pixel_center);
+t_vec	find_pixel_on_viewport(int x, int y, t_scene *scene);
 /* COLOR UTILS - src/utils/color.c */
 int						ft_str_is_color(char *str);
 
@@ -235,5 +240,6 @@ void					free_scene(t_scene *scene);
 
 /* MLX HOOKS */
 void					custom_key_hook(mlx_key_data_t keydata, void *param);
-
+void	object_selector_hook(int32_t x, int32_t y, modifier_key_t mods, t_hook_data *data);
+void	custom_mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *data);
 #endif

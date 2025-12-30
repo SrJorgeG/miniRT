@@ -37,7 +37,7 @@ void	init_cache(t_scene *scene)
 
 int	add_pixel_to_cache(t_obj_cache *cache, int x, int y)
 {
-	int	*new_coords;
+	uint32_t	*new_coords;
 	uint32_t new_capacity;
 	
 	if (cache->pixel_count >= cache->capacity)
@@ -46,7 +46,7 @@ int	add_pixel_to_cache(t_obj_cache *cache, int x, int y)
 		printf("cache->capacity: %d", cache->capacity);
 		// new_coords = ft_realloc(cache->pixels, cache->capacity,
 		//                       sizeof(int) * cache->capacity * 2);
-		new_coords = realloc(cache->pixels, (uint32_t)sizeof(int)
+		new_coords = realloc(cache->pixels, (uint32_t)sizeof(uint32_t)
 				* new_capacity * 2);
 		if (!new_coords)
 			return (0);
@@ -58,6 +58,8 @@ int	add_pixel_to_cache(t_obj_cache *cache, int x, int y)
 	cache->pixel_count++;
 	return (1);
 }
+
+
 
 void clear_cache(t_scene *scene)
 {

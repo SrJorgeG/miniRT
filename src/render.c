@@ -171,12 +171,11 @@ void	render(t_scene *scene, mlx_t *mlx, mlx_image_t *img)
 	int		x;
 	t_hit	hit;
 	t_vec	pixel_center;
-	t_vec	image_center;
 
 	y = 0;
 	x = 0;
 	scene->is_rendered = 0;
-	image_center = vector_sum(scene->map.camera.view_point,
+	scene->image_center = vector_sum(scene->map.camera.view_point,
 			scene->map.camera.orientation_nor);
 	while (y < scene->screen_h)
 	{
@@ -187,7 +186,7 @@ void	render(t_scene *scene, mlx_t *mlx, mlx_image_t *img)
 			/*Ahora (px,
 					py) son las coordenadas 2D del píxel dentro de la ventana
 				virtual. px va de -viewport_width/2 a +viewport_width/2 */
-			hit = get_hits(scene, get_ray_from_pixel(scene, image_center,
+			hit = get_hits(scene, get_ray_from_pixel(scene, scene->image_center,
 						pixel_center));
 			if (hit.hit)
 			{
