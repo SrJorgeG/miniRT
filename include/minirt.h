@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/12/22 20:49:30 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:55:24 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ u_int8_t				create_color(char *color_str, t_color *color);
 t_color					color_multiply(t_color c1, t_color c2);
 t_color					color_scale(t_color c, double factor);
 t_color					color_add(t_color c1, t_color c2);
-t_color					color_clamp(t_color c);
+void 					color_clamp(int c[3]);
 int						color_to_int_no_alpha(t_color color);
 t_color	calculate_lighting(t_hit *hit, t_scene *scene);
 
@@ -241,6 +241,15 @@ int						parser(char *filename, t_scene *scene);
 void					debug_map(t_map *map);
 void					debug_scene(t_scene *scene);
 
+/* Object functions */
+t_sphere *create_sphere(char **args);
+t_object	*create_object(int obj_type, void *object, size_t id, char *texture_path);
+
+
+/* Texture functions */
+int   load_texture(t_object *object);
+t_color textures_handler(t_hit *hit, t_scene *scene);
+
 /* Cache functions */
 void					init_cache(t_scene *scene);
 int						add_pixel_to_cache(t_obj_cache *cache, int x, int y);
@@ -249,6 +258,10 @@ void					clear_cache(t_scene *scene);
 /* FREE FUCNTIONS */
 void					free_map(t_map *map);
 void					free_scene(t_scene *scene);
+void	free_sphere(void *sphere);
+void	free_cylinder(void *sphere);
+void	free_plane(void *sphere);
+void	free_object(void *object);
 
 /* MLX HOOKS */
 void					custom_key_hook(mlx_key_data_t keydata, void *param);

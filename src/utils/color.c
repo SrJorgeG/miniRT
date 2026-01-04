@@ -94,12 +94,20 @@ t_color color_add(t_color c1, t_color c2)
 }
 
 // Se asegura de que los valores del color no superen 255
-t_color color_clamp(t_color c)
+void color_clamp(int c[3])
 {
-    if (c.r > 255) c.r = 255;
-    if (c.g > 255) c.g = 255;
-    if (c.b > 255) c.b = 255;
-    return c;
+	if (c[0] < 0)
+		c[0] = 0;
+    if (c[1] < 0)
+		c[1] = 0;
+    if (c[2] < 0)
+		c[2] = 0;
+    if (c[0] > 255)
+		c[0] = 255;
+    if (c[1] > 255)
+		c[1] = 255;
+    if (c[2] > 255)
+		c[2] = 255;
 }
 
 // Asumo que tienes un struct t_scene que contiene los punteros a la luz ambiental y la lista de luces

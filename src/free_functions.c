@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 15:39:18 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/22 20:57:22 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:15:35 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	free_sphere(void *sphere)
 	free(sp);
 }
 
+
 /* Aqui creo que podemos reducir lineas ya que ft_stack clear se puede llamar con un stack nulo y no peda con lo que se podria sacar del if
 	de momento lo dejo asi porque habra que ir modificando las funciones de liberar.
 */
@@ -43,7 +44,7 @@ void	free_map(t_map *map)
 {
 	if (map->objects)
 	{
-		ft_stack_clear(map->objects, free_plane);
+		ft_stack_clear(map->objects, free_object);
 		free(map->objects);
 	}
 	free(map);

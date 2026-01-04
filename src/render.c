@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/22 20:10:51 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/01/04 16:56:56 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ t_vec	find_pixel_on_viewport(int x, int y, t_scene *scene)
 
 t_color	calculate_lighting(t_hit *hit, t_scene *scene)
 {
+	t_color	base_color;
 	t_color	final_color;
 	t_light	*current_light;
 	t_list	*current;
@@ -126,7 +127,9 @@ t_color	calculate_lighting(t_hit *hit, t_scene *scene)
 	// --- PASO 1: Componente Ambiental ---
 	// Es el color del objeto afectado por la luz ambiental global.
 	// final_color = color_objeto * color_luz_ambiental * ratio_luz_ambiental
-	final_color = color_multiply(hit->color, scene->map.amb_ligt.amb_col);
+	base_color = textures_handler(hit, scene);
+	
+	final_color = color_multiply(base_color, scene->map.amb_ligt.amb_col);
 	final_color = color_scale(final_color, scene->map.amb_ligt.amb_ratio);
 	current = scene->map.lights->first;
 	// --- PASO 2: Iterar sobre todas las luces para la Componente Difusa ---
@@ -162,7 +165,7 @@ t_color	calculate_lighting(t_hit *hit, t_scene *scene)
 	// --- PASO 3: Clamping ---
 	/*Asegurarse de que el color final no exceda los límites (ej: 255, 255,
 		255) */
-	return (color_clamp(final_color));
+	return (final_color);
 }
 
 void	render(t_scene *scene, mlx_t *mlx, mlx_image_t *img)
@@ -190,18 +193,9 @@ void	render(t_scene *scene, mlx_t *mlx, mlx_image_t *img)
 						pixel_center));
 			if (hit.hit)
 			{
-				if (hit.object->texture_path)
-				{
-					mlx_put_pixel(img, x, y,
-					color_to_int_no_alpha(calculate_lighting(&hit, scene)));
-				}
-				else 
-				{
-					mlx_put_pixel(img, x, y,
-					color_to_int_no_alpha(calculate_lighting(&hit, scene)));
-				}
+				mlx_put_pixel(img, x, y,
+				color_to_int_no_alpha(calculate_lighting(&hit, scene)));
 				add_pixel_to_cache(&scene->pixel_cache[hit.object->id], x, y);
-				
 			}
 			else
 				mlx_put_pixel(img, x, y, color_to_int_no_alpha((t_color){0, 0,

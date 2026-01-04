@@ -88,35 +88,32 @@ void parse_light(char **args, t_scene *scene)
 	ft_stack_add_back(scene->map.lights, node);
 }
 
-void parse_sphere(char **args, t_scene *scene)
+void parse_sphere(char **args, t_scene *scene, int has_texture)
 {
 	t_object *obj;
 	t_sphere *sphere;
 	t_list *node;
 
-	obj = malloc(sizeof(t_object));
-	sphere = malloc(sizeof(t_sphere));
-	if (!sphere || !obj)
-		exit_error("Error. malloc\n", scene);
-	obj->object = sphere;
-	obj->type = SPHERE;
-	obj->id = scene->map.objects->size;
-	if (ft_strlst_len(args) != 4)
+	if (ft_strlst_len(args) != 4  || (ft_strlst_len(args) != 5 && has_texture))
 		exit_error("Error. Invalid map data, incompleted sphere row.\n", scene);
 	if (!ft_str_is_vector(args[1]) || !ft_strisdbl(args[2]) ||
 	    !ft_str_is_color(args[3]))
-		exit_error("Error invalid map data, wrong data in sphere row.\n",
+		exit_error("Error invalid map data, wrong data in sphere row [].\n",
 		           scene);
-	sphere->center = create_vector(args[1]);
-	sphere->diameter = ft_atodbl(args[2]);
-	sphere->radius = sphere->diameter / 2;
+	sphere = create_sphere(args);
+	if (!sphere)
+		exit_error("Error. malloc\n", scene);
+	if (has_texture)
+		obj = create_object(SPHERE, sphere, scene->map.objects->size, args[4]);
+	else
+		obj = create_object(SPHERE, sphere, scene->map.objects->size, NULL);
+	if (!obj)
+		return (free(sphere), exit_error("Error. malloc\n", scene));
 	if (!create_color(args[3], &obj->color_range))
 		exit_error("Error. Sphere color_range: ", scene);
-	if (sphere->diameter <= 0.0)
-		exit_error("Error. Invalid range for sphere diameter.", scene);
 	node = ft_lstnew(obj);
 	if (!node)
-		exit_error("Error. malloc\n", scene);
+		return (free_object(obj), exit_error("Error. malloc\n", scene));
 	ft_stack_add_back(scene->map.objects, node);
 }
 
@@ -207,7 +204,9 @@ void parse_line(char *line, t_scene *scene)
 	else if (!ft_strcmp(*args, "L"))
 		parse_light(args, scene);
 	else if (!ft_strcmp(*args, "sp"))
-		parse_sphere(args, scene);
+		parse_sphere(args, scene, 0);
+	else if (!ft_strcmp(*args, "spt"))
+		parse_sphere(args, scene, 1);
 	else if (!ft_strcmp(*args, "pl"))
 		parse_plane(args, scene);
 	else if (!ft_strcmp(*args, "cy"))
