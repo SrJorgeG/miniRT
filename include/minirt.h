@@ -39,6 +39,12 @@ typedef enum e_object_type
 	CYLINDER
 }						t_object_type;
 
+typedef struct s_vector_2d
+{
+	double				x;
+	double				y;
+}						t_vec2;
+
 typedef struct s_vector
 {
 	double				x;
@@ -50,9 +56,9 @@ typedef struct s_vector
 typedef struct s_vector	t_point;
 typedef struct s_color
 {
-	int					r;
-	int					g;
-	int					b;
+	uint8_t					r;
+	uint8_t					g;
+	uint8_t					b;
 
 } t_color; // [0-255]
 
@@ -117,6 +123,8 @@ typedef struct s_object
 	t_object_type		type;
 	void				*object;
 	t_vec				center;
+	char				*texture_path;
+	mlx_texture_t		*texture;
 	t_color				color_range;
 	size_t				id;
 }						t_object;

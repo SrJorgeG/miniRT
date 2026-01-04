@@ -190,9 +190,18 @@ void	render(t_scene *scene, mlx_t *mlx, mlx_image_t *img)
 						pixel_center));
 			if (hit.hit)
 			{
-				mlx_put_pixel(img, x, y,
+				if (hit.object->texture_path)
+				{
+					mlx_put_pixel(img, x, y,
 					color_to_int_no_alpha(calculate_lighting(&hit, scene)));
+				}
+				else 
+				{
+					mlx_put_pixel(img, x, y,
+					color_to_int_no_alpha(calculate_lighting(&hit, scene)));
+				}
 				add_pixel_to_cache(&scene->pixel_cache[hit.object->id], x, y);
+				
 			}
 			else
 				mlx_put_pixel(img, x, y, color_to_int_no_alpha((t_color){0, 0,

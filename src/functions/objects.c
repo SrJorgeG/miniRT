@@ -149,7 +149,7 @@ void    move_y(t_object *object, double value)
 int    move_object(mlx_key_data_t keydata, t_hook_data *data)
 {
     t_object *obj;
-
+    
     obj = data->scene->picked_obj;
     if (!obj)
         return (0);
