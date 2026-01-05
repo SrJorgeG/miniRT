@@ -67,9 +67,20 @@ int ft_str_is_color(char *str)
 t_color color_multiply(t_color c1, t_color c2)
 {
     t_color result;
-    result.r = (int)(((double)c1.r / 255.0) * ((double)c2.r / 255.0) * 255.0);
-    result.g = (int)(((double)c1.g / 255.0) * ((double)c2.g / 255.0) * 255.0);
-    result.b = (int)(((double)c1.b / 255.0) * ((double)c2.b / 255.0) * 255.0);
+	int rgb[3];
+
+    rgb[0] = (int)(((double)c1.r / 255.0) * ((double)c2.r / 255.0) * 255.0);
+    rgb[1] = (int)(((double)c1.g / 255.0) * ((double)c2.g / 255.0) * 255.0);
+    rgb[2] = (int)(((double)c1.b / 255.0) * ((double)c2.b / 255.0) * 255.0);
+	if (rgb[0] > 255)
+		rgb[0] = 255;
+	if (rgb[1] > 255)
+		rgb[1] = 255;
+	if (rgb[2] > 255)
+		rgb[2] = 255;
+	result.r = rgb[0];
+	result.g = rgb[1];
+	result.b = rgb[2];
     return result;
 }
 
@@ -77,9 +88,20 @@ t_color color_multiply(t_color c1, t_color c2)
 t_color color_scale(t_color c, double factor)
 {
     t_color result;
-    result.r = (int)((double)c.r * factor);
-    result.g = (int)((double)c.g * factor);
-    result.b = (int)((double)c.b * factor);
+	int rgb[3];
+
+    rgb[0] = (int)((double)c.r * factor);
+    rgb[1] = (int)((double)c.g * factor);
+    rgb[2] = (int)((double)c.b * factor);
+	if (rgb[0] > 255)
+		rgb[0] = 255;
+	if (rgb[1] > 255)
+		rgb[1] = 255;
+	if (rgb[2] > 255)
+		rgb[2] = 255;
+	result.r = rgb[0];
+	result.g = rgb[1];
+	result.b = rgb[2];
     return result;
 }
 
@@ -87,9 +109,20 @@ t_color color_scale(t_color c, double factor)
 t_color color_add(t_color c1, t_color c2)
 {
     t_color result;
-    result.r = c1.r + c2.r;
-    result.g = c1.g + c2.g;
-    result.b = c1.b + c2.b;
+	int rgb[3];
+
+    rgb[0] = c1.r + c2.r;
+    rgb[1] = c1.g + c2.g;
+    rgb[2] = c1.b + c2.b;
+	if (rgb[0] > 255)
+		rgb[0] = 255;
+	if (rgb[1] > 255)
+		rgb[1] = 255;
+	if (rgb[2] > 255)
+		rgb[2] = 255;
+	result.r = rgb[0];
+	result.g = rgb[1];
+	result.b = rgb[2];
     return result;
 }
 

@@ -5,7 +5,9 @@ int   load_texture(t_object *object)
 
     int texture_fd;
 
-    if (object->texture)
+    if (!object->texture_path)
+		return (1);
+	if (object->texture)
         return (1);
     texture_fd = open(object->texture_path, O_RDONLY);
     if (texture_fd < 0)
@@ -47,12 +49,14 @@ t_color get_texture_color(t_object *object, double u, double v, t_scene *scene)
 
 
 
-void get_sphere_uv(t_vec hit_point, t_vec center, double *u, double *v)
+void get_sphere_uv(t_vec hit_point, void *object, double *u, double *v)
 {
+	t_sphere	*sphere;
     t_vec d;
     double theta, phi;
     
-    d = vector_rest(hit_point, center);
+	sphere = (t_sphere *) object;
+    d = vector_rest(hit_point, sphere->center);
     d = vector_normalize(d);
     
     theta = acos(d.y);
@@ -68,7 +72,7 @@ t_color textures_handler(t_hit *hit, t_scene *scene)
     if (hit->object->texture_path != NULL)
 	{
 		if (hit->object->type == SPHERE)
-			get_sphere_uv(hit->p, hit->object->center, &u, &v);
+			get_sphere_uv(hit->p, hit->object, &u, &v);
 		return get_texture_color(hit->object, u, v, scene);
 	}
 	return (hit->object->color_range);

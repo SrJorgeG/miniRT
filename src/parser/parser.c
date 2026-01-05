@@ -94,7 +94,7 @@ void parse_sphere(char **args, t_scene *scene, int has_texture)
 	t_sphere *sphere;
 	t_list *node;
 
-	if (ft_strlst_len(args) != 4  || (ft_strlst_len(args) != 5 && has_texture))
+	if (ft_strlst_len(args) != 4  && (ft_strlst_len(args) != 5 && has_texture))
 		exit_error("Error. Invalid map data, incompleted sphere row.\n", scene);
 	if (!ft_str_is_vector(args[1]) || !ft_strisdbl(args[2]) ||
 	    !ft_str_is_color(args[3]))

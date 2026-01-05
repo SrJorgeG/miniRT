@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2026/01/04 16:56:56 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/01/05 16:07:06 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ t_color	calculate_lighting(t_hit *hit, t_scene *scene)
 		}
 		// Calcular el color difuso para ESTA luz
 		// color_difuso = color_objeto * color_luz * brillo_luz * factor_difuso
-		diffuse_for_this_light = color_multiply(hit->color,
+		diffuse_for_this_light = color_multiply(base_color,
 				current_light->color_range);
 		diffuse_for_this_light = color_scale(diffuse_for_this_light,
 				current_light->brightness * diffuse_factor);

@@ -12,11 +12,16 @@ t_object	*create_object(int obj_type, void *object, size_t id, char *texture_pat
 	obj = malloc(sizeof(t_object));
 	if (!obj)
 		return (NULL);
-	texture_fd = open(texture_path, O_RDONLY);
-    if (texture_fd < 0)
-		return (free(obj), NULL);
-	close(texture_fd);
-	obj->texture_path = ft_strdup(texture_path);
+	obj->texture_path = NULL;
+	obj->texture = NULL;
+	if (texture_path)
+	{
+		texture_fd = open(texture_path, O_RDONLY);
+    	if (texture_fd < 0)
+			return (free(obj), NULL);
+		close(texture_fd);
+		obj->texture_path = ft_strdup(texture_path);
+	}
 	if (!load_texture(obj))
 		return (free(obj), NULL);	
 	obj->object = object;
@@ -40,5 +45,5 @@ void	free_object(void *object)
 		free_cylinder(obj->object);
 	if (obj->type == PLANE)
 		free_plane(obj->object);
-	free(object);
+	free(obj);
 }
