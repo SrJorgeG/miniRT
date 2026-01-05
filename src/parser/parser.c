@@ -25,7 +25,7 @@ void parse_ambient_light(char **args, t_scene *scene)
 
 	amb_light = malloc(sizeof(t_amb_light));
 	if (!amb_light)
-		exit_error("Error. malloc\n", scene);
+		exit_error("Error. amb_light malloc\n", scene);
 	if (ft_strlst_len(args) != 3)
 		exit_error("Error. Invalid map data, incompleted ambient_light row.\n",
 		           scene);
@@ -70,7 +70,7 @@ void parse_light(char **args, t_scene *scene)
 		exit_error("Error. Duplicated Light\n", scene);
 	light = malloc(sizeof(t_light));
 	if (!light)
-		exit_error("Error. malloc\n", scene);
+		exit_error("Error. t_light malloc\n", scene);
 	if (ft_strlst_len(args) != 4)
 		exit_error("Error. Invalid map data, incompleted light row.\n", scene);
 	if (!ft_str_is_vector(args[1]) || !ft_strisdbl(args[2]) ||
@@ -84,7 +84,7 @@ void parse_light(char **args, t_scene *scene)
 		exit_error("Error. Invalid range for light FOV.", scene);
 	node = ft_lstnew(light);
 	if (!node)
-		exit_error("Error. malloc\n", scene);
+		exit_error("Error.parse_light: ft_lstnew: malloc\n", scene);
 	ft_stack_add_back(scene->map.lights, node);
 }
 
@@ -94,21 +94,22 @@ void parse_sphere(char **args, t_scene *scene, int has_texture)
 	t_sphere *sphere;
 	t_list *node;
 
-	if (ft_strlst_len(args) != 4  && (ft_strlst_len(args) != 5 && has_texture))
+	
+	if (ft_strlst_len(args) != 4  && (has_texture && ft_strlst_len(args) != 6 ))
 		exit_error("Error. Invalid map data, incompleted sphere row.\n", scene);
 	if (!ft_str_is_vector(args[1]) || !ft_strisdbl(args[2]) ||
-	    !ft_str_is_color(args[3]))
+	    !ft_str_is_color(args[3]) || (has_texture && !ft_str_is_vector(args[4])))
 		exit_error("Error invalid map data, wrong data in sphere row [].\n",
 		           scene);
 	sphere = create_sphere(args);
 	if (!sphere)
-		exit_error("Error. malloc\n", scene);
+		exit_error("Error create_sphere:\n", scene);
 	if (has_texture)
-		obj = create_object(SPHERE, sphere, scene->map.objects->size, args[4]);
+		obj = create_object(SPHERE, sphere, scene->map.objects->size,(char *[2]){args[4], args[5]});
 	else
-		obj = create_object(SPHERE, sphere, scene->map.objects->size, NULL);
+		obj = create_object(SPHERE, sphere, scene->map.objects->size, (char *[2]){NULL, NULL});
 	if (!obj)
-		return (free(sphere), exit_error("Error. malloc\n", scene));
+		return (free(sphere), exit_error("Error.create_object malloc\n", scene));
 	if (!create_color(args[3], &obj->color_range))
 		exit_error("Error. Sphere color_range: ", scene);
 	node = ft_lstnew(obj);
@@ -126,7 +127,7 @@ void parse_plane(char **args, t_scene *scene)
 	obj = malloc(sizeof(t_object));
 	plane = malloc(sizeof(t_plane));
 	if (!plane || !obj)
-		exit_error("Error. malloc\n", scene);
+		exit_error("Error parse_plane. malloc\n", scene);
 	obj->object = plane;
 	obj->type = PLANE;
 	obj->id = scene->map.objects->size;
@@ -156,7 +157,7 @@ void parse_cylinder(char **args, t_scene *scene)
 	obj = malloc(sizeof(t_object));
 	cylinder = malloc(sizeof(t_cylinder));
 	if (!cylinder || !obj)
-		exit_error("Error. malloc\n", scene);
+		exit_error("Error parse_cylinder. malloc\n", scene);
 	obj->object = cylinder;
 	obj->type = CYLINDER;
 	obj->id = scene->map.objects->size;
@@ -190,13 +191,20 @@ void parse_line(char *line, t_scene *scene)
 {
 	char **args;
 
-	args = ft_split(line, '\t');
+	args = ft_split_2(line, (char[2]){'\t', ' '});
+	
 	free(line);
 	if (!args || !args[0])
 	{
 		ft_free_split(args);
 		return;
 	}
+	int i=-1;
+	while (args[++i])
+	{
+		printf("%s\n", args[i]);
+	}
+	
 	if (!ft_strcmp(*args, "A"))
 		parse_ambient_light(args, scene);
 	else if (!ft_strcmp(*args, "C"))

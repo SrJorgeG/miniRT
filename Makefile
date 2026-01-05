@@ -7,13 +7,13 @@ LIBFT_DIR = libs/libft
 LIBFT_NAME = libft
 
 WAYLAND_LIBS = -lwayland-client -lwayland-cursor -lwayland-egl -lxkbcommon
-LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw $(WAYLAND_LIBS) -pthread -lm -L$(LIBFT_DIR) -l:libft.a
-#LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT_DIR) -l:libft.a
+#LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw $(WAYLAND_LIBS) -pthread -lm -L$(LIBFT_DIR) -l:libft.a
+LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT_DIR) -l:libft.a
 
 CFILES = src/main.c src/exit.c src/init.c src/free_functions.c src/render.c \
 src/parser/parser.c \
 src/ray/ray.c src/ray/hits.c \
-src/utils/color.c src/utils/scene.c src/utils/textures.c \
+src/utils/color.c src/utils/scene.c src/utils/textures.c src/utils/str.c \
 src/vector/vector.c src/vector/vector_aux.c src/vector/vector_basic.c \
 src/hooks/keyboard.c \
 src/hooks/mouse.c \

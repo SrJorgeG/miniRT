@@ -4,7 +4,7 @@
 /* CHECKEAR SI UNA TEXTURA NO VALIDA NO CREA LEAKS ASI, 
 SINO LLAMAR A FREE_OBJECT Y MODIFICAR FREE_OBJECT PARA QUE CHECKEE NULL 
 ANTES DE FREE OBJECT->OBJECT */
-t_object	*create_object(int obj_type, void *object, size_t id, char *texture_path)
+t_object	*create_object(int obj_type, void *object, size_t id, char *args[2])
 {
 	t_object	*obj;
 	int			texture_fd;
@@ -14,13 +14,15 @@ t_object	*create_object(int obj_type, void *object, size_t id, char *texture_pat
 		return (NULL);
 	obj->texture_path = NULL;
 	obj->texture = NULL;
-	if (texture_path)
+	if(args[0])
+		obj->orientation = create_vector(args[0]);
+	if (args[1])
 	{
-		texture_fd = open(texture_path, O_RDONLY);
+		texture_fd = open(args[1], O_RDONLY);
     	if (texture_fd < 0)
-			return (free(obj), NULL);
+			return (free(obj), perror("error in texture_fd"), NULL);
 		close(texture_fd);
-		obj->texture_path = ft_strdup(texture_path);
+		obj->texture_path = ft_strdup(args[1]);
 	}
 	if (!load_texture(obj))
 		return (free(obj), NULL);	

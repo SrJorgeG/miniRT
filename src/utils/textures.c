@@ -47,24 +47,53 @@ t_color get_texture_color(t_object *object, double u, double v, t_scene *scene)
     
 }
 
+// Rotar vector al sistema de coordenadas definido por la orientación
 
+t_vec rotate_to_texture_space(t_vec d, t_vec orientation)
+{
+    t_vec up, right, forward;
+    t_vec result;
+    
+    // La orientación define el "norte" de la textura
+    up = vector_normalize(orientation);
+    
+    // Crear sistema de coordenadas local
+    // Right:  perpendicular a up
+    if (fabs(up.y) > 0.9)
+        right = vector_normalize(vector_cross_prod(up, (t_vec){1, 0, 0}));
+    else
+        right = vector_normalize(vector_cross_prod(up, (t_vec){0, 1, 0}));
+    
+    // Forward:  perpendicular a up y right
+    forward = vector_cross_prod(up, right);
+    
+    // Proyectar d en el sistema local
+    result. x = vector_dot_prod(d, right);
+    result.y = vector_dot_prod(d, up);
+    result.z = vector_dot_prod(d, forward);
+    
+    return (result);
+}
 
-void get_sphere_uv(t_vec hit_point, void *object, double *u, double *v)
+void get_sphere_uv(t_vec hit_point, t_object *object, double *u, double *v)
 {
 	t_sphere	*sphere;
     t_vec d;
     double theta, phi;
     
-	sphere = (t_sphere *) object;
+	sphere = (t_sphere *) object->object;
     d = vector_rest(hit_point, sphere->center);
     d = vector_normalize(d);
-    
+    d = rotate_to_texture_space(d, object->orientation);
     theta = acos(d.y);
     phi = atan2(d.z, d.x);
     
     *u = (phi + M_PI) / (2.0 * M_PI);
     *v = theta / M_PI;
 }
+
+
+
 t_color textures_handler(t_hit *hit, t_scene *scene)
 {
     double u;

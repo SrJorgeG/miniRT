@@ -143,15 +143,11 @@ void color_clamp(int c[3])
 		c[2] = 255;
 }
 
-// Asumo que tienes un struct t_scene que contiene los punteros a la luz ambiental y la lista de luces
-
-//int color_to_int_alpha(t_color color)
-//{
-//    // Empaqueta los bytes en el orden R, G, B, A
-//   // return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
-//}
+int color_to_int_alpha(t_color color, uint8_t opacity)
+{
+    return ((opacity << 24) | (color.b << 16) | (color.g << 8) | color.r);
+}
 int color_to_int_no_alpha(t_color color)
 {
-    // Asume que el canal Alfa es 255 (totalmente opaco)
     return (color.r << 24 | color.g << 16 | color.b << 8 | 255);
 }

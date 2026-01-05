@@ -24,5 +24,5 @@ void	init_map(t_map *map)
 	map->lights = ft_stack_new();
 	map->objects = ft_stack_new();
 	if (!map->objects)
-		exit_error("Error. malloc. \n", map);
+		exit_error("Error init_map. malloc. \n", map);
 }

@@ -38,7 +38,7 @@ void	custom_key_hook(mlx_key_data_t keydata, void *param)
 		if (keydata.action == MLX_PRESS
 			|| keydata.action == MLX_REPEAT)
 		{
-			if (move_object(keydata, data) || resize_object(keydata, data) || camera_keys(keydata, &data->scene->map.camera))
+			if (move_object(keydata, data) || resize_object(keydata, data) || rotate_object(keydata, data) || camera_keys(keydata, &data->scene->map.camera))
 			{
 				clear_cache(data->scene);
 				render(data->scene, data->mlx, data->image);

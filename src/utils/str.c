@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/24 14:37:57 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/06/03 23:19:31 by dcid-san         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
@@ -17,58 +6,80 @@ static size_t ft_findchr(char const *s, char c[2])
 	size_t i;
 
 	i = 0;
-	while (s[i] && (s[i] == c[0] || s[i] == c[1]))
+	while (s[i] && s[i] != c[0] && s[i] != c[1])
 		i++;
 	return (i);
 }
 
 static size_t ft_count_words(char const *s, char c[2])
 {
-	size_t count;
-	unsigned int add;
+	size_t	count;
+	int		in_word;
 
 	count = 0;
-	add = 0;
+	in_word = 0;
 	while (*s)
 	{
-		if ((*s == c) && add)
+		if (*s == c[0] || *s == c[1])
 		{
-			count++;
-			add = 0;
+			if (in_word)
+			{
+				count++;
+				in_word = 0;
+			}
 		}
-		if ((*s == c[0] || *s == c[1]) && !add)
-			add = 1;
+		else
+			in_word = 1;
 		s++;
 	}
-	if (add)
+	if (in_word)
 		count++;
 	return (count);
 }
 
+static void ft_copy_word(char *dest, const char *src, size_t len)
+{
+	size_t i;
+
+	i = 0;
+	while (i < len)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+}
+
 char **ft_split_2(char const *s, char c[2])
 {
-	size_t words;
-	size_t i;
-	char **list;
-	size_t wordsize;
+	size_t	words;
+	size_t	i;
+	char	**list;
+	size_t	wordsize;
 
+	if (! s)
+		return (NULL);
 	words = ft_count_words(s, c);
 	list = malloc((words + 1) * sizeof(char *));
 	if (list == NULL)
 		return (NULL);
 	list[words] = NULL;
 	i = 0;
-	wordsize = 0;
 	while (i < words)
 	{
-		while (*s == c && *s)
+		while (*s && (*s == c[0] || *s == c[1]))
 			s++;
 		wordsize = ft_findchr(s, c);
 		list[i] = malloc((wordsize + 1) * sizeof(char));
 		if (list[i] == NULL)
+		{
+			while (i > 0)
+				free(list[--i]);
+			free(list);
 			return (NULL);
-		ft_strncpy(list[i], s, wordsize + 1);
-		s += wordsize + 1;
+		}
+		ft_copy_word(list[i], s, wordsize);
+		s += wordsize;
 		i++;
 	}
 	return (list);

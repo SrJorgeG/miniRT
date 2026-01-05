@@ -23,8 +23,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 /* 				MLX DEFINES				*/
-# define HEIGHT 400
-# define WIDTH 400
+# define HEIGHT 1200
+# define WIDTH 1200
 # define TITLE "MiniRT - De tu padre"
 
 # define RAY_T_MIN 0.0001f
@@ -123,6 +123,7 @@ typedef struct s_object
 	t_object_type		type;
 	void				*object;
 	t_vec				center;
+	t_vec				orientation;
 	char				*texture_path;
 	mlx_texture_t		*texture;
 	t_color				color_range;
@@ -230,6 +231,8 @@ t_color					color_scale(t_color c, double factor);
 t_color					color_add(t_color c1, t_color c2);
 void 					color_clamp(int c[3]);
 int						color_to_int_no_alpha(t_color color);
+int color_to_int_alpha(t_color color, uint8_t opacity);
+
 t_color	calculate_lighting(t_hit *hit, t_scene *scene);
 
 void					init_map(t_map *map);
@@ -243,7 +246,7 @@ void					debug_scene(t_scene *scene);
 
 /* Object functions */
 t_sphere *create_sphere(char **args);
-t_object	*create_object(int obj_type, void *object, size_t id, char *texture_path);
+t_object	*create_object(int obj_type, void *object, size_t id, char *texture_path[2]);
 
 
 /* Texture functions */
@@ -269,7 +272,7 @@ void	object_selector_hook(int32_t x, int32_t y, modifier_key_t mods, t_hook_data
 void	custom_mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *data);
 
 
-
+int    rotate_object(mlx_key_data_t keydata, t_hook_data *data);
 int    move_object(mlx_key_data_t keydata, t_hook_data *data);
 int    resize_object(mlx_key_data_t keydata, t_hook_data *data);
 

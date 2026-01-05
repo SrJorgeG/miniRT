@@ -45,6 +45,8 @@ t_vec vector_normalize(t_vec vec)
     double		len;
 
 	len = vector_lenght(&vec);
+	if (len < 0.0000001)
+        return ((t_vec){0, 1, 0});
     return ((t_vec) {vec.x / len, vec.y / len, vec.z / len});
 }
 
