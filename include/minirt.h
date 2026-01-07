@@ -23,8 +23,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 /* 				MLX DEFINES				*/
-# define HEIGHT 1200
-# define WIDTH 1200
+# define HEIGHT 600
+# define WIDTH 600
 # define TITLE "MiniRT - De tu padre"
 
 # define RAY_T_MIN 0.0001f
@@ -203,11 +203,12 @@ t_vec					vector_rest(t_vec v1, t_vec v2);
 t_vec					vector_multiplication(t_vec v1, double num);
 t_vec					vector_division(t_vec v1, double num);
 t_vec					*vector_dup(t_vec vec);
+t_vec					vector_scale(t_vec vec, double scalar);
 
 
 /* VECTOR_AUX - src/utils/vector_aux.c */
 double					vector_lenght_square(t_vec *vec);
-double					vector_lenght(t_vec *vec);
+double					vector_lenght(t_vec vec);
 t_vec					vector_normalize(t_vec vec);
 double					vector_dot_prod(t_vec v1, t_vec v2);
 t_vec					vector_cross_prod(t_vec v1, t_vec v2);
@@ -278,5 +279,9 @@ int    resize_object(mlx_key_data_t keydata, t_hook_data *data);
 
 void select_object(t_scene *scene, t_object *object, mlx_image_t *image);
 void deselect_object(t_scene *scene, t_object *object, mlx_image_t *image);
+
+void get_cylinder_normal(t_hit *hit, t_cylinder *cyl, t_ray ray);
+int hit_cylinder(t_ray ray, t_cylinder *cyl, double *obj_distance);
+
 
 #endif

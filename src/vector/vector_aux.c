@@ -19,9 +19,9 @@ inline double	vector_lenght_square(t_vec *vec)
 }
 
 // DEVUELVE LA LONGITUD DE UN VECTOR
-inline double	vector_lenght(t_vec *vec)
+inline double	vector_lenght(t_vec vec)
 {
-	return (sqrt(vector_lenght_square(vec)));
+	return (sqrt((vec.x * vec.x) + (vec.y * vec.y) + (vec.z * vec.z)));
 }
 
 // DEVUELVE UN VECTOR NORMALIZADO
@@ -44,7 +44,7 @@ t_vec vector_normalize(t_vec vec)
 {
     double		len;
 
-	len = vector_lenght(&vec);
+	len = vector_lenght(vec);
 	if (len < 0.0000001)
         return ((t_vec){0, 1, 0});
     return ((t_vec) {vec.x / len, vec.y / len, vec.z / len});

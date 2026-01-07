@@ -92,7 +92,66 @@ void get_sphere_uv(t_vec hit_point, t_object *object, double *u, double *v)
     *v = theta / M_PI;
 }
 
+// quizas la escala convenga ponerla como parametro??????
+void get_plane_uv(t_vec hit_point, t_object *object, double *u, double *v)
+{
+    t_plane *plane;
+    t_vec local_hit;
+    t_vec right, forward;
+    double scale;
+    
+    plane = (t_plane *)object->object;
+    t_vec up = vector_normalize(plane->vector);
+    if (fabs(up.y) > 0.9)
+        right = vector_normalize(vector_cross_prod(up, (t_vec){1, 0, 0}));
+    else
+        right = vector_normalize(vector_cross_prod(up, (t_vec){0, 1, 0}));
+    
+    forward = vector_cross_prod(up, right);
+    if (object->orientation. x != 0 || object->orientation.y != 0 || object->orientation.z != 0)
+    {
+        right = rotate_to_texture_space(right, object->orientation);
+        forward = rotate_to_texture_space(forward, object->orientation);
+    }
+    local_hit = vector_rest(hit_point, plane->point);
+    
+    scale = 0.1;
+    
+    *u = vector_dot_prod(local_hit, right) * scale;
+    *v = vector_dot_prod(local_hit, forward) * scale;
+    
+    *u = *u - floor(*u);
+    *v = *v - floor(*v);
+}
 
+/* d es el vector desde el centro del cilindro al punto de impacto, el resto es intuitivo */
+void get_cylinder_uv(t_vec hit_point, t_object *object, double *u, double *v)
+{
+    t_cylinder *cylinder;
+    t_vec d, axis;
+    t_vec projection, radial;
+    double height, phi;
+    double cyl_height;
+    
+    cylinder = (t_cylinder *)object->object;
+    axis = vector_normalize(object->orientation);
+    d = vector_rest(hit_point, cylinder->center);
+    height = vector_dot_prod(d, axis);
+    
+    projection = vector_scale(axis, height);
+    radial = vector_rest(d, projection);
+    radial = vector_normalize(radial);
+    
+    if (object->orientation. x != 0 || object->orientation.y != 0 || object->orientation.z != 0)
+        radial = rotate_to_texture_space(radial, object->orientation);    
+    phi = atan2(radial.z, radial.x);
+    *u = (phi + M_PI) / (2.0 * M_PI);
+    
+    cyl_height = cylinder->height;
+    *v = (height + cyl_height / 2.0) / cyl_height;
+    if (*v < 0.0) *v = 0.0;
+    if (*v > 1.0) *v = 1.0;
+}
 
 t_color textures_handler(t_hit *hit, t_scene *scene)
 {
@@ -102,6 +161,10 @@ t_color textures_handler(t_hit *hit, t_scene *scene)
 	{
 		if (hit->object->type == SPHERE)
 			get_sphere_uv(hit->p, hit->object, &u, &v);
+		else if (hit->object->type == CYLINDER)
+			get_cylinder_uv(hit->p, hit->object, &u, &v);
+		else if (hit->object->type == PLANE)
+			get_plane_uv(hit->p, hit->object, &u, &v);
 		return get_texture_color(hit->object, u, v, scene);
 	}
 	return (hit->object->color_range);

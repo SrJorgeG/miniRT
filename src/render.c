@@ -32,7 +32,7 @@ int	hit_object(t_ray ray, t_object *object, double *obj_distance)
 	if (object->type == SPHERE)
 		return (hit_sphere(ray, object->object, obj_distance));
 	else if (object->type == CYLINDER)
-		return (hit_sphere(ray, object->object, obj_distance));
+		return (hit_cylinder(ray, object->object, obj_distance));
 	else if (object->type == PLANE)
 		return (hit_plane(ray, object->object, obj_distance));
 	return (0);
@@ -55,6 +55,11 @@ void	get_hit_normal(t_hit *hit, t_ray ray)
 		if (vector_dot_prod(ray.direction, hit->normal) > 0)
 			hit->normal = vector_multiplication(hit->normal, -1.0);
 	}
+	else if (hit->object->type == CYLINDER)
+	{
+		get_cylinder_normal(hit, hit->object->object, ray);
+	}
+	
 }
 
 void	fill_hit_info(t_hit *closest, double obj_distance, t_object *last_hit)
