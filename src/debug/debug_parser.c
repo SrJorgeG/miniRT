@@ -53,7 +53,7 @@ void	debug_plane(t_plane *p)
 void	debug_cylinder(t_cylinder *c)
 {
 	debug_vec("center", c->center);
-	debug_vec("axis", c->axys);
+	debug_vec("axis", c->axis);
 	printf("diameter: %.4f\n", c->diameter);
 	printf("height: %.4f\n", c->height);
 }

@@ -23,8 +23,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 /* 				MLX DEFINES				*/
-# define HEIGHT 600
-# define WIDTH 600
+# define WIDTH 1920
+# define HEIGHT 1080
 # define TITLE "MiniRT - De tu padre"
 
 # define RAY_T_MIN 0.0001f
@@ -36,7 +36,8 @@ typedef enum e_object_type
 {
 	SPHERE,
 	PLANE,
-	CYLINDER
+	CYLINDER,
+	CONE
 }						t_object_type;
 
 typedef struct s_vector_2d
@@ -112,11 +113,19 @@ typedef struct s_plane
 typedef struct s_cylinder
 {
 	t_vec				center;
-	t_vec axys; // [-1,1]
+	t_vec axis; // [-1,1]
 	double				diameter;
 	double				height;
 
 }						t_cylinder;
+
+typedef struct s_cone
+{
+	t_vec				top;
+	t_vec				axis;
+	double				diameter;
+	double				height;
+}						t_cone;
 
 typedef struct s_object
 {
@@ -248,6 +257,8 @@ void					debug_scene(t_scene *scene);
 /* Object functions */
 t_sphere *create_sphere(char **args);
 t_object	*create_object(int obj_type, void *object, size_t id, char *texture_path[2]);
+t_plane *create_plane(char **args);
+t_cylinder *create_cylinder(char **args);
 
 
 /* Texture functions */
@@ -280,8 +291,8 @@ int    resize_object(mlx_key_data_t keydata, t_hook_data *data);
 void select_object(t_scene *scene, t_object *object, mlx_image_t *image);
 void deselect_object(t_scene *scene, t_object *object, mlx_image_t *image);
 
-void get_cylinder_normal(t_hit *hit, t_cylinder *cyl, t_ray ray);
-int hit_cylinder(t_ray ray, t_cylinder *cyl, double *obj_distance);
+void get_cylinder_normal(t_hit *hit,t_object *obj, t_cylinder *cyl, t_ray ray);
+int hit_cylinder(t_ray ray,t_object *obj, t_cylinder *cyl, double *obj_distance);
 
 
 #endif

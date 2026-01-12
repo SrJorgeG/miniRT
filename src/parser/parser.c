@@ -118,26 +118,27 @@ void parse_sphere(char **args, t_scene *scene, int has_texture)
 	ft_stack_add_back(scene->map.objects, node);
 }
 
-void parse_plane(char **args, t_scene *scene)
+void parse_plane(char **args, t_scene *scene, int has_texture)
 {
 	t_object *obj;
 	t_plane *plane;
 	t_list *node;
 
-	obj = malloc(sizeof(t_object));
-	plane = malloc(sizeof(t_plane));
-	if (!plane || !obj)
-		exit_error("Error parse_plane. malloc\n", scene);
-	obj->object = plane;
-	obj->type = PLANE;
-	obj->id = scene->map.objects->size;
-	if (ft_strlst_len(args) != 4)
+	if (ft_strlst_len(args) != 4 && (has_texture && ft_strlst_len(args) != 5))
 		exit_error("Error. Invalid map data, incompleted plane row.\n", scene);
 	if (!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) ||
 	    !ft_str_is_color(args[3]))
 		exit_error("Error invalid map data, wrong data in plane row.\n", scene);
-	plane->point = create_vector(args[1]);
-	plane->vector = create_vector(args[2]);
+	plane = create_plane(args);
+	if (!plane)
+		exit_error("Error parse_plane. malloc\n", scene);
+	if (has_texture)
+		obj = create_object(PLANE, plane, scene->map.objects->size, (char *[2]){args[2], args[4]});
+	else
+		obj = create_object(PLANE, plane, scene->map.objects->size, (char *[2]){NULL, NULL});
+	
+	if (!obj)
+		return(free_plane(plane), exit_error("Error parse_plane. create_object\n", scene));
 	if (!create_color(args[3], &obj->color_range))
 		exit_error("Error. Plane color_range: ", scene);
 	if (!is_normalized_vec(plane->vector))
@@ -148,20 +149,13 @@ void parse_plane(char **args, t_scene *scene)
 	ft_stack_add_back(scene->map.objects, node);
 }
 
-void parse_cylinder(char **args, t_scene *scene)
+void parse_cylinder(char **args, t_scene *scene, int has_texture)
 {
 	t_object *obj;
 	t_cylinder *cylinder;
 	t_list *node;
 
-	obj = malloc(sizeof(t_object));
-	cylinder = malloc(sizeof(t_cylinder));
-	if (!cylinder || !obj)
-		exit_error("Error parse_cylinder. malloc\n", scene);
-	obj->object = cylinder;
-	obj->type = CYLINDER;
-	obj->id = scene->map.objects->size;
-	if (ft_strlst_len(args) != 6)
+	if (ft_strlst_len(args) != 6 && (has_texture && ft_strlst_len(args) != 7))
 		exit_error("Error. Invalid map data, incompleted cylinder row.\n",
 		           scene);
 	if (!ft_str_is_vector(args[1]) || !ft_str_is_vector(args[2]) ||
@@ -169,18 +163,17 @@ void parse_cylinder(char **args, t_scene *scene)
 	    (!ft_str_is_color(args[5])))
 		exit_error("Error invalid map data, wrong data in cylinder row.\n",
 		           scene);
-	cylinder->center = create_vector(args[1]);
-	cylinder->axys = create_vector(args[2]);
-	cylinder->diameter = ft_atodbl(args[3]);
-	cylinder->height = ft_atodbl(args[4]);
+	cylinder = create_cylinder(args);
+	if (!cylinder)
+		exit_error("Error parse_cylinder: ", scene);
+	if ((has_texture))
+		obj = create_object(CYLINDER, cylinder, scene->map.objects->size, (char *[2]){args[2], args[6]});
+	else
+		obj = create_object(CYLINDER, cylinder, scene->map.objects->size, (char *[2]){args[2], NULL});
+	if (!obj)
+		return(free_cylinder(cylinder), exit_error("Error parse_cylinder: ", scene));
 	if (!create_color(args[5], &obj->color_range))
 		exit_error("Error. Cylinder color_range: ", scene);
-	if (!is_normalized_vec(cylinder->axys))
-		exit_error("Error. Invalid range for cylinder orientation.", scene);
-	if (cylinder->diameter <= 0.0)
-		exit_error("Error. Invalid range for cylinder diameter.", scene);
-	if (cylinder->height <= 0.0)
-		exit_error("Error. Invalid range for cylinder height.", scene);
 	node = ft_lstnew(obj);
 	if (!node)
 		exit_error("Error. malloc\n", scene);
@@ -216,9 +209,13 @@ void parse_line(char *line, t_scene *scene)
 	else if (!ft_strcmp(*args, "spt"))
 		parse_sphere(args, scene, 1);
 	else if (!ft_strcmp(*args, "pl"))
-		parse_plane(args, scene);
+		parse_plane(args, scene, 0);
+	else if (!ft_strcmp(*args, "plt"))
+		parse_plane(args, scene, 1);
 	else if (!ft_strcmp(*args, "cy"))
-		parse_cylinder(args, scene);
+		parse_cylinder(args, scene, 0);
+	else if (!ft_strcmp(*args, "cyt"))
+		parse_cylinder(args, scene, 1);
 	else
 		exit_error("Error invalid map data, wrong identifier in row.\n", scene);
 	ft_free_split(args);

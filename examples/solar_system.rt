@@ -1,0 +1,12 @@
+A	0.7										255,255,255
+C	0,0,-50		0,0,1		10
+L	-70,0,80					1.0			255,255,255
+
+
+plt	0,-100,100			0,1,0					100,100,255		/home/krusty/Downloads/testeo/textures/stars.png
+plt	0,100,100			0,1,0					100,100,255		/home/krusty/Downloads/testeo/textures/stars.png
+plt	-150,0,100			1,0,0					100,100,255		/home/krusty/Downloads/testeo/textures/stars.png
+plt	150,0,100			1,0,0					100,100,255		/home/krusty/Downloads/testeo/textures/stars.png
+cyt	0,0.0,100	0,1,0	14.2	21.42	10,0,255 
+spt 0,0,80  25  255,255,0   0.8,0.3,0.3     /home/krusty/Downloads/testeo/textures/earth.png
+spt -70,0,80  50  255,255,0   0.8,0.3,0.3     /home/krusty/Downloads/testeo/textures/sun.png

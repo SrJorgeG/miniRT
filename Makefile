@@ -19,6 +19,8 @@ src/hooks/keyboard.c \
 src/hooks/mouse.c \
 src/objects/object.c \
 src/objects/sphere.c \
+src/objects/cylinder.c \
+src/objects/plane.c \
 src/functions/objects.c \
 src/debug/debug_parser.c \
 src/cache/cache.c

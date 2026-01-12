@@ -226,6 +226,8 @@ int    rotate_object(mlx_key_data_t keydata, t_hook_data *data)
 		obj->orientation.z = 0;
 	if (obj->orientation.z < -1.0)
 		obj->orientation.z = 1.0;
+	obj->orientation = vector_normalize(obj->orientation);
+	printf("%f-%f-%f", obj->orientation.x, obj->orientation.y, obj->orientation.x);
 	return(1);
 
 }
