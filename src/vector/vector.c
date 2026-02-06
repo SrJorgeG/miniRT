@@ -31,9 +31,13 @@ t_vec	*vector_constructor(double x, double y, double z)
 	return (vector);
 }
 
-inline void	v_free(t_vec	*vector)
+t_vec vector_scale(t_vec vec, double scalar)
 {
-	free(vector);
+    return ((t_vec){
+        vec.x * scalar,
+        vec.y * scalar,
+        vec.z * scalar
+    });
 }
 
 t_vec	create_vector(char *vector_str)

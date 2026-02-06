@@ -6,12 +6,12 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:59:22 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/10/10 19:20:23 by dcid-san         ###   ########.fr       */
+/*   Updated: 2025/12/16 20:40:23 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 void	*ft_realloc(void *src, unsigned long oldsize, unsigned long newsize)
 {
@@ -20,13 +20,15 @@ void	*ft_realloc(void *src, unsigned long oldsize, unsigned long newsize)
 	unsigned char	*srcchar;
 
 	if (newsize == 0)
+		return (free(src), NULL);
+	i = 0;
+	srcchar = (unsigned char *)src;
+	cpy = (unsigned char *)malloc(newsize);
+	if (!cpy)
 	{
 		free(src);
 		return (NULL);
 	}
-	i = 0;
-	srcchar = (unsigned char *) src;
-	cpy = (unsigned char *) malloc(newsize);
 	if (src != NULL)
 	{
 		while (i < oldsize && i < newsize)

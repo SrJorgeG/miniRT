@@ -1,0 +1,7 @@
+A	0.5										255,255,255
+C	0,0,-50		0,0,1		100
+L	-70,0,80					1.0			255,255,255
+
+
+spt 0,0,80  25  255,255,0   0.8,0.3,0.3     /home/krusty/Downloads/testeo/textures/earth.png
+spt -70,0,80  50  255,255,0   0.8,0.3,0.3     /home/krusty/Downloads/testeo/textures/sun.png

@@ -67,9 +67,20 @@ int ft_str_is_color(char *str)
 t_color color_multiply(t_color c1, t_color c2)
 {
     t_color result;
-    result.r = (int)(((double)c1.r / 255.0) * ((double)c2.r / 255.0) * 255.0);
-    result.g = (int)(((double)c1.g / 255.0) * ((double)c2.g / 255.0) * 255.0);
-    result.b = (int)(((double)c1.b / 255.0) * ((double)c2.b / 255.0) * 255.0);
+	int rgb[3];
+
+    rgb[0] = (int)(((double)c1.r / 255.0) * ((double)c2.r / 255.0) * 255.0);
+    rgb[1] = (int)(((double)c1.g / 255.0) * ((double)c2.g / 255.0) * 255.0);
+    rgb[2] = (int)(((double)c1.b / 255.0) * ((double)c2.b / 255.0) * 255.0);
+	if (rgb[0] > 255)
+		rgb[0] = 255;
+	if (rgb[1] > 255)
+		rgb[1] = 255;
+	if (rgb[2] > 255)
+		rgb[2] = 255;
+	result.r = rgb[0];
+	result.g = rgb[1];
+	result.b = rgb[2];
     return result;
 }
 
@@ -77,9 +88,20 @@ t_color color_multiply(t_color c1, t_color c2)
 t_color color_scale(t_color c, double factor)
 {
     t_color result;
-    result.r = (int)((double)c.r * factor);
-    result.g = (int)((double)c.g * factor);
-    result.b = (int)((double)c.b * factor);
+	int rgb[3];
+
+    rgb[0] = (int)((double)c.r * factor);
+    rgb[1] = (int)((double)c.g * factor);
+    rgb[2] = (int)((double)c.b * factor);
+	if (rgb[0] > 255)
+		rgb[0] = 255;
+	if (rgb[1] > 255)
+		rgb[1] = 255;
+	if (rgb[2] > 255)
+		rgb[2] = 255;
+	result.r = rgb[0];
+	result.g = rgb[1];
+	result.b = rgb[2];
     return result;
 }
 
@@ -87,30 +109,45 @@ t_color color_scale(t_color c, double factor)
 t_color color_add(t_color c1, t_color c2)
 {
     t_color result;
-    result.r = c1.r + c2.r;
-    result.g = c1.g + c2.g;
-    result.b = c1.b + c2.b;
+	int rgb[3];
+
+    rgb[0] = c1.r + c2.r;
+    rgb[1] = c1.g + c2.g;
+    rgb[2] = c1.b + c2.b;
+	if (rgb[0] > 255)
+		rgb[0] = 255;
+	if (rgb[1] > 255)
+		rgb[1] = 255;
+	if (rgb[2] > 255)
+		rgb[2] = 255;
+	result.r = rgb[0];
+	result.g = rgb[1];
+	result.b = rgb[2];
     return result;
 }
 
 // Se asegura de que los valores del color no superen 255
-t_color color_clamp(t_color c)
+void color_clamp(int c[3])
 {
-    if (c.r > 255) c.r = 255;
-    if (c.g > 255) c.g = 255;
-    if (c.b > 255) c.b = 255;
-    return c;
+	if (c[0] < 0)
+		c[0] = 0;
+    if (c[1] < 0)
+		c[1] = 0;
+    if (c[2] < 0)
+		c[2] = 0;
+    if (c[0] > 255)
+		c[0] = 255;
+    if (c[1] > 255)
+		c[1] = 255;
+    if (c[2] > 255)
+		c[2] = 255;
 }
 
-// Asumo que tienes un struct t_scene que contiene los punteros a la luz ambiental y la lista de luces
-
-//int color_to_int_alpha(t_color color)
-//{
-//    // Empaqueta los bytes en el orden R, G, B, A
-//   // return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
-//}
+int color_to_int_alpha(t_color color, uint8_t opacity)
+{
+    return ((opacity << 24) | (color.b << 16) | (color.g << 8) | color.r);
+}
 int color_to_int_no_alpha(t_color color)
 {
-    // Asume que el canal Alfa es 255 (totalmente opaco)
     return (color.r << 24 | color.g << 16 | color.b << 8 | 255);
 }

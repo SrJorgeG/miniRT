@@ -50,104 +50,143 @@ int hit_plane(t_ray ray, t_plane *plane, double *obj_distance)
     return 0;
 }
 
-int hit_cylinder(t_ray ray, t_cylinder *cylinder, double *obj_distance)
+
+static double hit_cylinder_caps(t_ray ray, t_object *obj, t_cylinder *cyl, double radius, double half_h)
 {
-    t_ray   local_ray;
-    double  t_body = -1.0;
-    double  t_cap = -1.0;
-    int     hit_body = 0;
-    int     hit_caps = 0;
-
-    // Transformar rayo
-    local_ray.origin = mat4_transform_point(cylinder->inverse_transform, 
-                                            ray.origin);
-    local_ray.direction = mat4_transform_direction(cylinder->inverse_transform, 
-                                                   ray.direction);
-    local_ray.direction = vector_normalize(local_ray.direction);
-
-    // --- CUERPO DEL CILINDRO ---
-    double a = local_ray.direction.x * local_ray.direction.x + 
-               local_ray.direction.y * local_ray.direction.y;
-    double b = 2.0 * (local_ray.origin.x * local_ray.direction.x + 
-                      local_ray.origin.y * local_ray.direction.y);
-    double c = local_ray.origin.x * local_ray.origin.x + 
-               local_ray.origin.y * local_ray.origin.y - 1.0;
+    double  denom;
+    double  t;
+    double  dist;
+    double  closest;
+    t_vec   hit;
+    t_vec   cap_center;
     
-    double disc = b * b - 4.0 * a * c;
+    denom = vector_dot_prod(ray.direction, obj->orientation);
+    if (fabs(denom) < 1e-6)
+        return (-1);
     
-    if (disc >= 0.0)
-    {
-        double t0 = (-b - sqrt(disc)) / (2.0 * a);
-        double t1 = (-b + sqrt(disc)) / (2.0 * a);
-        double t_test;
-        
-        if (t0 > 0.001)
-            t_test = t0;
-        else if (t1 > 0.001)
-            t_test = t1;
-        else
-            t_test = -1.0;
-        
-        if (t_test > 0)
-        {
-            t_vec p = vector_sum(local_ray.origin, 
-                                vector_multiplication(local_ray.direction, t_test));
-            if (p.z >= -1.0 && p.z <= 1.0)
-            {
-                t_body = t_test;
-                hit_body = 1;
-            }
-        }
-    }
+    closest = INFINITY;
 
-    // --- TAPAS DEL CILINDRO ---
-    if (fabs(local_ray.direction.z) > 0.0001)
+    cap_center = vector_sum(cyl->center, 
+                            vector_multiplication(obj->orientation, half_h));
+    t = vector_dot_prod(vector_rest(cap_center, ray.origin), obj->orientation) / denom;
+    
+    if (t > 1e-6)
     {
-        // Tapa inferior (z = -1)
-        double t_bottom = (-1.0 - local_ray.origin.z) / local_ray.direction.z;
-        if (t_bottom > 0.001)
-        {
-            t_vec p = vector_sum(local_ray.origin, 
-                                vector_multiplication(local_ray.direction, t_bottom));
-            double radius_sq = p.x * p.x + p.y * p.y;
-            if (radius_sq <= 1.0)
-            {
-                if (!hit_caps || t_bottom < t_cap)
-                {
-                    t_cap = t_bottom;
-                    hit_caps = 1;
-                }
-            }
-        }
-        
-        // Tapa superior (z = +1)
-        double t_top = (1.0 - local_ray.origin.z) / local_ray.direction.z;
-        if (t_top > 0.001)
-        {
-            t_vec p = vector_sum(local_ray.origin, 
-                                vector_multiplication(local_ray.direction, t_top));
-            double radius_sq = p.x * p.x + p.y * p.y;
-            if (radius_sq <= 1.0)
-            {
-                if (!hit_caps || t_top < t_cap)
-                {
-                    t_cap = t_top;
-                    hit_caps = 1;
-                }
-            }
-        }
+        hit = vector_sum(ray.origin, vector_multiplication(ray.direction, t));
+        dist = vector_lenght(vector_rest(hit, cap_center));
+        if (dist <= radius)
+            closest = t;
     }
+    
+    cap_center = vector_sum(cyl->center, 
+                            vector_multiplication(obj->orientation, -half_h));
+    t = vector_dot_prod(vector_rest(cap_center, ray.origin), obj->orientation) / denom;
+    
+    if (t > 1e-6 && t < closest)
+    {
+        hit = vector_sum(ray.origin, vector_multiplication(ray.direction, t));
+        dist = vector_lenght(vector_rest(hit, cap_center));
+        if (dist <= radius)
+            closest = t;
+    }
+    
+    return (closest == INFINITY ?  -1 : closest);
+}
 
-    // Elegir el hit más cercano
-    if (hit_body && hit_caps)
+static double hit_cylinder_body(t_ray ray, t_object *obj, t_vec oc, 
+                         double radius, double half_h)
+{
+    double  a, b, c;
+    double  discriminant;
+    double  t;
+    double  h;
+    
+    
+    a = vector_dot_prod(ray.direction, ray.direction) - 
+        pow(vector_dot_prod(ray.direction, obj->orientation), 2);
+    
+    b = 2.0 * (vector_dot_prod(ray. direction, oc) - 
+               vector_dot_prod(ray.direction, obj->orientation) * vector_dot_prod(oc, obj->orientation));
+    
+    c = vector_dot_prod(oc, oc) - 
+        pow(vector_dot_prod(oc, obj->orientation), 2) - 
+        radius * radius;
+
+    discriminant = b * b - 4 * a * c;
+    if (discriminant < 0)
+        return (-1);
+    
+    t = (-b - sqrt(discriminant)) / (2.0 * a);
+    if (t > 1e-6)
+    {
+        h = vector_dot_prod(vector_sum(oc, vector_multiplication(ray.direction, t)), obj->orientation);
+        if (fabs(h) <= half_h)
+            return (t);
+    }
+    
+    t = (-b + sqrt(discriminant)) / (2.0 * a);
+    if (t > 1e-6)
+    {
+        h = vector_dot_prod(vector_sum(oc, vector_multiplication(ray.direction, t)), obj->orientation);
+        if (fabs(h) <= half_h)
+            return (t);
+    }
+    
+    return (-1);
+}
+
+void get_cylinder_normal(t_hit *hit, t_object *obj, t_cylinder *cyl, t_ray ray)
+{
+    t_vec   to_hit;
+    double  h;
+    double  half_h;
+    t_vec   proj;
+    
+    to_hit = vector_rest(hit->p, cyl->center);
+    h = vector_dot_prod(to_hit, obj->orientation);
+    half_h = cyl->height / 2.0;
+    
+    if (fabs(fabs(h) - half_h) < 1e-3)
+    {
+        hit->normal = obj->orientation;
+        if (h < 0)
+            hit->normal = vector_multiplication(hit->normal, -1.0);
+    }
+    else
+    {
+        proj = vector_multiplication(obj->orientation, h);
+        hit->normal = vector_normalize(vector_rest(to_hit, proj));
+    }
+    
+    if (vector_dot_prod(ray.direction, hit->normal) > 0)
+        hit->normal = vector_multiplication(hit->normal, -1.0);
+}
+
+int hit_cylinder(t_ray ray,t_object *obj, t_cylinder *cyl, double *obj_distance)
+{
+    t_vec   oc;
+    double  radius;
+    double  half_h;
+    double  t_body;
+    double  t_cap;
+    
+    oc = vector_rest(ray.origin, cyl->center);
+    radius = cyl->diameter / 2.0;
+    half_h = cyl->height / 2.0;
+    
+    t_body = hit_cylinder_body(ray, obj, oc, radius, half_h);
+    t_cap = hit_cylinder_caps(ray,obj, cyl, radius, half_h);
+    
+    if (t_body > 0 && t_cap > 0)
         *obj_distance = fmin(t_body, t_cap);
-    else if (hit_body)
+    else if (t_body > 0)
         *obj_distance = t_body;
-    else if (hit_caps)
+    else if (t_cap > 0)
         *obj_distance = t_cap;
     else
         return (0);
     
     return (1);
 }
+
 
