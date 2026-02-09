@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2026/01/04 16:55:24 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/02/06 12:43:15 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 /* 				MLX DEFINES				*/
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 600
+# define HEIGHT 600
 # define TITLE "MiniRT - De tu padre"
 
 # define RAY_T_MIN 0.0001f

@@ -4,4 +4,4 @@ L	30,50,-20					0.7			255,255,255
 L	-30,-50,+20					0.9			100,100,255
 L	30,50,-20					0.7			255,255,255
 
-plt	0,0,500			0,1,0					100,100,255		/home/krusty/Downloads/testeo/textures/cascades.png
+plt	0,0,500			0,1,0					100,100,255		/home/dcid-san/42Course/miniRT/textures/cascades.png

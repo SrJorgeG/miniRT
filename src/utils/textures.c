@@ -161,9 +161,9 @@ t_color textures_handler(t_hit *hit, t_scene *scene)
 	{
 		if (hit->object->type == SPHERE)
 			get_sphere_uv(hit->p, hit->object, &u, &v);
-		else if (hit->object->type == CYLINDER)
+		if (hit->object->type == CYLINDER)
 			get_cylinder_uv(hit->p, hit->object, &u, &v);
-		else if (hit->object->type == PLANE)
+		if (hit->object->type == PLANE)
 			get_plane_uv(hit->p, hit->object, &u, &v);
 		return get_texture_color(hit->object, u, v, scene);
 	}
