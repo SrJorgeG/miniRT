@@ -12,10 +12,6 @@
 
 #include "../include/minirt.h"
 
-/*
-	-PENDIENTE LIBERAR BIEN LOS MALLOC,
-		SE LE PASARÁ PROBABLEMENTE UN T_DATA GENERAL A EXIT_ERROR Y SE LIBERARÁ TODO LO ALOCADO AHÍ.
-*/
 void	init_map(t_map *map)
 {
 	map->has_amb_ligt = 0;

@@ -12,10 +12,9 @@
 
 #include "../../include/minirt.h"
 
-
-t_vec   v(double x, double y, double z)
+t_vec	vector_create_short(double x, double y, double z)
 {
-	return ((t_vec) {x, y, z});
+	return ((t_vec){x, y, z});
 }
 
 t_vec	*vector_constructor(double x, double y, double z)
@@ -31,13 +30,9 @@ t_vec	*vector_constructor(double x, double y, double z)
 	return (vector);
 }
 
-t_vec vector_scale(t_vec vec, double scalar)
+t_vec	vector_scale(t_vec vec, double scalar)
 {
-    return ((t_vec){
-        vec.x * scalar,
-        vec.y * scalar,
-        vec.z * scalar
-    });
+	return ((t_vec){vec.x * scalar, vec.y * scalar, vec.z * scalar});
 }
 
 t_vec	create_vector(char *vector_str)
@@ -51,42 +46,4 @@ t_vec	create_vector(char *vector_str)
 	vector.z = ft_atoi(vector_split[2]);
 	ft_free_split(vector_split);
 	return (vector);
-}
-
-int ft_str_is_vector(char *str)
-{
-    int component_count = 0;
-    int digit_len = 0;
-
-    if (!str || *str == '\0')
-        return (0);
-    while (*str)
-    {
-        if (ft_isdigit(*str))
-			digit_len++;
-        else if (*str == ',')
-        {
-            if (digit_len == 0 || component_count >= 2)
-                return (0);
-            component_count++;
-            digit_len = 0;
-        }
-        else if (*str != '-' && *str != '+' && *str != '.')
-            return (0);
-        str++;
-    }
-    if (component_count == 2 && digit_len > 0)
-        return (1);
-    return (0);
-}
-
-int is_normalized_vec(t_vec vector)
-{
-	if (vector.x < -1 || vector.x > 1)
-		return (0);
-	if (vector.y < -1 || vector.y > 1)
-		return (0);
-	if (vector.z < -1 || vector.z > 1)
-		return (0);
-	return (1);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/11 13:44:47 by dcid-san          #+#    #+#             */
+/*   Updated: 2025/10/11 13:44:49 by dcid-san         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minirt.h"
 
 int	load_texture(t_object *object)
@@ -47,102 +59,73 @@ t_color	get_texture_color(t_object *object, double u, double v, t_scene *scene)
 	return ((t_color){pixel[0], pixel[1], pixel[2]});
 }
 
-t_vec	rotate_to_texture_space(t_vec d, t_vec orientation)
+static void	get_sphere_uv_helper(t_vec d, double *u, double *v)
 {
-	t_vec	up;
-	t_vec	right;
-	t_vec	forward;
-	t_vec	result;
+	double	theta;
+	double	phi;
 
-	up = vector_normalize(orientation);
-	if (fabs(up.y) > 0.9)
-		right = vector_normalize(vector_cross_prod(up, (t_vec){1, 0, 0}));
-	else
-		right = vector_normalize(vector_cross_prod(up, (t_vec){0, 1, 0}));
-	forward = vector_cross_prod(up, right);
-	result.x = vector_dot_prod(d, right);
-	result.y = vector_dot_prod(d, up);
-	result.z = vector_dot_prod(d, forward);
-	return (result);
-}
-
-void	get_sphere_uv(t_vec hit_point, t_object *object, double *u, double *v)
-{
-	t_sphere	*sphere;
-	t_vec		d;
-	double		theta;
-	double		phi;
-
-	sphere = (t_sphere *)object->object;
-	d = vector_rest(hit_point, sphere->center);
-	d = vector_normalize(d);
-	d = rotate_to_texture_space(d, object->orientation);
 	theta = acos(d.y);
 	phi = atan2(d.z, d.x);
 	*u = (phi + M_PI) / (2.0 * M_PI);
 	*v = theta / M_PI;
 }
 
-void	get_plane_uv(t_vec hit_point, t_object *object, double *u, double *v)
+static void	get_plane_uv_helper(t_plane *plane, t_object *obj, t_vec hit_point,
+		double *u, double *v)
 {
-	t_plane	*plane;
-	t_vec	local_hit;
-	t_vec	up;
 	t_vec	right;
 	t_vec	forward;
-	double	scale;
+	t_vec	local_hit;
 
-	plane = (t_plane *)object->object;
-	up = vector_normalize(plane->vector);
-	if (fabs(up.y) > 0.9)
-		right = vector_normalize(vector_cross_prod(up, (t_vec){1, 0, 0}));
+	right = vector_normalize(plane->vector);
+	if (fabs(right.y) < 0.9)
+		forward = vector_normalize(vector_cross_prod(right, (t_vec){0, 1, 0}));
 	else
-		right = vector_normalize(vector_cross_prod(up, (t_vec){0, 1, 0}));
-	forward = vector_cross_prod(up, right);
-	if (object->orientation.x != 0 || object->orientation.y != 0
-		|| object->orientation.z != 0)
-	{
-		right = rotate_to_texture_space(right, object->orientation);
-		forward = rotate_to_texture_space(forward, object->orientation);
-	}
+		forward = vector_normalize(vector_cross_prod(right, (t_vec){1, 0, 0}));
 	local_hit = vector_rest(hit_point, plane->point);
-	scale = 0.1;
-	*u = vector_dot_prod(local_hit, right) * scale;
-	*v = vector_dot_prod(local_hit, forward) * scale;
+	*u = vector_dot_prod(local_hit, forward) * 0.1;
+	*v = vector_dot_prod(local_hit, right) * 0.1;
 	*u = *u - floor(*u);
 	*v = *v - floor(*v);
 }
 
-void	get_cylinder_uv(t_vec hit_point, t_object *object, double *u,
-		double *v)
+static void	get_cylinder_uv_helper(t_cylinder *cyl, t_object *obj,
+		t_vec hit_point, double *u, double *v)
 {
-	t_cylinder	*cylinder;
-	t_vec		d;
-	t_vec		axis;
-	t_vec		projection;
-	t_vec		radial;
-	double		height;
-	double		phi;
-	double		cyl_height;
+	t_vec	axis;
+	t_vec	d;
+	double	height;
 
-	cylinder = (t_cylinder *)object->object;
-	axis = vector_normalize(object->orientation);
-	d = vector_rest(hit_point, cylinder->center);
+	axis = vector_normalize(obj->orientation);
+	d = vector_rest(hit_point, cyl->center);
 	height = vector_dot_prod(d, axis);
-	projection = vector_scale(axis, height);
-	radial = vector_rest(d, projection);
-	radial = vector_normalize(radial);
-	if (object->orientation.x != 0 || object->orientation.y != 0
-		|| object->orientation.z != 0)
-		radial = rotate_to_texture_space(radial, object->orientation);
-	phi = atan2(radial.z, radial.x);
-	*u = (phi + M_PI) / (2.0 * M_PI);
-	cyl_height = cylinder->height;
-	*v = (height + cyl_height / 2.0) / cyl_height;
+	d = vector_rest(d, vector_scale(axis, height));
+	d = vector_normalize(d);
+	*u = (atan2(d.z, d.x) + M_PI) / (2.0 * M_PI);
+	*v = (height + cyl->height / 2.0) / cyl->height;
 	if (*v < 0.0)
 		*v = 0.0;
 	if (*v > 1.0)
 		*v = 1.0;
+}
+
+void	get_object_uv(t_vec hit_point, t_object *object, double *u, double *v)
+{
+	t_sphere	*sphere;
+	t_vec		d;
+
+	if (object->type == SPHERE)
+	{
+		sphere = (t_sphere *)object->object;
+		d = vector_rest(hit_point, sphere->center);
+		d = vector_normalize(d);
+		get_sphere_uv_helper(d, u, v);
+	}
+	else if (object->type == CYLINDER)
+		get_cylinder_uv_helper((t_cylinder *)object->object, object,
+			hit_point, u, v);
+	else if (object->type == PLANE)
+		get_plane_uv_helper((t_plane *)object->object, object, hit_point, u, v);
 }
 
 t_color	textures_handler(t_hit *hit, t_scene *scene)
@@ -154,12 +137,7 @@ t_color	textures_handler(t_hit *hit, t_scene *scene)
 	v = 0;
 	if (hit->object->texture_path != NULL)
 	{
-		if (hit->object->type == SPHERE)
-			get_sphere_uv(hit->p, hit->object, &u, &v);
-		if (hit->object->type == CYLINDER)
-			get_cylinder_uv(hit->p, hit->object, &u, &v);
-		if (hit->object->type == PLANE)
-			get_plane_uv(hit->p, hit->object, &u, &v);
+		get_object_uv(hit->p, hit->object, &u, &v);
 		return (get_texture_color(hit->object, u, v, scene));
 	}
 	return (hit->object->color_range);

@@ -87,13 +87,13 @@ void	debug_objects(t_stack *objects)
 void	debug_lights(t_stack *lights)
 {
 	t_list	*tmp;
-	t_light	*obj;
+	t_light	*light;
 
 	tmp = lights->first;
 	while (tmp)
 	{
-		obj = (t_light *)tmp->content;
-		debug_light(obj);
+		light = (t_light *)tmp->content;
+		debug_light(light);
 		tmp = tmp->next;
 	}
 }

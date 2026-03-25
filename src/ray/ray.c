@@ -12,9 +12,9 @@
 
 #include "../../include/minirt.h"
 
-t_ray *ray_constructor(t_point *origin, t_vec *direction)
+t_ray	*ray_constructor(t_point *origin, t_vec *direction)
 {
-	t_ray *ray;
+	t_ray	*ray;
 
 	ray = malloc(sizeof(t_ray));
 	if (!ray)
@@ -24,13 +24,13 @@ t_ray *ray_constructor(t_point *origin, t_vec *direction)
 	return (ray);
 }
 
-void ray_destructor(t_ray *ray)
+void	ray_destructor(t_ray *ray)
 {
 	free(ray);
 }
 
-// CALCULAR / GENERAR PUNTOS EN UN RAYO A PARTIR DE UNA VARIABLE T
-t_vec ray_generate_points(t_ray ray, long t)
+t_vec	ray_generate_points(t_ray ray, long t_param)
 {
-	return (vector_sum(ray.origin, vector_multiplication(ray.direction, t)));
+	return (vector_sum(ray.origin,
+			vector_multiplication(ray.direction, t_param)));
 }

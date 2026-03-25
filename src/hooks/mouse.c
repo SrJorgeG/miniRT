@@ -14,9 +14,9 @@
 
 int	match_idx(void *lst, void *idx)
 {
-	t_list	*current;
+	t_list		*current;
 	t_object	*obj;
-	size_t	*value;
+	size_t		*value;
 
 	current = lst;
 	obj = current->content;
@@ -32,16 +32,17 @@ void	object_selector_hook(int32_t x, int32_t y, modifier_key_t mods,
 {
 	t_hit	hit;
 	t_vec	pixel_center;
+	t_ray	ray;
 
 	(void)mods;
 	if (!data->scene->picked_obj)
 	{
 		pixel_center = find_pixel_on_viewport(x, y, data->scene);
-		hit = get_hits(data->scene, get_ray_from_pixel(data->scene,
-				data->scene->image_center, pixel_center));
-		if (!hit.hit)
-			return;
-		select_object(data->scene, hit.object, data->image);
+		ray = get_ray_from_pixel(data->scene, data->scene->image_center,
+				pixel_center);
+		hit = get_hits(data->scene, ray);
+		if (hit.hit)
+			select_object(data->scene, hit.object, data->image);
 	}
 	else
 	{
@@ -53,8 +54,8 @@ void	custom_mouse_hook(mouse_key_t button, action_t action,
 	modifier_key_t mods, void *param)
 {
 	t_hook_data	*data;
-	int32_t	x;
-	int32_t	y;
+	int32_t		x;
+	int32_t		y;
 
 	data = param;
 	if (data->scene->is_rendered)
