@@ -14,8 +14,8 @@
 
 int	match_idx(void *lst, void *idx)
 {
-	t_list *current;
-	t_object *obj;
+	t_list	*current;
+	t_object	*obj;
 	size_t	*value;
 
 	current = lst;
@@ -27,18 +27,18 @@ int	match_idx(void *lst, void *idx)
 		return (0);
 }
 
-
-void	object_selector_hook(int32_t x, int32_t y, modifier_key_t mods, t_hook_data *data)
+void	object_selector_hook(int32_t x, int32_t y, modifier_key_t mods,
+	t_hook_data *data)
 {
 	t_hit	hit;
-	t_vec		pixel_center;
+	t_vec	pixel_center;
 
 	(void)mods;
 	if (!data->scene->picked_obj)
 	{
 		pixel_center = find_pixel_on_viewport(x, y, data->scene);
-		hit = get_hits(data->scene, get_ray_from_pixel(data->scene, data->scene->image_center,
-							pixel_center));
+		hit = get_hits(data->scene, get_ray_from_pixel(data->scene,
+				data->scene->image_center, pixel_center));
 		if (!hit.hit)
 			return;
 		select_object(data->scene, hit.object, data->image);
@@ -47,16 +47,12 @@ void	object_selector_hook(int32_t x, int32_t y, modifier_key_t mods, t_hook_data
 	{
 		deselect_object(data->scene, data->scene->picked_obj, data->image);
 	}
-	
-	
-	
-	
 }
 
-
-void	custom_mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
+void	custom_mouse_hook(mouse_key_t button, action_t action,
+	modifier_key_t mods, void *param)
 {
-	t_hook_data *data;
+	t_hook_data	*data;
 	int32_t	x;
 	int32_t	y;
 
@@ -68,7 +64,5 @@ void	custom_mouse_hook(mouse_key_t button, action_t action, modifier_key_t mods,
 			mlx_get_mouse_pos(data->mlx, &x, &y);
 			object_selector_hook(x, y, mods, data);
 		}
-		
 	}
-	
 }
