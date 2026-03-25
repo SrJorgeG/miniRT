@@ -92,8 +92,3 @@ t_color	color_add(t_color c1, t_color c2)
 		rgb[2] = 255;
 	return ((t_color){rgb[0], rgb[1], rgb[2]});
 }
-
-int	color_to_int(t_color color, uint8_t opacity)
-{
-	return ((opacity << 24) | (color.b << 16) | (color.g << 8) | color.r);
-}

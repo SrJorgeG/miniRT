@@ -51,3 +51,14 @@ int	vector_is_normalized(t_vec vector)
 		return (0);
 	return (1);
 }
+
+int	is_normalized_vec(t_vec vector)
+{
+	if (vector.x < -1 || vector.x > 1)
+		return (0);
+	if (vector.y < -1 || vector.y > 1)
+		return (0);
+	if (vector.z < -1 || vector.z > 1)
+		return (0);
+	return (1);
+}

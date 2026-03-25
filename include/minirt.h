@@ -251,15 +251,29 @@ void					setup_camera(t_camera *camera);
 void					setup_scene(t_scene *scene, t_camera *camera);
 
 int						parser(char *filename, t_scene *scene);
+
+/* PARSER FUNCTIONS */
+void					parse_ambient_light(char **args, t_scene *scene);
+void					parse_camera(char **args, t_scene *scene);
+void					parse_light(char **args, t_scene *scene);
+void					parse_sphere(char **args, t_scene *scene, int has_texture);
+void					parse_plane(char **args, t_scene *scene, int has_texture);
+void					parse_cylinder(char **args, t_scene *scene, int has_texture);
+
+/* DEBUG FUNCTIONS */
 void					debug_map(t_map *map);
 void					debug_scene(t_scene *scene);
+void					debug_camera(t_camera *cam);
+void					debug_ambient(t_amb_light *amb);
+void					debug_light(t_light *light);
+void					debug_objects(t_stack *objects);
+void					debug_lights(t_stack *lights);
 void					debug_vec(char *name, t_vec v);
 void					debug_color(char *name, t_color c);
 void					debug_sphere(t_sphere *s);
 void					debug_plane(t_plane *p);
 void					debug_cylinder(t_cylinder *c);
 void					debug_object(t_object *obj);
-void					debug_objects(t_stack *objects);
 
 /* Object functions */
 t_sphere *create_sphere(char **args);

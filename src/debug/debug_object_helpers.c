@@ -12,27 +12,6 @@
 
 #include "../../include/minirt.h"
 
-void	debug_sphere(t_sphere *s)
-{
-	debug_vec("center", s->center);
-	printf("diameter: %.4f\n", s->diameter);
-	printf("radius: %.4f\n", s->radius);
-}
-
-void	debug_plane(t_plane *p)
-{
-	debug_vec("point", p->point);
-	debug_vec("normal", p->vector);
-}
-
-void	debug_cylinder(t_cylinder *c)
-{
-	debug_vec("center", c->center);
-	debug_vec("axis", c->axis);
-	printf("diameter: %.4f\n", c->diameter);
-	printf("height: %.4f\n", c->height);
-}
-
 void	debug_object(t_object *obj)
 {
 	printf("=== OBJECT id=%lu ===\n", obj->id);

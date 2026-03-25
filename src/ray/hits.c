@@ -95,6 +95,7 @@ int	hit_cylinder(t_ray ray, t_object *obj, t_cylinder *cyl,
 	double	b;
 	double	c;
 
+	(void)obj_distance;
 	oc = vector_rest(ray.origin, cyl->center);
 	a = vector_dot_prod(ray.direction, ray.direction);
 	a = a - pow(vector_dot_prod(ray.direction, obj->orientation), 2);

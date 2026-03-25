@@ -15,6 +15,7 @@
 void	add_ambient_light(t_color *final_color, t_hit *hit,
 		t_scene *scene, t_color base_color)
 {
+	(void)hit;
 	*final_color = color_multiply(base_color, scene->map.amb_ligt.amb_col);
 	*final_color = color_scale(*final_color, scene->map.amb_ligt.amb_ratio);
 }

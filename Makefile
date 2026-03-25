@@ -10,19 +10,19 @@ WAYLAND_LIBS = -lwayland-client -lwayland-cursor -lwayland-egl -lxkbcommon
 #LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw $(WAYLAND_LIBS) -pthread -lm -L$(LIBFT_DIR) -l:libft.a
 LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT_DIR) -l:libft.a
 
-CFILES = src/main.c src/exit.c src/init.c src/free_functions.c src/render.c \
-src/parser/parser.c \
-src/ray/ray.c src/ray/hits.c \
-src/utils/color.c src/utils/scene.c src/utils/textures.c src/utils/str.c \
-src/vector/vector.c src/vector/vector_aux.c src/vector/vector_basic.c \
+CFILES = src/main.c src/exit.c src/init.c src/free_functions.c src/free_helpers.c src/render.c \
+src/parser/parser.c src/parser/parser_scene.c src/parser/parser_objects.c \
+src/ray/ray.c src/ray/hits.c src/ray/lighting.c src/ray/raycasting.c src/ray/ray_utils.c \
+src/utils/color.c src/utils/color_helpers.c src/utils/scene.c src/utils/textures.c src/utils/str.c \
+src/vector/vector.c src/vector/vector_aux.c src/vector/vector_basic.c src/vector/vector_utils.c \
 src/hooks/keyboard.c \
 src/hooks/mouse.c \
 src/objects/object.c \
 src/objects/sphere.c \
 src/objects/cylinder.c \
 src/objects/plane.c \
-src/functions/objects.c \
-src/debug/debug_parser.c \
+src/functions/objects.c src/functions/objects_helpers.c \
+src/debug/debug_parser.c src/debug/debug_helpers.c src/debug/debug_object_helpers.c \
 src/cache/cache.c
 COBJ = $(CFILES:.c=.o)
 
