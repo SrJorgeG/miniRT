@@ -12,7 +12,7 @@ LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT
 
 CFILES = src/main.c src/exit.c src/init.c src/free_functions.c src/free_helpers.c src/free_cone.c src/render.c \
 src/parser/parser.c src/parser/parser_scene.c src/parser/parser_objects.c \
-src/ray/ray.c src/ray/hits.c src/ray/lighting.c src/ray/raycasting.c src/ray/ray_utils.c \
+src/ray/ray.c src/ray/hits.c src/ray/hits_cone.c src/ray/lighting.c src/ray/raycasting.c src/ray/ray_utils.c \
 src/utils/color.c src/utils/color_helpers.c src/utils/scene.c src/utils/textures.c src/utils/str.c \
 src/vector/vector.c src/vector/vector_aux.c src/vector/vector_basic.c src/vector/vector_utils.c \
 src/hooks/keyboard.c \

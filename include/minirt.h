@@ -224,9 +224,13 @@ t_vec					vector_cross_prod(t_vec v1, t_vec v2);
 
 /*		Hit functionss 	*/
 int						hit_sphere(t_ray ray, t_sphere *sphere,
-							double *obj_distance);
+						double *obj_distance);
 int						hit_plane(t_ray ray, t_plane *plane,
-							double *obj_distance);
+						double *obj_distance);
+int						hit_cone(t_ray ray, t_object *obj,
+						t_cone *cone, double *obj_distance);
+void					get_cone_normal(t_hit *hit, t_object *obj,
+						t_cone *cone, t_ray ray);
 t_hit	get_hits(t_scene *scene, t_ray ray);
 t_ray	get_ray_from_pixel(t_scene *scene, t_vec image_center,
 		t_vec pixel_center);

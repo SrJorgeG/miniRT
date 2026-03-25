@@ -20,6 +20,8 @@ int	hit_object(t_ray ray, t_object *object, double *obj_distance)
 		return (hit_cylinder(ray, object, object->object, obj_distance));
 	else if (object->type == PLANE)
 		return (hit_plane(ray, object->object, obj_distance));
+	else if (object->type == CONE)
+		return (hit_cone(ray, object, object->object, obj_distance));
 	return (0);
 }
 
@@ -50,6 +52,8 @@ void	get_hit_normal(t_hit *hit, t_ray ray)
 	}
 	else if (hit->object->type == CYLINDER)
 		get_cylinder_normal(hit, hit->object, hit->object->object, ray);
+	else if (hit->object->type == CONE)
+		get_cone_normal(hit, hit->object, hit->object->object, ray);
 }
 
 static void	check_all_hits(t_scene *scene, t_ray ray, t_hit *closest,
