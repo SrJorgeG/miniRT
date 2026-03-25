@@ -34,7 +34,10 @@ void	parse_sphere(char **args, t_scene *scene, int has_texture)
 		exit_error("Error. Sphere color_range: ", scene);
 	node = ft_lstnew(obj);
 	if (!node)
-		return (free_object(obj), exit_error("Error. malloc\n", scene));
+	{
+		free_object(obj);
+		exit_error("Error. malloc\n", scene);
+	}
 	ft_stack_add_back(scene->map.objects, node);
 }
 
@@ -50,7 +53,7 @@ void	parse_plane(char **args, t_scene *scene, int has_texture)
 	if (has_texture)
 		obj = create_object(PLANE, plane, scene->map.objects->size,
 				(char *[2]){args[2], args[4]});
-	if (!has_texture)
+	else
 		obj = create_object(PLANE, plane, scene->map.objects->size,
 				(char *[2]){NULL, NULL});
 	if (!obj)
@@ -62,7 +65,8 @@ void	parse_plane(char **args, t_scene *scene, int has_texture)
 		exit_error("Error. Plane orientation invalid.\n", scene);
 	node = ft_lstnew(obj);
 	if (!node)
-		exit_error("Error. malloc\n", scene);
+		return (free_object(obj),
+			exit_error("Error. malloc\n", scene));
 	ft_stack_add_back(scene->map.objects, node);
 }
 
@@ -78,7 +82,7 @@ void	parse_cylinder(char **args, t_scene *scene, int has_texture)
 	if (has_texture)
 		obj = create_object(CYLINDER, cylinder, scene->map.objects->size,
 				(char *[2]){args[2], args[6]});
-	if (!has_texture)
+	else
 		obj = create_object(CYLINDER, cylinder, scene->map.objects->size,
 				(char *[2]){args[2], NULL});
 	if (!obj)
@@ -88,6 +92,7 @@ void	parse_cylinder(char **args, t_scene *scene, int has_texture)
 		exit_error("Error. Cylinder color_range: ", scene);
 	node = ft_lstnew(obj);
 	if (!node)
-		exit_error("Error. malloc\n", scene);
+		return (free_object(obj),
+			exit_error("Error. malloc\n", scene));
 	ft_stack_add_back(scene->map.objects, node);
 }

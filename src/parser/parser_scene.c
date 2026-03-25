@@ -79,6 +79,7 @@ void	parse_light(char **args, t_scene *scene)
 		exit_error("Error. Invalid range for light FOV.", scene);
 	node = ft_lstnew(light);
 	if (!node)
-		exit_error("Error.parse_light: ft_lstnew: malloc\n", scene);
+		return (free(light),
+			exit_error("Error.parse_light: ft_lstnew: malloc\n", scene));
 	ft_stack_add_back(scene->map.lights, node);
 }
