@@ -1,9 +1,9 @@
 
 #include "../../include/minirt.h"
 
-static size_t ft_findchr(char const *s, char c[2])
+static size_t	ft_findchr(char const *s, char c[2])
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (s[i] && s[i] != c[0] && s[i] != c[1])
@@ -11,7 +11,7 @@ static size_t ft_findchr(char const *s, char c[2])
 	return (i);
 }
 
-static size_t ft_count_words(char const *s, char c[2])
+static size_t	ft_count_words(char const *s, char c[2])
 {
 	size_t	count;
 	int		in_word;
@@ -37,9 +37,9 @@ static size_t ft_count_words(char const *s, char c[2])
 	return (count);
 }
 
-static void ft_copy_word(char *dest, const char *src, size_t len)
+static void	ft_copy_word(char *dest, const char *src, size_t len)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < len)
@@ -50,14 +50,14 @@ static void ft_copy_word(char *dest, const char *src, size_t len)
 	dest[i] = '\0';
 }
 
-char **ft_split_2(char const *s, char c[2])
+char	**ft_split_2(char const *s, char c[2])
 {
 	size_t	words;
 	size_t	i;
 	char	**list;
 	size_t	wordsize;
 
-	if (! s)
+	if (!s)
 		return (NULL);
 	words = ft_count_words(s, c);
 	list = malloc((words + 1) * sizeof(char *));
