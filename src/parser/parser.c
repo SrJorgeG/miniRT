@@ -32,6 +32,10 @@ static void	parse_line_dispatcher(char **args, t_scene *scene)
 		parse_cylinder(args, scene, 0);
 	else if (!ft_strcmp(*args, "cyt"))
 		parse_cylinder(args, scene, 1);
+	else if (!ft_strcmp(*args, "co"))
+		parse_cone(args, scene, 0);
+	else if (!ft_strcmp(*args, "cot"))
+		parse_cone(args, scene, 1);
 	else
 		exit_error("Error invalid map data, wrong identifier in row.\n", scene);
 }

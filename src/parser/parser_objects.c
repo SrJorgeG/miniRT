@@ -96,3 +96,30 @@ void	parse_cylinder(char **args, t_scene *scene, int has_texture)
 			exit_error("Error. malloc\n", scene));
 	ft_stack_add_back(scene->map.objects, node);
 }
+
+void	parse_cone(char **args, t_scene *scene, int has_texture)
+{
+	t_object	*obj;
+	t_cone		*cone;
+	t_list		*node;
+
+	cone = create_cone(args);
+	if (!cone)
+		exit_error("Error parse_cone: ", scene);
+	if (has_texture)
+		obj = create_object(CONE, cone, scene->map.objects->size,
+				(char *[2]){args[2], args[6]});
+	else
+		obj = create_object(CONE, cone, scene->map.objects->size,
+				(char *[2]){args[2], NULL});
+	if (!obj)
+		return (free_cone(cone),
+			exit_error("Error parse_cone: ", scene));
+	if (!create_color(args[5], &obj->color_range))
+		exit_error("Error. Cone color_range: ", scene);
+	node = ft_lstnew(obj);
+	if (!node)
+		return (free_object(obj),
+			exit_error("Error. malloc\n", scene));
+	ft_stack_add_back(scene->map.objects, node);
+}

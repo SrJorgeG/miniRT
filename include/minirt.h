@@ -259,6 +259,7 @@ void					parse_light(char **args, t_scene *scene);
 void					parse_sphere(char **args, t_scene *scene, int has_texture);
 void					parse_plane(char **args, t_scene *scene, int has_texture);
 void					parse_cylinder(char **args, t_scene *scene, int has_texture);
+void					parse_cone(char **args, t_scene *scene, int has_texture);
 
 /* DEBUG FUNCTIONS */
 void					debug_map(t_map *map);
@@ -280,6 +281,7 @@ t_sphere *create_sphere(char **args);
 t_object	*create_object(int obj_type, void *object, size_t id, char *texture_path[2]);
 t_plane *create_plane(char **args);
 t_cylinder *create_cylinder(char **args);
+t_cone *create_cone(char **args);
 
 
 /* Texture functions */
@@ -297,6 +299,7 @@ void					free_scene(t_scene *scene);
 void	free_sphere(void *sphere);
 void	free_cylinder(void *sphere);
 void	free_plane(void *sphere);
+void	free_cone(void *cone);
 void	free_object(void *object);
 
 /* MLX HOOKS */
