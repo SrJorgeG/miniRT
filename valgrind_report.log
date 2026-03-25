@@ -1,0 +1,82 @@
+==131240== Memcheck, a memory error detector
+==131240== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==131240== Using Valgrind-3.25.1-4441567fbe-20250520 and LibVEX; rerun with -h for copyright info
+==131240== Command: ./miniRT examples/sphere_textured.rt
+==131240== Parent PID: 131239
+==131240== 
+--131240-- 
+--131240-- Valgrind options:
+--131240--    --leak-check=full
+--131240--    --show-leak-kinds=all
+--131240--    --track-origins=yes
+--131240--    --suppressions=/home/krusty/42Course/miniRTNorm/valgrind_suppressions.txt
+--131240--    --log-file=/home/krusty/42Course/miniRTNorm/valgrind_report.log
+--131240--    --verbose
+--131240-- Contents of /proc/version:
+--131240--   Linux version 6.18.19-2-cachyos-lts (linux-cachyos-lts@cachyos) (gcc (GCC) 15.2.1 20260209, GNU ld (GNU Binutils) 2.46) #1 SMP PREEMPT_DYNAMIC Tue, 24 Mar 2026 17:15:21 +0000
+--131240-- 
+--131240-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed-fma
+--131240-- Page sizes: currently 4096, max supported 4096
+--131240-- Valgrind library directory: /usr/lib/valgrind
+--131240-- Reading syms from /home/krusty/42Course/miniRTNorm/miniRT
+--131240-- Reading syms from /usr/lib/ld-linux-x86-64.so.2
+==131240== Downloading debug info for /usr/lib/ld-linux-x86-64.so.2...
+--131240--   Considering /home/krusty/.cache/debuginfod_client/6b31e4539fa2cf563e8dc9c4f1cff5cb04b05972/debuginfo ..
+--131240--   .. CRC is valid
+==131240== Successfully downloaded debug file for /usr/lib/ld-linux-x86-64.so.2
+--131240-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--131240--    object doesn't have a dynamic symbol table
+--131240-- Scheduler: using generic scheduler lock implementation.
+--131240-- Reading suppressions file: /home/krusty/42Course/miniRTNorm/valgrind_suppressions.txt
+--131240-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==131240== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-131240-by-krusty-on-???
+==131240== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-131240-by-krusty-on-???
+==131240== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-131240-by-krusty-on-???
+==131240== 
+==131240== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==131240== don't want to do, unless you know exactly what you're doing,
+==131240== or are doing some strange experiment):
+==131240==   /usr/lib/valgrind/../../bin/vgdb --pid=131240 ...command...
+==131240== 
+==131240== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==131240==   /path/to/gdb ./miniRT
+==131240== and then give GDB the following command
+==131240==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=131240
+==131240== --pid is optional if only one valgrind process is running
+==131240== 
+vex amd64->IR: unhandled instruction bytes: 0x62 0xF1 0x7F 0x48 0x7F 0x84 0x24 0x30 0x0 0x0
+vex amd64->IR:   REX=0 REX.W=0 REX.R=0 REX.X=0 REX.B=0
+vex amd64->IR:   VEX=0 VEX.L=0 VEX.nVVVV=0x0 ESC=NONE
+vex amd64->IR:   PFX.66=0 PFX.F2=0 PFX.F3=0
+==131240== valgrind: Unrecognised instruction at address 0x405513d.
+==131240==    at 0x405513D: _dl_start (rtld.c:565)
+==131240==    by 0x40541C7: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+==131240==    by 0x1: ???
+==131240==    by 0x1FFF000452: ???
+==131240==    by 0x1FFF00045B: ???
+==131240== Your program just tried to execute an instruction that Valgrind
+==131240== did not recognise.  There are two possible reasons for this.
+==131240== 1. Your program has a bug and erroneously jumped to a non-code
+==131240==    location.  If you are running Memcheck and you just saw a
+==131240==    warning about a bad jump, it's probably your program's fault.
+==131240== 2. The instruction is legitimate but Valgrind doesn't handle it,
+==131240==    i.e. it's Valgrind's fault.  If you think this is the case or
+==131240==    you are not sure, please let us know and we'll try to fix it.
+==131240== Either way, Valgrind will now raise a SIGILL signal which will
+==131240== probably kill your program.
+==131240== 
+==131240== Process terminating with default action of signal 4 (SIGILL): dumping core
+==131240==  Illegal opcode at address 0x405513D
+==131240==    at 0x405513D: _dl_start (rtld.c:565)
+==131240==    by 0x40541C7: ??? (in /usr/lib/ld-linux-x86-64.so.2)
+==131240==    by 0x1: ???
+==131240==    by 0x1FFF000452: ???
+==131240==    by 0x1FFF00045B: ???
+==131240== 
+==131240== HEAP SUMMARY:
+==131240==     in use at exit: 0 bytes in 0 blocks
+==131240==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==131240== 
+==131240== All heap blocks were freed -- no leaks are possible
+==131240== 
+==131240== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
