@@ -68,15 +68,13 @@ re: fclean all
 bonus:
 	@echo "No se han definido reglas para bonus aún.
 
-valgrind:
+asan: fclean mlx_setup $(LIBFT_NAME) asan_build
+	@echo "✅ Compiled with AddressSanitizer"
 
-	make FLAGS="-Wall -Werror -Wextra -Iincludes -g"
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./miniRT examples/sphere.rt
-
-valgrind_s:
-	make
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --gen-suppressions=yes ./miniRT examples/example.rt
+asan_build: $(COBJ)
+	$(CC) $(FLAGS) -g -fsanitize=address -fsanitize=leak -o $(NAME) $(COBJ) $(LIBS)
 
 debug: fclean mlx_debug $(LIBFT_NAME) $(NAME)
 	@echo "Compiled in debug mode"
-.PHONY: all clean fclean re bonus mlx
+
+.PHONY: all clean fclean re bonus mlx asan asan_build
