@@ -13,19 +13,14 @@
 #include "../../include/minirt.h"
 #include <sys/types.h>
 
-int	color_to_int(t_color color, uint8_t opacity)
-{
-	return ((opacity << 24) | (color.b << 16) | (color.g << 8) | color.r);
-}
-
 int	color_to_int_no_alpha(t_color color)
 {
-	return (color_to_int(color, 255));
+	return (color.r << 24 | color.g << 16 | color.b << 8 | 255);
 }
 
 int	color_to_int_alpha(t_color color, uint8_t opacity)
 {
-	return (color_to_int(color, opacity));
+	return ((opacity << 24) | (color.b << 16) | (color.g << 8) | color.r);
 }
 
 t_color	color_scale(t_color c, double factor)
