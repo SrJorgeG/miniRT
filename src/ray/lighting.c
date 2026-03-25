@@ -32,8 +32,8 @@ void	add_diffuse_lighting(t_color *final_color, t_hit *hit,
 	while (current)
 	{
 		current_light = scene->map.lights->first->content;
-		light_dir = vector_normalize(vector_rest(current_light->light_point,
-				hit->p));
+		light_dir = vector_normalize(
+				vector_rest(current_light->light_point, hit->p));
 		diffuse_factor = vector_dot_prod(hit->normal, light_dir);
 		if (diffuse_factor < 0)
 			diffuse_factor = 0;

@@ -52,46 +52,30 @@ void	get_hit_normal(t_hit *hit, t_ray ray)
 		get_cylinder_normal(hit, hit->object, hit->object->object, ray);
 }
 
-static void	check_last_hit(t_scene *scene, t_ray ray, t_hit *closest)
-{
-	double	obj_distance;
-
-	if (scene->map.last_hit)
-	{
-		if (hit_object(ray, scene->map.last_hit, &obj_distance)
-			&& obj_distance < closest->t)
-		{
-			if (obj_distance < closest->t)
-				fill_hit_info(closest, obj_distance, scene->map.last_hit);
-		}
-	}
-}
-
-static void	check_other_objects(t_scene *scene, t_ray ray, t_hit *closest)
+static void	check_all_hits(t_scene *scene, t_ray ray, t_hit *closest,
+		t_object *last_hit)
 {
 	t_list		*current;
 	t_object	*obj;
 	double		obj_distance;
 
+	if (last_hit)
+	{
+		if (hit_object(ray, last_hit, &obj_distance)
+			&& obj_distance < closest->t)
+		{
+			if (obj_distance < closest->t)
+				fill_hit_info(closest, obj_distance, last_hit);
+		}
+	}
 	current = scene->map.objects->first;
 	while (current)
 	{
 		obj = current->content;
-		if (obj != scene->map.last_hit && hit_object(ray, obj, &obj_distance)
+		if (obj != last_hit && hit_object(ray, obj, &obj_distance)
 			&& obj_distance < closest->t)
 			fill_hit_info(closest, obj_distance, obj);
 		current = current->next;
-	}
-}
-
-static void	finalize_hit_info(t_scene *scene, t_ray ray, t_hit *closest)
-{
-	if (closest->hit)
-	{
-		scene->map.last_hit = closest->object;
-		closest->p = vector_sum(ray.origin, vector_multiplication(ray.direction,
-					closest->t));
-		get_hit_normal(closest, ray);
 	}
 }
 
@@ -101,8 +85,13 @@ t_hit	get_hits(t_scene *scene, t_ray ray)
 
 	closest.hit = 0;
 	closest.t = INFINITY;
-	check_last_hit(scene, ray, &closest);
-	check_other_objects(scene, ray, &closest);
-	finalize_hit_info(scene, ray, &closest);
+	check_all_hits(scene, ray, &closest, scene->map.last_hit);
+	if (closest.hit)
+	{
+		scene->map.last_hit = closest.object;
+		closest.p = vector_sum(ray.origin,
+				vector_multiplication(ray.direction, closest.t));
+		get_hit_normal(&closest, ray);
+	}
 	return (closest);
 }

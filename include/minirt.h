@@ -253,6 +253,13 @@ void					setup_scene(t_scene *scene, t_camera *camera);
 int						parser(char *filename, t_scene *scene);
 void					debug_map(t_map *map);
 void					debug_scene(t_scene *scene);
+void					debug_vec(char *name, t_vec v);
+void					debug_color(char *name, t_color c);
+void					debug_sphere(t_sphere *s);
+void					debug_plane(t_plane *p);
+void					debug_cylinder(t_cylinder *c);
+void					debug_object(t_object *obj);
+void					debug_objects(t_stack *objects);
 
 /* Object functions */
 t_sphere *create_sphere(char **args);
@@ -290,6 +297,12 @@ int    resize_object(mlx_key_data_t keydata, t_hook_data *data);
 
 void select_object(t_scene *scene, t_object *object, mlx_image_t *image);
 void deselect_object(t_scene *scene, t_object *object, mlx_image_t *image);
+
+void	resize_helper(t_object *obj, int is_bigger);
+void	move_helper(t_object *obj, double x_val, double y_val);
+void	clamp_orientation(t_vec *orientation);
+void	brighten_pixel(mlx_image_t *image, uint32_t x, uint32_t y);
+void	restore_pixel(t_scene *scene, mlx_image_t *image, uint32_t x, uint32_t y);
 
 void get_cylinder_normal(t_hit *hit,t_object *obj, t_cylinder *cyl, t_ray ray);
 int hit_cylinder(t_ray ray,t_object *obj, t_cylinder *cyl, double *obj_distance);

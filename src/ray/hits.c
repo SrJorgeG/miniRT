@@ -44,13 +44,14 @@ int	hit_plane(t_ray ray, t_plane *plane, double *obj_distance)
 	double	denom;
 	double	t;
 	double	eps;
+	t_vec	temp;
 
 	eps = 1e-6;
 	denom = vector_dot_prod(ray.direction, plane->vector);
 	if (fabs(denom) > eps)
 	{
-		t = vector_dot_prod(vector_rest(plane->point, ray.origin),
-			plane->vector) / denom;
+		temp = vector_rest(plane->point, ray.origin);
+		t = vector_dot_prod(temp, plane->vector) / denom;
 		if (t > eps)
 		{
 			*obj_distance = t;
@@ -58,66 +59,6 @@ int	hit_plane(t_ray ray, t_plane *plane, double *obj_distance)
 		}
 	}
 	return (0);
-}
-
-static double	hit_cyl_body_t1(t_ray ray, t_object *obj, t_vec oc,
-		t_cylinder *cyl, double a, double b, double c)
-{
-	double	t;
-	double	h;
-
-	t = (-b - sqrt(b * b - 4 * a * c)) / (2.0 * a);
-	if (t > 1e-6)
-	{
-		h = vector_dot_prod(vector_sum(oc,
-			vector_multiplication(ray.direction, t)), obj->orientation);
-		if (fabs(h) <= cyl->height / 2.0)
-			return (t);
-	}
-	return (-1);
-}
-
-static double	hit_cyl_body_t2(t_ray ray, t_object *obj, t_vec oc,
-		t_cylinder *cyl, double a, double b, double c)
-{
-	double	t;
-	double	h;
-
-	t = (-b + sqrt(b * b - 4 * a * c)) / (2.0 * a);
-	if (t > 1e-6)
-	{
-		h = vector_dot_prod(vector_sum(oc,
-			vector_multiplication(ray.direction, t)), obj->orientation);
-		if (fabs(h) <= cyl->height / 2.0)
-			return (t);
-	}
-	return (-1);
-}
-
-static double	hit_cyl_body(t_ray ray, t_object *obj, t_vec oc,
-		t_cylinder *cyl)
-{
-	double	a;
-	double	b;
-	double	c;
-	double	disc;
-
-	a = vector_dot_prod(ray.direction, ray.direction)
-		- pow(vector_dot_prod(ray.direction, obj->orientation), 2);
-	b = 2.0 * (vector_dot_prod(ray.direction, oc)
-		- vector_dot_prod(ray.direction, obj->orientation)
-		* vector_dot_prod(oc, obj->orientation));
-	c = vector_dot_prod(oc, oc)
-		- pow(vector_dot_prod(oc, obj->orientation), 2)
-		- (cyl->diameter / 2.0) * (cyl->diameter / 2.0);
-	disc = b * b - 4 * a * c;
-	if (disc < 0)
-		return (-1);
-	if (hit_cyl_body_t1(ray, obj, oc, cyl, a, b, c) > 0)
-		return (hit_cyl_body_t1(ray, obj, oc, cyl, a, b, c));
-	if (hit_cyl_body_t2(ray, obj, oc, cyl, a, b, c) > 0)
-		return (hit_cyl_body_t2(ray, obj, oc, cyl, a, b, c));
-	return (-1);
 }
 
 void	get_cylinder_normal(t_hit *hit, t_object *obj, t_cylinder *cyl,
@@ -150,14 +91,20 @@ int	hit_cylinder(t_ray ray, t_object *obj, t_cylinder *cyl,
 		double *obj_distance)
 {
 	t_vec	oc;
-	double	t_body;
+	double	a;
+	double	b;
+	double	c;
 
 	oc = vector_rest(ray.origin, cyl->center);
-	t_body = hit_cyl_body(ray, obj, oc, cyl);
-	if (t_body > 0)
-	{
-		*obj_distance = t_body;
-		return (1);
-	}
+	a = vector_dot_prod(ray.direction, ray.direction);
+	a = a - pow(vector_dot_prod(ray.direction, obj->orientation), 2);
+	b = vector_dot_prod(ray.direction, oc);
+	b = 2.0 * (b - vector_dot_prod(ray.direction, obj->orientation)
+			* vector_dot_prod(oc, obj->orientation));
+	c = vector_dot_prod(oc, oc);
+	c = c - pow(vector_dot_prod(oc, obj->orientation), 2);
+	c = c - (cyl->diameter / 2.0) * (cyl->diameter / 2.0);
+	if (b * b - 4 * a * c < 0)
+		return (0);
 	return (0);
 }

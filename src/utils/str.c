@@ -12,7 +12,7 @@
 
 #include "../../include/minirt.h"
 
-static size_t	ft_findchr(char const *s, char c[2])
+static size_t	ft_findchr(const char *s, char c[2])
 {
 	size_t	i;
 
@@ -22,84 +22,57 @@ static size_t	ft_findchr(char const *s, char c[2])
 	return (i);
 }
 
-static size_t	ft_count_words(char const *s, char c[2])
+static size_t	ft_count_words(const char *s, char c[2])
 {
-	size_t	count;
-	int		in_word;
+	size_t	cnt;
 
-	count = 0;
-	in_word = 0;
+	cnt = 0;
 	while (*s)
 	{
-		if (*s == c[0] || *s == c[1])
+		if (*s != c[0] && *s != c[1])
 		{
-			if (in_word)
-			{
-				count++;
-				in_word = 0;
-			}
+			cnt++;
+			while (*s && *s != c[0] && *s != c[1])
+				s++;
 		}
 		else
-			in_word = 1;
-		s++;
+			s++;
 	}
-	if (in_word)
-		count++;
-	return (count);
+	return (cnt);
 }
 
-static void	ft_copy_word(char *dest, const char *src, size_t len)
+static void	ft_copy_word(char *d, const char *s, size_t l)
 {
+	while (l--)
+		*d++ = *s++;
+	*d = '\0';
+}
+
+char	**ft_split_2(const char *s, char c[2])
+{
+	char	**res;
+	size_t	cnt;
 	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-}
-
-static int	ft_assign_word(char ***list, const char **s, char c[2], size_t index)
-{
-	size_t	wordsize;
-
-	while (**s && (**s == c[0] || **s == c[1]))
-		(*s)++;
-	wordsize = ft_findchr(*s, c);
-	(*list)[index] = malloc((wordsize + 1) * sizeof(char));
-	if ((*list)[index] == NULL)
-		return (0);
-	ft_copy_word((*list)[index], *s, wordsize);
-	*s += wordsize;
-	return (1);
-}
-
-char	**ft_split_2(char const *s, char c[2])
-{
-	size_t	words;
-	size_t	i;
-	char	**list;
+	size_t	sz;
 
 	if (!s)
 		return (NULL);
-	words = ft_count_words(s, c);
-	list = malloc((words + 1) * sizeof(char *));
-	if (list == NULL)
+	cnt = ft_count_words(s, c);
+	res = malloc((cnt + 1) * sizeof(char *));
+	if (!res)
 		return (NULL);
-	list[words] = NULL;
+	res[cnt] = NULL;
 	i = 0;
-	while (i < words)
+	while (i < cnt)
 	{
-		if (!ft_assign_word(&list, &s, c, i))
-		{
-			while (i > 0)
-				free(list[--i]);
-			free(list);
-			return (NULL);
-		}
-		i++;
+		while (*s == c[0] || *s == c[1])
+			s++;
+		sz = ft_findchr(s, c);
+		res[i] = malloc(sz + 1);
+		if (!res[i])
+			return (free(res), NULL);
+		ft_copy_word(res[i++], s, sz);
+		s += sz;
 	}
-	return (list);
+	return (res);
 }

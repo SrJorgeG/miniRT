@@ -16,6 +16,7 @@
 void	setup_camera(t_camera *camera)
 {
 	t_vec	*world_up;
+	t_vec	cross;
 
 	camera->radial_fov = (camera->fov * M_PI) / 180;
 	camera->focal = FOCAL;
@@ -25,8 +26,8 @@ void	setup_camera(t_camera *camera)
 		free(world_up);
 		world_up = vector_constructor(0.0, 0.0, 1.0);
 	}
-	camera->right = vector_normalize(
-		vector_cross_prod(camera->orientation_nor, *world_up));
+	cross = vector_cross_prod(camera->orientation_nor, *world_up);
+	camera->right = vector_normalize(cross);
 	camera->up = vector_cross_prod(camera->right, camera->orientation_nor);
 }
 
