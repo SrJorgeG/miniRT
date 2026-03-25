@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sphere.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: krusty <krusty@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/01 00:00:00 by krusty            #+#    #+#             */
+/*   Updated: 2026/03/25 00:00:00 by krusty           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minirt.h"
 
-t_sphere *create_sphere(char **args)
+t_sphere	*create_sphere(char **args)
 {
-	t_sphere *sphere;
+	t_sphere	*sphere;
 
 	sphere = malloc(sizeof(t_sphere));
 	if (!sphere)
