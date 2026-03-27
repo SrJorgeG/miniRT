@@ -15,6 +15,9 @@
 # define MINIRT_H
 
 # include "../libs/MLX42/include/MLX42/MLX42.h"
+# include "geo_trans.h"
+# include <unistd.h>
+# include <stdio.h>
 # include "../libs/libft/libft.h"
 # include <fcntl.h>
 # include <math.h>
@@ -221,6 +224,11 @@ double					vector_lenght(t_vec vec);
 t_vec					vector_normalize(t_vec vec);
 double					vector_dot_prod(t_vec v1, t_vec v2);
 t_vec					vector_cross_prod(t_vec v1, t_vec v2);
+
+/*	 Hit functionss 	*/
+int	hit_sphere(t_ray ray, t_sphere *sphere, double *obj_distance);
+int hit_plane(t_ray ray, t_plane *plane, double *obj_distance);
+int hit_cylinder(t_ray ray, t_cylinder *cylinder, double *obj_distance);
 
 /*		Hit functionss 	*/
 int						hit_sphere(t_ray ray, t_sphere *sphere,

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+#include "../../include/geo_trans.h"
 
 static void	parse_line_dispatcher(char **args, t_scene *scene)
 {
