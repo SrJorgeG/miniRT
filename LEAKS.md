@@ -19,7 +19,7 @@ Análisis estático exhaustivo de memory leaks en código de `src/`. Se encontra
 node = ft_lstnew(obj);
 if (!node)
     exit_error("Error. malloc\n", scene);  // ❌ LEAK: obj no se libera
-ft_stack_add_back(scene->map.objects, node);
+ft_stack_add_back(scene->map->objects, node);
 ```
 
 **Problema**: Si `ft_lstnew(obj)` falla y retorna NULL, la función `exit_error` se llama pero NO libera `obj` antes. El puntero `obj` se pierde.
@@ -46,7 +46,7 @@ ft_stack_add_back(scene->map.objects, node);
 node = ft_lstnew(obj);
 if (!node)
     exit_error("Error. malloc\n", scene);  // ❌ LEAK: obj no se libera
-ft_stack_add_back(scene->map.objects, node);
+ft_stack_add_back(scene->map->objects, node);
 ```
 
 **Problema**: Idéntico al LEAK #1, pero para cilindros.
@@ -178,7 +178,7 @@ free_object()
 node = ft_lstnew(obj);
 if (!node)
     exit_error("Error. malloc\n", scene);
-ft_stack_add_back(scene->map.objects, node);
+ft_stack_add_back(scene->map->objects, node);
 
 // DESPUÉS (SIN LEAK)
 node = ft_lstnew(obj);
@@ -187,7 +187,7 @@ if (!node)
     free_object(obj);  // ← Agregar esta línea
     exit_error("Error. malloc\n", scene);
 }
-ft_stack_add_back(scene->map.objects, node);
+ft_stack_add_back(scene->map->objects, node);
 ```
 
 ---
@@ -201,7 +201,7 @@ ft_stack_add_back(scene->map.objects, node);
 node = ft_lstnew(obj);
 if (!node)
     exit_error("Error. malloc\n", scene);
-ft_stack_add_back(scene->map.objects, node);
+ft_stack_add_back(scene->map->objects, node);
 
 // DESPUÉS (SIN LEAK)
 node = ft_lstnew(obj);
@@ -210,7 +210,7 @@ if (!node)
     free_object(obj);  // ← Agregar esta línea
     exit_error("Error. malloc\n", scene);
 }
-ft_stack_add_back(scene->map.objects, node);
+ft_stack_add_back(scene->map->objects, node);
 ```
 
 ---

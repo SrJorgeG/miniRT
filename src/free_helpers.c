@@ -6,26 +6,45 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 19:35:00 by dcid-san          #+#    #+#             */
-/*   Updated: 2026/03/25 19:35:00 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/27 21:28:46 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
+void	free_light(void *l)
+{
+	t_light *light;
+	
+	if (l)
+	{
+		light = (t_light *)l;
+		free(light);
+	}
+}
+
 void	free_plane(void *plane)
 {
 	t_plane	*pl;
 
-	pl = (t_plane *)plane;
-	free(pl);
+	if (plane)
+	{
+		pl = (t_plane *)plane;
+		free(pl);
+	}
+	
 }
 
 void	free_cylinder(void *cylinder)
 {
 	t_cylinder	*cy;
 
-	cy = (t_cylinder *)cylinder;
-	free(cy);
+	if (cylinder)
+	{
+		cy = (t_cylinder *)cylinder;
+		free(cy);
+	}
+	
 }
 
 void	free_sphere(void *sphere)
@@ -43,5 +62,12 @@ void	free_map(t_map *map)
 		ft_stack_clear(map->objects, free_object);
 		free(map->objects);
 	}
+	if (map->lights)
+	{
+		ft_stack_clear(map->lights, free_light);
+		free(map->lights);
+	}
+	
 	free(map);
 }
+

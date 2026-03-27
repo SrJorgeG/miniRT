@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_objects.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krusty <krusty@student.42madrid.com>       +#+  +:+       +#+        */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:23:08 by krusty            #+#    #+#             */
-/*   Updated: 2025/12/22 20:58:32 by krusty           ###   ########.fr       */
+/*   Updated: 2026/03/27 20:53:10 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void	parse_sphere(char **args, t_scene *scene, int has_texture)
 	if (!sphere)
 		exit_error("Error create_sphere:\n", scene);
 	if (has_texture)
-		obj = create_object(SPHERE, sphere, scene->map.objects->size,
+		obj = create_object(SPHERE, sphere, scene->map->objects->size,
 				(char *[2]){args[4], args[5]});
 	if (!has_texture)
-		obj = create_object(SPHERE, sphere, scene->map.objects->size,
+		obj = create_object(SPHERE, sphere, scene->map->objects->size,
 				(char *[2]){NULL, NULL});
 	if (!obj)
 		return (free(sphere), exit_error("Error.create_object malloc\n",
@@ -38,7 +38,7 @@ void	parse_sphere(char **args, t_scene *scene, int has_texture)
 		free_object(obj);
 		exit_error("Error. malloc\n", scene);
 	}
-	ft_stack_add_back(scene->map.objects, node);
+	ft_stack_add_back(scene->map->objects, node);
 }
 
 void	parse_plane(char **args, t_scene *scene, int has_texture)
@@ -51,10 +51,10 @@ void	parse_plane(char **args, t_scene *scene, int has_texture)
 	if (!plane)
 		exit_error("Error parse_plane. malloc\n", scene);
 	if (has_texture)
-		obj = create_object(PLANE, plane, scene->map.objects->size,
+		obj = create_object(PLANE, plane, scene->map->objects->size,
 				(char *[2]){args[2], args[4]});
 	else
-		obj = create_object(PLANE, plane, scene->map.objects->size,
+		obj = create_object(PLANE, plane, scene->map->objects->size,
 				(char *[2]){NULL, NULL});
 	if (!obj)
 		return (free_plane(plane), exit_error(
@@ -67,7 +67,7 @@ void	parse_plane(char **args, t_scene *scene, int has_texture)
 	if (!node)
 		return (free_object(obj),
 			exit_error("Error. malloc\n", scene));
-	ft_stack_add_back(scene->map.objects, node);
+	ft_stack_add_back(scene->map->objects, node);
 }
 
 void	parse_cylinder(char **args, t_scene *scene, int has_texture)
@@ -80,10 +80,10 @@ void	parse_cylinder(char **args, t_scene *scene, int has_texture)
 	if (!cylinder)
 		exit_error("Error parse_cylinder: ", scene);
 	if (has_texture)
-		obj = create_object(CYLINDER, cylinder, scene->map.objects->size,
+		obj = create_object(CYLINDER, cylinder, scene->map->objects->size,
 				(char *[2]){args[2], args[6]});
 	else
-		obj = create_object(CYLINDER, cylinder, scene->map.objects->size,
+		obj = create_object(CYLINDER, cylinder, scene->map->objects->size,
 				(char *[2]){args[2], NULL});
 	if (!obj)
 		return (free_cylinder(cylinder),
@@ -94,7 +94,7 @@ void	parse_cylinder(char **args, t_scene *scene, int has_texture)
 	if (!node)
 		return (free_object(obj),
 			exit_error("Error. malloc\n", scene));
-	ft_stack_add_back(scene->map.objects, node);
+	ft_stack_add_back(scene->map->objects, node);
 }
 
 void	parse_cone(char **args, t_scene *scene, int has_texture)
@@ -107,10 +107,10 @@ void	parse_cone(char **args, t_scene *scene, int has_texture)
 	if (!cone)
 		exit_error("Error parse_cone: ", scene);
 	if (has_texture)
-		obj = create_object(CONE, cone, scene->map.objects->size,
+		obj = create_object(CONE, cone, scene->map->objects->size,
 				(char *[2]){args[2], args[6]});
 	else
-		obj = create_object(CONE, cone, scene->map.objects->size,
+		obj = create_object(CONE, cone, scene->map->objects->size,
 				(char *[2]){args[2], NULL});
 	if (!obj)
 		return (free_cone(cone),
@@ -121,5 +121,5 @@ void	parse_cone(char **args, t_scene *scene, int has_texture)
 	if (!node)
 		return (free_object(obj),
 			exit_error("Error. malloc\n", scene));
-	ft_stack_add_back(scene->map.objects, node);
+	ft_stack_add_back(scene->map->objects, node);
 }

@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:38:58 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/22 20:50:45 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/27 21:05:08 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	custom_key_hook(mlx_key_data_t keydata, void *param)
 		{
 			if (move_object(keydata, data) || resize_object(keydata, data)
 				|| rotate_object(keydata, data)
-				|| camera_keys(keydata, &data->scene->map.camera))
+				|| camera_keys(keydata, &data->scene->map->camera))
 			{
 				clear_cache(data->scene);
 				render(data->scene, data->mlx, data->image);

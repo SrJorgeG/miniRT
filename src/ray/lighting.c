@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:07:06 by dcid-san          #+#    #+#             */
-/*   Updated: 2026/01/05 16:07:06 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/27 21:05:08 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	add_ambient_light(t_color *final_color, t_hit *hit,
 		t_scene *scene, t_color base_color)
 {
 	(void)hit;
-	*final_color = color_multiply(base_color, scene->map.amb_ligt.amb_col);
-	*final_color = color_scale(*final_color, scene->map.amb_ligt.amb_ratio);
+	*final_color = color_multiply(base_color, scene->map->amb_ligt.amb_col);
+	*final_color = color_scale(*final_color, scene->map->amb_ligt.amb_ratio);
 }
 
 void	add_diffuse_lighting(t_color *final_color, t_hit *hit,
@@ -29,10 +29,10 @@ void	add_diffuse_lighting(t_color *final_color, t_hit *hit,
 	double	diffuse_factor;
 	t_color	diffuse_for_this_light;
 
-	current = scene->map.lights->first;
+	current = scene->map->lights->first;
 	while (current)
 	{
-		current_light = scene->map.lights->first->content;
+		current_light = scene->map->lights->first->content;
 		light_dir = vector_normalize(
 				vector_rest(current_light->light_point, hit->p));
 		diffuse_factor = vector_dot_prod(hit->normal, light_dir);

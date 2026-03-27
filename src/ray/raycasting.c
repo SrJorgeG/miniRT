@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/05 16:07:06 by dcid-san          #+#    #+#             */
-/*   Updated: 2026/01/05 16:07:06 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/27 21:05:08 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	check_all_hits(t_scene *scene, t_ray ray, t_hit *closest,
 				fill_hit_info(closest, obj_distance, last_hit);
 		}
 	}
-	current = scene->map.objects->first;
+	current = scene->map->objects->first;
 	while (current)
 	{
 		obj = current->content;
@@ -89,10 +89,10 @@ t_hit	get_hits(t_scene *scene, t_ray ray)
 
 	closest.hit = 0;
 	closest.t = INFINITY;
-	check_all_hits(scene, ray, &closest, scene->map.last_hit);
+	check_all_hits(scene, ray, &closest, scene->map->last_hit);
 	if (closest.hit)
 	{
-		scene->map.last_hit = closest.object;
+		scene->map->last_hit = closest.object;
 		closest.p = vector_sum(ray.origin,
 				vector_multiplication(ray.direction, closest.t));
 		get_hit_normal(&closest, ray);

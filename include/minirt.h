@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2026/02/06 12:43:15 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/27 20:58:19 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ typedef struct s_scene
 {
 	t_real				aspect;
 	t_real				viewport;
-	t_map				map;
+	t_map				*map;
 	bool				is_rendered;
 	bool				is_obj_picked;
 	t_object			*picked_obj;
@@ -174,6 +174,8 @@ typedef struct s_scene
 	t_real				viewport_w;
 	t_real				viewport_h;
 	t_vec				image_center;
+	mlx_t				*mlx;
+	mlx_image_t			*img;
 }						t_scene;
 
 typedef struct s_hook_data
@@ -194,7 +196,8 @@ typedef struct s_hit
 	t_object			*object;
 }						t_hit;
 
-void					exit_error(char *err_msg, void *free_data);
+
+void					exit_error(char *err_msg, t_scene *free_data);
 
 /* STRING UTILLS */
 char					**ft_split_2(char const *s, char c[2]);
@@ -249,7 +252,7 @@ int color_to_int_alpha(t_color color, uint8_t opacity);
 
 t_color	calculate_lighting(t_hit *hit, t_scene *scene);
 
-void					init_map(t_map *map);
+void					init_map(t_scene *scene);
 void					render(t_scene *scene, mlx_t *mlx, mlx_image_t *img);
 void					setup_camera(t_camera *camera);
 void					setup_scene(t_scene *scene, t_camera *camera);
@@ -296,6 +299,7 @@ t_color textures_handler(t_hit *hit, t_scene *scene);
 void					init_cache(t_scene *scene);
 int						add_pixel_to_cache(t_obj_cache *cache, int x, int y);
 void					clear_cache(t_scene *scene);
+void					free_cache(t_scene *scene);
 
 /* FREE FUCNTIONS */
 void					free_map(t_map *map);

@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/22 20:56:52 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/27 21:38:10 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	setup_camera(t_camera *camera)
 		world_up = vector_constructor(0.0, 0.0, 1.0);
 	}
 	cross = vector_cross_prod(camera->orientation_nor, *world_up);
+	free(world_up);
 	camera->right = vector_normalize(cross);
 	camera->up = vector_cross_prod(camera->right, camera->orientation_nor);
 }
@@ -35,7 +36,7 @@ void	setup_scene(t_scene *scene, t_camera *camera)
 {
 	scene->screen_h = HEIGHT;
 	scene->screen_w = WIDTH;
-	scene->map.last_hit = NULL;
+	scene->map->last_hit = NULL;
 	scene->cache_count = 0;
 	scene->is_obj_picked = 0;
 	scene->picked_obj = NULL;
@@ -44,4 +45,6 @@ void	setup_scene(t_scene *scene, t_camera *camera)
 	scene->viewport = 0.0;
 	scene->viewport_w = 2.0 * tan(camera->radial_fov * 2.0);
 	scene->viewport_h = scene->viewport_w / scene->aspect;
+	scene->mlx = NULL;
+	scene->img = NULL;
 }

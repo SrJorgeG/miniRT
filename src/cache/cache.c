@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:23:08 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/12/22 20:58:32 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/27 20:51:18 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ void	init_cache(t_scene *scene)
 	size_t	i;
 
 	i = 0;
-	scene->pixel_cache = malloc(scene->map.objects->size
+	scene->pixel_cache = malloc(scene->map->objects->size
 			* sizeof(t_obj_cache));
 	if (!scene->pixel_cache)
-		exit_error("Error pixel_cache. malloc\n", NULL);
-	while (i < scene->map.objects->size)
+		exit_error("Error pixel_cache. malloc\n", scene);
+	while (i < scene->map->objects->size)
 	{
 		scene->pixel_cache[i].capacity = 1024;
 		scene->pixel_cache[i].pixel_count = 0;

@@ -1,6 +1,6 @@
 NAME = miniRT
 COMPILER = CC
-FLAGS = -Wall -Wextra -Werror -Iincludes
+FLAGS = -Wall -Wextra -Werror -Iincludes -g3
 MLX_DIR = libs/MLX42
 BUILD_DIR = $(MLX_DIR)/build
 LIBFT_DIR = libs/libft

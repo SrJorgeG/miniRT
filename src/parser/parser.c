@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krusty <krusty@student.42madrid.com>       +#+  +:+       +#+        */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:23:08 by krusty            #+#    #+#             */
-/*   Updated: 2025/12/22 20:58:32 by krusty           ###   ########.fr       */
+/*   Updated: 2026/03/27 21:14:23 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	parse_line_dispatcher(char **args, t_scene *scene)
 		exit_error("Error invalid map data, wrong identifier in row.\n", scene);
 }
 
-int	check_map(char *filename)
+int	check_map(char *filename, t_scene *scene)
 {
 	int		fd;
 	char	*cpy;
@@ -49,10 +49,10 @@ int	check_map(char *filename)
 	while (*cpy && *cpy != '.')
 		cpy++;
 	if (ft_strcmp(cpy, ".rt") != 0)
-		exit_error("Error, invalid filename\n", NULL);
+		exit_error("Error, invalid filename\n", scene);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		exit_error("Error, invalid map file\n", NULL);
+		exit_error("Error, invalid map file\n", scene);
 	return (fd);
 }
 
@@ -96,14 +96,19 @@ int	parser(char *filename, t_scene *scene)
 	int		fd;
 	char	*line;
 
-	fd = check_map(filename);
-	init_map(&scene->map);
+	fd = check_map(filename, scene);
+	init_map(scene);
 	line = get_next_line(fd);
 	while (line)
 	{
 		trim_new_line(line);
 		if (line && ft_strlen(line) > 0)
 			parse_line(line, scene);
+		else
+		{
+			if (line)
+				free(line);
+		}
 		line = get_next_line(fd);
 	}
 	close(fd);
