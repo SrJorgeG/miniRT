@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2026/02/06 02:43:38 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/02/06 12:43:15 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 /* 				MLX DEFINES				*/
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 600
+# define HEIGHT 600
 # define TITLE "MiniRT - De tu padre"
 
 # define RAY_T_MIN 0.0001f
@@ -232,9 +232,13 @@ int hit_cylinder(t_ray ray, t_cylinder *cylinder, double *obj_distance);
 
 /*		Hit functionss 	*/
 int						hit_sphere(t_ray ray, t_sphere *sphere,
-							double *obj_distance);
+						double *obj_distance);
 int						hit_plane(t_ray ray, t_plane *plane,
-							double *obj_distance);
+						double *obj_distance);
+int						hit_cone(t_ray ray, t_object *obj,
+						t_cone *cone, double *obj_distance);
+void					get_cone_normal(t_hit *hit, t_object *obj,
+						t_cone *cone, t_ray ray);
 t_hit	get_hits(t_scene *scene, t_ray ray);
 t_ray	get_ray_from_pixel(t_scene *scene, t_vec image_center,
 		t_vec pixel_center);
@@ -259,14 +263,37 @@ void					setup_camera(t_camera *camera);
 void					setup_scene(t_scene *scene, t_camera *camera);
 
 int						parser(char *filename, t_scene *scene);
+
+/* PARSER FUNCTIONS */
+void					parse_ambient_light(char **args, t_scene *scene);
+void					parse_camera(char **args, t_scene *scene);
+void					parse_light(char **args, t_scene *scene);
+void					parse_sphere(char **args, t_scene *scene, int has_texture);
+void					parse_plane(char **args, t_scene *scene, int has_texture);
+void					parse_cylinder(char **args, t_scene *scene, int has_texture);
+void					parse_cone(char **args, t_scene *scene, int has_texture);
+
+/* DEBUG FUNCTIONS */
 void					debug_map(t_map *map);
 void					debug_scene(t_scene *scene);
+void					debug_camera(t_camera *cam);
+void					debug_ambient(t_amb_light *amb);
+void					debug_light(t_light *light);
+void					debug_objects(t_stack *objects);
+void					debug_lights(t_stack *lights);
+void					debug_vec(char *name, t_vec v);
+void					debug_color(char *name, t_color c);
+void					debug_sphere(t_sphere *s);
+void					debug_plane(t_plane *p);
+void					debug_cylinder(t_cylinder *c);
+void					debug_object(t_object *obj);
 
 /* Object functions */
 t_sphere *create_sphere(char **args);
 t_object	*create_object(int obj_type, void *object, size_t id, char *texture_path[2]);
 t_plane *create_plane(char **args);
 t_cylinder *create_cylinder(char **args);
+t_cone *create_cone(char **args);
 
 
 /* Texture functions */
@@ -284,6 +311,7 @@ void					free_scene(t_scene *scene);
 void	free_sphere(void *sphere);
 void	free_cylinder(void *sphere);
 void	free_plane(void *sphere);
+void	free_cone(void *cone);
 void	free_object(void *object);
 
 /* MLX HOOKS */
@@ -298,6 +326,12 @@ int    resize_object(mlx_key_data_t keydata, t_hook_data *data);
 
 void select_object(t_scene *scene, t_object *object, mlx_image_t *image);
 void deselect_object(t_scene *scene, t_object *object, mlx_image_t *image);
+
+void	resize_helper(t_object *obj, int is_bigger);
+void	move_helper(t_object *obj, double x_val, double y_val);
+void	clamp_orientation(t_vec *orientation);
+void	brighten_pixel(mlx_image_t *image, uint32_t x, uint32_t y);
+void	restore_pixel(t_scene *scene, mlx_image_t *image, uint32_t x, uint32_t y);
 
 void get_cylinder_normal(t_hit *hit,t_object *obj, t_cylinder *cyl, t_ray ray);
 int hit_cylinder(t_ray ray,t_object *obj, t_cylinder *cyl, double *obj_distance);

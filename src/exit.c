@@ -19,6 +19,5 @@ void	exit_error(char *err_msg, void *free_data)
 	{
 		free_map(free_data);
 	}
-	
 	exit(1);
 }

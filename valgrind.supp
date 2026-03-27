@@ -1,0 +1,221 @@
+# Valgrind Suppressions File for miniRT
+# Usage: valgrind --suppressions=valgrind.supp ./miniRT examples/sphere.rt
+# or for more detailed output: valgrind --suppressions=valgrind.supp --leak-check=full --show-leak-kinds=all ./miniRT examples/sphere.rt
+
+# ===== MLX42 Library Suppressions =====
+{
+   <MLX42 initialization - glfw window creation>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:glfwCreateWindow
+   ...
+}
+
+{
+   <MLX42 context - intentional persistent allocation>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:mlx_init
+   ...
+}
+
+{
+   <MLX42 OpenGL context setup>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:glad_glGetError
+   ...
+}
+
+{
+   <MLX42 texture loading - reachable memory>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:mlx_load_png
+   ...
+}
+
+{
+   <GLFW initialization - persistent system state>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:glfwInit
+   ...
+}
+
+{
+   <GLFW window system - reachable allocations>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   ...
+   fun:glfw
+   ...
+}
+
+# ===== LibFT Library Suppressions =====
+{
+   <libft split function - expected behavior>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:ft_split
+}
+
+{
+   <libft string allocation>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:ft_strdup
+}
+
+# ===== System Library Suppressions =====
+{
+   <libc initialization - reachable only>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/lib/x86_64-linux-gnu/libc.so.*
+}
+
+{
+   <libc calloc - reachable only>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/lib/x86_64-linux-gnu/libc.so.*
+}
+
+{
+   <libdl initialization>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/lib/x86_64-linux-gnu/libdl.so.*
+}
+
+# ===== X11/Wayland Display Server Suppressions =====
+{
+   <X11 connection setup - reachable system state>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:XOpenDisplay
+   ...
+}
+
+{
+   <Wayland connection - reachable system state>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:wl_proxy_marshal_flags
+   ...
+}
+
+{
+   <XCB connection - reachable allocations>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/lib/x86_64-linux-gnu/libxcb.so.*
+}
+
+# ===== OpenGL Suppressions =====
+{
+   <OpenGL vendor library initialization>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:glXGetProcAddressARB
+   ...
+}
+
+{
+   <OpenGL ICD loader>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:dlopen
+   obj:/lib/x86_64-linux-gnu/libGL.so.*
+}
+
+# ===== Uninitialized Memory (Often False Positives) =====
+{
+   <OpenGL parameter queries - expected uninitialized reads>
+   Memcheck:Use
+   ...
+   fun:glGetIntegerv
+   ...
+}
+
+{
+   <X11 event reading - expected uninitialized data>
+   Memcheck:Use
+   ...
+   fun:XReadEvents
+   ...
+}
+
+# ===== Conditional Jump Suppressions =====
+{
+   <libxcb conditional jumps - reachable paths>
+   Memcheck:Cond
+   ...
+   obj:/lib/x86_64-linux-gnu/libxcb.so.*
+}
+
+{
+   <OpenGL conditional paths>
+   Memcheck:Cond
+   ...
+   fun:glXGetProcAddressARB
+   ...
+}
+
+# ===== pthread Suppressions =====
+{
+   <pthread initialization>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:pthread_create@@GLIBC_2.2.5
+}
+
+{
+   <pthread key creation>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:pthread_key_create@@GLIBC_2.2.5
+}
+
+# ===== Compiler/Linker Generated Suppressions =====
+{
+   <GCC C++ exception handling>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/lib/x86_64-linux-gnu/libstdc++.so.*
+}
+
+{
+   <Dynamic linker initialization>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/lib64/ld-linux-x86-64.so.*
+}

@@ -1,0 +1,14 @@
+A	0.2										255,255,255
+C	0,5,50		0,0,1		70
+L	30,50,-20					0.7			255,255,255
+L	-30,-50,+20					0.9			100,100,255
+L	30,50,-20					0.7			255,255,255
+
+sp	-30,2,100						20			255,0,0
+spt	0,3,120						30			0,255,0		0,0,0		/home/krusty/42Course/miniRT/textures/earth.png
+sp	30,2,100						20			0,0,255
+spt	-10,5,80						15			255,255,0			0,0,0		/home/krusty/42Course/miniRT/textures/jupiter.png
+sp	10,5,80						15			255,0,255
+
+plt	0,0,100			0,1,0					100,100,255 /home/krusty/42Course/miniRT/textures/stars.png
+cyt	0,0.0,100	0,1,0	14.2	21.42	10,0,255		/home/krusty/42Course/miniRT/textures/sun.png
