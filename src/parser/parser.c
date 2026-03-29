@@ -6,13 +6,13 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:23:08 by krusty            #+#    #+#             */
-/*   Updated: 2026/03/27 21:14:23 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 21:15:33 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
-static void	parse_line_dispatcher(char **args, t_scene *scene)
+static void	parse_line_aux(char **args, t_scene *scene)
 {
 	if (!ft_strcmp(*args, "A"))
 		parse_ambient_light(args, scene);
@@ -64,18 +64,16 @@ void	parse_line(char *line, t_scene *scene)
 
 	delim[0] = '\t';
 	delim[1] = ' ';
-	args = ft_split_2(line, delim);
+	scene->args = ft_split_2(line, delim);
+	args = scene->args;
 	free(line);
 	if (!args || !args[0])
-	{
-		ft_free_split(args);
-		return ;
-	}
+		return (ft_free_split(scene->args));
 	i = -1;
 	while (args[++i])
 		printf("%s\n", args[i]);
-	parse_line_dispatcher(args, scene);
-	ft_free_split(args);
+	parse_line_aux(args, scene);
+	ft_free_split(scene->args);
 }
 
 void	trim_new_line(char *str)

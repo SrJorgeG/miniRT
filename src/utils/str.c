@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/11 13:44:47 by dcid-san          #+#    #+#             */
-/*   Updated: 2025/10/11 13:44:49 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 21:32:30 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,19 @@ char	**ft_split_2(const char *s, char c[2])
 		s += sz;
 	}
 	return (res);
+}
+
+void	free_split_2(char **split)
+{
+	size_t	i;
+
+	if (!split)
+		return ;
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }

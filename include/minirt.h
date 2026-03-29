@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2026/03/27 20:58:19 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 21:07:54 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ typedef struct s_map
 
 typedef struct s_scene
 {
+	char				**args;
 	t_real				aspect;
 	t_real				viewport;
 	t_map				*map;

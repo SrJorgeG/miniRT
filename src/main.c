@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:39:54 by jgomez-d          #+#    #+#             */
-/*   Updated: 2026/03/29 20:54:31 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 21:09:19 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	init_scene_and_camera(t_scene *scene, char *filename)
 	scene->mlx = NULL;
 	scene->img = NULL;
 	scene->pixel_cache = NULL;
+	scene->args = NULL;
 	parser(filename, scene);
 	setup_camera(&scene->map->camera);
 	setup_scene(scene, &scene->map->camera);
