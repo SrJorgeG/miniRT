@@ -10,7 +10,7 @@ WAYLAND_LIBS = -lwayland-client -lwayland-cursor -lwayland-egl -lxkbcommon
 #LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw $(WAYLAND_LIBS) -pthread -lm -L$(LIBFT_DIR) -l:libft.a
 LIBS = -L$(BUILD_DIR) -l:libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L$(LIBFT_DIR) -l:libft.a
 
-CFILES = src/main.c src/exit.c src/init.c src/free_functions.c src/free_helpers.c src/free_cone.c src/render.c \
+CFILES = src/main.c src/exit.c src/init.c src/free_functions.c src/free_helpers.c src/render.c \
 src/parser/parser.c src/parser/parser_scene.c src/parser/parser_objects.c \
 src/ray/ray.c src/ray/hits.c src/ray/hits_cone.c src/ray/lighting.c src/ray/raycasting.c src/ray/ray_utils.c \
 src/utils/color.c src/utils/color_helpers.c src/utils/scene.c src/utils/textures.c src/utils/str.c \

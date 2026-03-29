@@ -16,10 +16,23 @@
 ** Check if invalid texture creates leaks,
 ** or call free_object and modify it to check NULL before freeing.
 */
+
+void	set_texture(t_object *obj, char *texture_path)
+{
+	int			texture_fd;
+
+	texture_fd = open(texture_path, O_RDONLY);
+	if (texture_fd < 0)
+		return (free(obj), perror("error in texture_fd"), NULL);
+	close(texture_fd);
+	obj->texture_path = ft_strdup(texture_path);
+	if (!obj->texture_path)
+		return (free(obj), perror("error in ft_strdup"), NULL);
+}
+
 t_object	*create_object(int obj_type, void *object, size_t id, char *args[2])
 {
 	t_object	*obj;
-	int			texture_fd;
 
 	obj = malloc(sizeof(t_object));
 	if (!obj)
@@ -29,13 +42,7 @@ t_object	*create_object(int obj_type, void *object, size_t id, char *args[2])
 	if (args[0])
 		obj->orientation = create_vector(args[0]);
 	if (args[1])
-	{
-		texture_fd = open(args[1], O_RDONLY);
-		if (texture_fd < 0)
-			return (free(obj), perror("error in texture_fd"), NULL);
-		close(texture_fd);
-		obj->texture_path = ft_strdup(args[1]);
-	}
+		set_texture(obj, args[1]);
 	if (!load_texture(obj))
 		return (free(obj), NULL);
 	obj->object = object;
@@ -59,5 +66,7 @@ void	free_object(void *object)
 		free_cylinder(obj->object);
 	if (obj->type == PLANE)
 		free_plane(obj->object);
+	if (obj->type == CONE)
+		free_cone(obj->object);
 	free(obj);
 }

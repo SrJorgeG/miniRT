@@ -12,6 +12,14 @@
 
 #include "../include/minirt.h"
 
+void	free_cone(void *cone)
+{
+	t_cone	*cn;
+
+	cn = (t_cone *)cone;
+	free(cn);
+}
+
 void	free_cache(t_scene *scene)
 {
 	int	i;
