@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:23:08 by krusty            #+#    #+#             */
-/*   Updated: 2026/03/27 21:33:06 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:50:20 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	parse_ambient_light(char **args, t_scene *scene)
 {
-	if (scene->map->has_amb_ligt)
+	if (scene->map->has_amb_light)
 		exit_error("Error. Duplicated Ambient Light\n", scene);
-	
 	if (ft_strlst_len(args) != 3)
 		exit_error("Error. Invalid map data, incompleted ambient_light row.\n",
 			scene);
@@ -29,7 +28,7 @@ void	parse_ambient_light(char **args, t_scene *scene)
 	if (scene->map->amb_ligt.amb_ratio < 0.0
 		|| scene->map->amb_ligt.amb_ratio > 1.0)
 		exit_error("Error. Invalid range for ambient light ratio.", scene);
-	scene->map->has_amb_ligt = 1;
+	scene->map->has_amb_light = 1;
 }
 
 void	parse_camera(char **args, t_scene *scene)
@@ -78,4 +77,5 @@ void	parse_light(char **args, t_scene *scene)
 		return (free(light),
 			exit_error("Error.parse_light: ft_lstnew: malloc\n", scene));
 	ft_stack_add_back(scene->map->lights, node);
+	scene->map->has_lights = 1;
 }

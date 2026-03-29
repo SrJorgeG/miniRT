@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2026/03/29 21:07:54 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:25:47 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ typedef struct s_map
 	t_stack				*lights;
 	t_amb_light			amb_ligt;
 	uint8_t				has_camera;
-	uint8_t				has_amb_ligt;
+	uint8_t				has_amb_light;
 	uint8_t				has_lights;
 }						t_map;
 
@@ -169,6 +169,9 @@ typedef struct s_scene
 	t_real				viewport_w;
 	t_real				viewport_h;
 	t_vec				image_center;
+	int					has_camera;
+	int					has_light;
+	int					has_amb_light;
 	mlx_t				*mlx;
 	mlx_image_t			*img;
 }						t_scene;

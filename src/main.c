@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:39:54 by jgomez-d          #+#    #+#             */
-/*   Updated: 2026/03/29 21:09:19 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:49:15 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	get_rgba(int r, int g, int b, int a)
 
 static void	init_mlx_and_render(t_scene *scene, char *title)
 {
-
 	scene->mlx = mlx_init(WIDTH, HEIGHT, title, 0);
 	if (!scene->mlx)
 		exit_error("Error. mlx_init\n", scene);
@@ -49,7 +48,6 @@ static void	init_scene_and_camera(t_scene *scene, char *filename)
 	setup_camera(&scene->map->camera);
 	setup_scene(scene, &scene->map->camera);
 	init_cache(scene);
-	debug_scene(scene);
 }
 
 int	main(int ac, char *av[])
@@ -61,7 +59,7 @@ int	main(int ac, char *av[])
 		exit_error("Error, invalid number of arguments\n", NULL);
 	scene = malloc(sizeof(t_scene));
 	if (!scene)
-		exit_error("Error, malloc of t_scene\n", NULL);	
+		exit_error("Error, malloc of t_scene\n", NULL);
 	init_scene_and_camera(scene, av[1]);
 	init_mlx_and_render(scene, TITLE);
 	free_scene(scene);

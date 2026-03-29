@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 15:39:18 by dcid-san          #+#    #+#             */
-/*   Updated: 2026/03/29 21:10:03 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:49:42 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ void	free_cache(t_scene *scene)
 
 void	free_scene(t_scene *scene)
 {
-	if (!scene)
-		return ;
-	free_cache(scene);
-	if (scene->map)
-		free_map(scene->map);
-	if (scene->img)
-		mlx_delete_image(scene->mlx, scene->img);
-	if (scene->mlx)
-		mlx_terminate(scene->mlx);
-	if (scene->args)
-		ft_free_split(scene->args);
-	
-	free(scene);
+	if (scene)
+	{
+		free_cache(scene);
+		if (scene->map)
+			free_map(scene->map);
+		if (scene->img)
+			mlx_delete_image(scene->mlx, scene->img);
+		if (scene->mlx)
+			mlx_terminate(scene->mlx);
+		if (scene->args)
+			ft_free_split(scene->args);
+		free(scene);
+	}
 }

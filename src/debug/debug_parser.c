@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:00:00 by dcid-san          #+#    #+#             */
-/*   Updated: 2026/03/27 21:05:38 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:25:47 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ void	debug_map(t_map *map)
 
 	printf("\n======= MAP DEBUG =======\n");
 	printf("has_camera: %d\n", map->has_camera);
-	printf("has_ambient: %d\n", map->has_amb_ligt);
+	printf("has_ambient: %d\n", map->has_amb_light);
 	printf("has_lights: %d\n", map->has_lights);
 	if (map->has_camera)
 		debug_camera(&map->camera);
-	if (map->has_amb_ligt)
+	if (map->has_amb_light)
 		debug_ambient(&map->amb_ligt);
 	if (map->has_lights)
 	{

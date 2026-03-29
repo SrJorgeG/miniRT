@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 17:23:08 by krusty            #+#    #+#             */
-/*   Updated: 2026/03/29 21:15:33 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:50:39 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	parse_line(char *line, t_scene *scene)
 {
 	char	**args;
 	char	delim[2];
-	int		i;
 
 	delim[0] = '\t';
 	delim[1] = ' ';
@@ -68,12 +67,10 @@ void	parse_line(char *line, t_scene *scene)
 	args = scene->args;
 	free(line);
 	if (!args || !args[0])
-		return (ft_free_split(scene->args));
-	i = -1;
-	while (args[++i])
-		printf("%s\n", args[i]);
+		return (scene->args = NULL, ft_free_split(scene->args));
 	parse_line_aux(args, scene);
 	ft_free_split(scene->args);
+	scene->args = NULL;
 }
 
 void	trim_new_line(char *str)
@@ -110,5 +107,8 @@ int	parser(char *filename, t_scene *scene)
 		line = get_next_line(fd);
 	}
 	close(fd);
+	if (!scene->map->has_amb_light || !scene->map->has_camera
+		|| !scene->map->has_lights)
+		exit_error("Missing required data", scene);
 	return (1);
 }

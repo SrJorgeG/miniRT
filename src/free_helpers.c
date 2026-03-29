@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 19:35:00 by dcid-san          #+#    #+#             */
-/*   Updated: 2026/03/27 21:28:46 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:48:38 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	free_light(void *l)
 {
-	t_light *light;
-	
+	t_light	*light;
+
 	if (l)
 	{
 		light = (t_light *)l;
@@ -32,7 +32,6 @@ void	free_plane(void *plane)
 		pl = (t_plane *)plane;
 		free(pl);
 	}
-	
 }
 
 void	free_cylinder(void *cylinder)
@@ -44,7 +43,6 @@ void	free_cylinder(void *cylinder)
 		cy = (t_cylinder *)cylinder;
 		free(cy);
 	}
-	
 }
 
 void	free_sphere(void *sphere)
@@ -67,7 +65,5 @@ void	free_map(t_map *map)
 		ft_stack_clear(map->lights, free_light);
 		free(map->lights);
 	}
-	
 	free(map);
 }
-
