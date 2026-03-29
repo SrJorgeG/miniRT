@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krusty <krusty@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by krusty            #+#    #+#             */
-/*   Updated: 2026/03/25 00:00:00 by krusty           ###   ########.fr       */
+/*   Updated: 2026/03/29 20:50:12 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** or call free_object and modify it to check NULL before freeing.
 */
 
-void	set_texture(t_object *obj, char *texture_path)
+void	*set_texture(t_object *obj, char *texture_path)
 {
 	int			texture_fd;
 
@@ -28,6 +28,7 @@ void	set_texture(t_object *obj, char *texture_path)
 	obj->texture_path = ft_strdup(texture_path);
 	if (!obj->texture_path)
 		return (free(obj), perror("error in ft_strdup"), NULL);
+	return obj;
 }
 
 t_object	*create_object(int obj_type, void *object, size_t id, char *args[2])
@@ -42,7 +43,8 @@ t_object	*create_object(int obj_type, void *object, size_t id, char *args[2])
 	if (args[0])
 		obj->orientation = create_vector(args[0]);
 	if (args[1])
-		set_texture(obj, args[1]);
+		if (!set_texture(obj, args[1]))
+			return (NULL);
 	if (!load_texture(obj))
 		return (free(obj), NULL);
 	obj->object = object;
