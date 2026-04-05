@@ -6,7 +6,7 @@
 /*   By: krusty <krusty@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by krusty            #+#    #+#             */
-/*   Updated: 2026/03/25 00:00:00 by krusty           ###   ########.fr       */
+/*   Updated: 2026/04/05 00:00:00 by krusty           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,11 @@ t_cone	*create_cone(char **args)
 		return (perror("Error. Invalid range for cone diameter."), NULL);
 	if (cone->height <= 0.0)
 		return (perror("Error. Invalid range for cone height."), NULL);
+	cone->rot_x = 0.0;
+	cone->rot_y = 0.0;
+	cone->rot_z = 0.0;
+	cone->trans_x = 0.0;
+	cone->trans_y = 0.0;
+	cone->trans_z = 0.0;
 	return (cone);
 }

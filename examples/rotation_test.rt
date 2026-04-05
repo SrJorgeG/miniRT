@@ -1,0 +1,17 @@
+# Rotation Test Scene - Planes and Cylinders rotated
+A 0.3 255,255,255
+C -50,0,30 0,0,1 70
+L -40,0,40 0.7 255,255,255
+
+# Base plane (no rotation)
+pl 0,0,-10 0,1.0,0 100,100,100
+
+# Plane rotated on X axis (45 degrees)
+# Format: pl point normal color [rotation_x rotation_y rotation_z] [translation]
+pl 0,0,20 0,1.0,0 255,0,0 45,0,0
+
+# Plane rotated on Y axis (45 degrees)
+pl -25,0,20 0,1.0,0 0,255,0 0,45,0
+
+# Plane rotated on Z axis (30 degrees)
+pl 25,0,20 0,1.0,0 0,0,255 0,0,30

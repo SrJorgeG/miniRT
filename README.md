@@ -1,124 +1,185 @@
-# miniRT - Ray Tracing Engine
+*This project has been created as part of the 42 curriculum by dcid-san, jgomez-d.*
 
-Un proyecto de ray tracing desarrollado en C como parte del currículo de 42. El objetivo es crear un motor de renderizado capaz de generar imágenes 3D mediante trazado de rayos.
+## Description
 
-## 📋 Características
+miniRT is a ray tracing engine written in C as part of the 42 curriculum. The project introduces the fundamentals of ray tracing—a rendering technique that simulates light propagation to generate photorealistic 3D images. Unlike rasterization used in modern graphics engines, ray tracing is computationally more expensive but produces superior visual quality by accurately modeling light interactions.
 
-- **Trazado de rayos (Ray Tracing)**: Algoritmo de renderizado que simula la propagación de luz
-- **Soporte de múltiples objetos**: Esferas, planos, cilindros y más
-- **Iluminación realista**: Cálculo de sombras, reflexiones y reflejos
-- **Manejo de archivos .rt**: Parser para escenas definidas en archivos
-- **Optimización de rendimiento**: Algoritmos eficientes para cálculos de intersecciones
+The goal of miniRT is to demonstrate the ability to implement complex mathematical and physical formulas while maintaining clean, normalized C code. The engine supports multiple geometric objects (spheres, planes, and cylinders), realistic lighting calculations (ambient and diffuse), shadow casting, and object transformations.
 
-## 🛠️ Requisitos
+## Instructions
 
-- GCC/Clang
-- Make
-- Librerías estándar de C (POSIX)
-- MLX42 (para renderizado gráfico)
+### Compilation
 
-## 📦 Instalación
+The project uses a Makefile that automates the build process:
 
 ```bash
-git clone <repository_url>
-cd miniRT
-make
+make            # Build the executable
+make clean      # Remove object files
+make fclean     # Remove object files and executable
+make re         # Rebuild from scratch
 ```
 
-## 🚀 Uso
+### Requirements
+
+- GCC or Clang compiler
+- GNU Make
+- MiniLibX42 library (automatically cloned and built)
+- libft library (included in the project)
+- POSIX-compliant system (Linux/macOS)
+- Math library (`-lm` flag)
+
+### Execution
+
+Run the ray tracer with a scene file:
 
 ```bash
-./miniRT <archivo_escena.rt>
+./miniRT <scene_file.rt>
 ```
 
-### Formato de archivo .rt
+Example:
 
-El archivo de configuración define la escena:
-
-```
-R 800 600              # Resolución (Ancho Alto)
-A 0.2 255,255,255    # Luz ambiental (intensidad, color RGB)
-c -50,0,20 0,0,0 70  # Cámara (posición, dirección, FOV)
-l -40,0,30 0.7 255,255,255  # Luz (posición, intensidad, color)
-sp 0,0,0 20 255,0,0   # Esfera (posición, radio, color)
-pl 0,0,-30 0,0,1 0,255,0    # Plano (posición, normal, color)
-cy 0,0,0 0,1,0 5 20 255,255,0  # Cilindro (posición, eje, radio, altura, color)
+```bash
+./miniRT examples/scene.rt
 ```
 
-## 📁 Estructura del Proyecto
+### Scene File Format
+
+Scene files use the `.rt` extension and define the 3D world. Elements can appear in any order and are separated by whitespace or newlines.
+
+#### Required Elements
+
+- **Ambient Light (A)**: `A 0.2 255,255,255`
+  - Ratio: [0.0, 1.0]
+  - Color: R,G,B [0, 255] each
+
+- **Camera (C)**: `C -50,0,20 0,0,1 70`
+  - Position: x,y,z coordinates
+  - Orientation: normalized vector
+  - FOV: horizontal field of view in degrees [0, 180]
+
+- **Light (L)**: `L -40,0,30 0.7 255,255,255`
+  - Position: x,y,z coordinates
+  - Brightness: [0.0, 1.0]
+  - Color: R,G,B [0, 255] each
+
+#### Geometric Objects
+
+- **Sphere (sp)**: `sp 0,0,20 20 255,0,0`
+  - Position, diameter, color
+
+- **Plane (pl)**: `pl 0,0,0 0,1,0 255,0,225`
+  - Position, normal vector, color
+
+- **Cylinder (cy)**: `cy 50,0,20.6 0,0,1 14.2 21.42 10,0,255`
+  - Position, axis vector, diameter, height, color
+
+#### Example Scene
+
+```
+A 0.2 255,255,255
+C -50,0,20 0,0,1 70
+L -40,0,30 0.7 255,255,255
+pl 0,0,0 0,1,0 255,0,225
+sp 0,0,20 20 255,0,0
+cy 50,0,20.6 0,0,1 14.2 21.42 10,0,255
+```
+
+### Controls
+
+- **ESC**: Close the window and exit
+- **Mouse Click**: Window close button exits the application
+
+## Resources
+
+### Ray Tracing References
+
+- [Ray Tracing in One Weekend](https://raytracing.github.io/) - Essential guide to ray tracing fundamentals
+- [MiniLibX Documentation](https://github.com/codam-coding-college/MLX42) - Graphics library used for window management and rendering
+- [3D Graphics Mathematics](https://www.3dgep.com/) - Vector and matrix operations essential for ray tracing
+- [Phong Reflection Model](https://en.wikipedia.org/wiki/Phong_reflection_model) - Light reflection calculations
+
+### Implementation References
+
+- Vector mathematics: dot product, cross product, normalization
+- Ray-object intersection algorithms: sphere, plane, cylinder
+- Lighting model: ambient light, diffuse reflection, specular highlights
+- Memory management: dynamic allocation and deallocation patterns in C
+
+### AI Usage
+
+AI tools were utilized strategically to enhance productivity while maintaining code ownership:
+
+- **Parser Implementation**: AI assisted in designing the `.rt` file parser logic, providing initial algorithm structure that was thoroughly reviewed, modified, and tested by the developers.
+- **Vector Mathematics**: AI generated boilerplate vector operation functions (add, subtract, normalize) which were verified mathematically and integrated after peer review.
+- **Error Handling**: AI provided templates for robust error checking in file parsing and memory allocation, customized to project-specific requirements.
+- **Debugging Optimization**: AI suggestions for structuring debug output and memory leak detection using Valgrind.
+
+All AI-generated code was critically examined, tested for correctness, and adapted to ensure it met 42 Norm standards and project requirements. No code was used without full understanding and validation.
+
+## Project Structure
 
 ```
 miniRT/
 ├── src/
-│   ├── main.c           # Punto de entrada
-│   ├── parser/          # Parser de archivos .rt
-│   ├── render/          # Motor de ray tracing
-│   ├── math/            # Operaciones matemáticas (vectores, matrices)
-│   ├── objects/         # Definición de objetos 3D
-│   ├── lighting/        # Cálculos de iluminación
-│   ├── utils/           # Funciones utilitarias
-│   └── ...
-├── include/
-│   └── minirt.h         # Headers principales
+│   ├── main.c                  # Entry point
+│   ├── init.c                  # Initialization
+│   ├── render.c                # Rendering loop
+│   ├── exit.c                  # Exit handlers
+│   ├── parser/                 # Scene file parsing
+│   │   ├── parser.c
+│   │   ├── parser_scene.c
+│   │   └── parser_objects.c
+│   ├── ray/                    # Ray tracing core
+│   │   ├── ray.c
+│   │   ├── hits.c
+│   │   ├── hit_cylinder.c
+│   │   ├── hits_cone.c
+│   │   ├── lighting.c
+│   │   ├── raycasting.c
+│   │   └── ray_utils.c
+│   ├── objects/                # Geometric objects
+│   │   ├── sphere.c
+│   │   ├── plane.c
+│   │   ├── cylinder.c
+│   │   └── cone.c
+│   ├── vector/                 # Vector operations
+│   │   ├── vector.c
+│   │   ├── vector_aux.c
+│   │   ├── vector_basic.c
+│   │   └── vector_utils.c
+│   ├── utils/                  # Utilities
+│   │   ├── color.c
+│   │   ├── scene.c
+│   │   ├── textures.c
+│   │   └── str.c
+│   ├── hooks/                  # Input handling
+│   │   ├── keyboard.c
+│   │   └── mouse.c
+│   ├── cache/                  # Performance optimization
+│   │   └── cache.c
+│   └── debug/                  # Debugging utilities
+│       ├── debug_parser.c
+│       └── debug_helpers.c
+├── include/                    # Header files
+├── libs/
+│   ├── libft/                  # Custom C library
+│   └── MLX42/                  # Graphics library
+├── examples/                   # Example scene files
 ├── Makefile
-├── valgrind.supp        # Supresor de falsos positivos de Valgrind
 └── README.md
 ```
 
-## 🔍 Funciones Clave
+## Technical Highlights
 
-### Parser
-- `parse_scene()`: Parsea el archivo de configuración
-- `parse_object()`: Procesa cada línea del archivo
+- **Ray-Object Intersection**: Efficient algorithms for computing ray intersections with spheres, planes, and cylinders
+- **Lighting Model**: Proper implementation of ambient and diffuse lighting with shadow calculations
+- **Memory Safety**: Strict adherence to the 42 Norm with complete memory cleanup and no leaks
+- **Vector Mathematics**: Custom vector library supporting all necessary 3D transformations
+- **Performance**: Caching mechanisms to optimize repeated calculations
 
-### Matemáticas
-- `vector_add()`, `vector_sub()`: Operaciones vectoriales
-- `dot_product()`, `cross_product()`: Productos escalar y vectorial
-- `normalize()`: Normalización de vectores
+## Notes
 
-### Ray Tracing
-- `trace_ray()`: Traza un rayo a través de la escena
-- `intersect_sphere()`: Calcula intersección rayo-esfera
-- `intersect_plane()`: Calcula intersección rayo-plano
-- `compute_lighting()`: Calcula iluminación en un punto
-
-### Utilidades
-- `ft_split_2()`: Divide strings por múltiples delimitadores
-- `free_split_2()`: Libera memoria de split_2
-
-## 🧪 Pruebas
-
-```bash
-make test           # Ejecutar pruebas (si están implementadas)
-valgrind ./miniRT scene.rt  # Verificar fugas de memoria
-```
-
-## 📊 Validación de Memoria
-
-El proyecto utiliza Valgrind para detectar fugas de memoria:
-
-```bash
-valgrind --leak-check=full --show-leak-kinds=all ./miniRT scene.rt
-```
-
-Consulta `valgrind.supp` para los supresores configurados.
-
-## 🤝 Autor
-
-- **dcid-san** - Estudiante de 42 Madrid
-
-## 📝 Licencia
-
-Este proyecto es parte del currículo de 42 y sigue sus normas de código.
-
-## 🎯 Próximas Mejoras
-
-- [ ] Soporte para texturas
-- [ ] Reflejos y refracciones mejorados
-- [ ] Objetos adicionales (conos, toros)
-- [ ] Optimización con BVH tree
-- [ ] Parallelización del renderizado
-
----
-
-**Nota**: Este proyecto es parte de la escuela 42 y debe cumplir con sus normas de codificación (Norminette).
+- This project must comply with the 42 Norm coding standard
+- All memory must be properly freed (no leaks tolerated)
+- The program must not crash under any circumstances (no segfaults, bus errors, or double frees)
+- Window management must remain responsive (minimize, maximize, switch windows)

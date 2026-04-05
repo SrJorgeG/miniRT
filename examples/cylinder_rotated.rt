@@ -1,0 +1,20 @@
+# Cylinder Rotation Test - Multiple cylinders with different rotations
+A 0.3 255,255,255
+C -60,20,30 0,0,1 70
+L -40,0,30 0.7 255,255,255
+
+# Base plane
+pl 0,0,-20 0,1.0,0 100,100,100
+
+# Cylinder pointing up (no rotation)
+# Format: cy center axis diameter height color [rotation] [translation]
+cy 0,0,20 0,0,1.0 10 20 255,0,0
+
+# Cylinder rotated 45 degrees on X axis
+cy -25,0,20 0,0,1.0 10 20 0,255,0 45,0,0
+
+# Cylinder rotated 90 degrees on X axis (horizontal)
+cy 25,0,20 0,0,1.0 10 20 0,0,255 90,0,0
+
+# Cylinder rotated on multiple axes
+cy 0,0,40 0,0,1.0 8 16 255,255,0 30,45,60

@@ -34,6 +34,10 @@ void	custom_key_hook(mlx_key_data_t keydata, void *param)
 	data = param;
 	if (data->scene->is_rendered)
 	{
+		if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+		{
+			mlx_close_window(data->mlx);
+		}
 		if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
 		{
 			if (move_object(keydata, data) || resize_object(keydata, data)

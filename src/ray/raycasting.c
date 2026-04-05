@@ -99,3 +99,15 @@ t_hit	get_hits(t_scene *scene, t_ray ray)
 	}
 	return (closest);
 }
+
+int	is_in_shadow(t_scene *scene, t_ray shadow_ray, double light_distance)
+{
+	t_hit	closest;
+
+	closest.hit = 0;
+	closest.t = INFINITY;
+	check_all_hits(scene, shadow_ray, &closest, NULL);
+	if (closest.hit && closest.t > 1e-4 && closest.t < light_distance)
+		return (1);
+	return (0);
+}

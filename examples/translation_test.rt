@@ -1,0 +1,20 @@
+# Translation Test Scene - Spheres moved to different positions
+A 0.3 255,255,255
+C -50,0,20 0,0,1 70
+L -40,0,30 0.7 255,255,255
+
+# Plane base
+pl 0,0,-30 0,1.0,0 100,100,100
+
+# Sphere at origin (no translation)
+sp 0,0,20 10 255,0,0
+
+# Sphere translated positively on X axis
+# Format: sp center diameter color [translation]
+sp 0,0,20 10 0,255,0 20,0,0
+
+# Sphere translated on Y axis
+sp 0,0,20 10 0,0,255 0,15,0
+
+# Sphere translated on Z axis  
+sp 0,0,20 10 255,255,0 0,0,10

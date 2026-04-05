@@ -83,6 +83,9 @@ typedef struct s_camera
 	int					fov;
 	unsigned int		focal;
 	double				radial_fov;
+	double				rot_x;
+	double				rot_y;
+	double				rot_z;
 }						t_camera;
 
 typedef struct s_light
@@ -90,6 +93,9 @@ typedef struct s_light
 	t_vec				light_point;
 	float				brightness;
 	t_color				color_range;
+	double				trans_x;
+	double				trans_y;
+	double				trans_z;
 }						t_light;
 
 typedef struct s_sphere
@@ -97,12 +103,21 @@ typedef struct s_sphere
 	t_vec				center;
 	double				diameter;
 	double				radius;
+	double				trans_x;
+	double				trans_y;
+	double				trans_z;
 }						t_sphere;
 
 typedef struct s_plane
 {
 	t_vec				point;
 	t_vec				vector;
+	double				rot_x;
+	double				rot_y;
+	double				rot_z;
+	double				trans_x;
+	double				trans_y;
+	double				trans_z;
 }						t_plane;
 
 typedef struct s_cylinder
@@ -111,6 +126,12 @@ typedef struct s_cylinder
 	t_vec				axis;
 	double				diameter;
 	double				height;
+	double				rot_x;
+	double				rot_y;
+	double				rot_z;
+	double				trans_x;
+	double				trans_y;
+	double				trans_z;
 }						t_cylinder;
 
 typedef struct s_cone
@@ -119,6 +140,12 @@ typedef struct s_cone
 	t_vec				axis;
 	double				diameter;
 	double				height;
+	double				rot_x;
+	double				rot_y;
+	double				rot_z;
+	double				trans_x;
+	double				trans_y;
+	double				trans_z;
 }						t_cone;
 
 typedef struct s_object
@@ -231,6 +258,8 @@ int						hit_cone(t_ray ray, t_object *obj,
 void					get_cone_normal(t_hit *hit, t_object *obj,
 							t_cone *cone, t_ray ray);
 t_hit					get_hits(t_scene *scene, t_ray ray);
+int						is_in_shadow(t_scene *scene, t_ray shadow_ray,
+						double light_distance);
 t_ray					get_ray_from_pixel(t_scene *scene,
 							t_vec image_center, t_vec pixel_center);
 t_vec					find_pixel_on_viewport(int x, int y,
@@ -341,8 +370,22 @@ void					restore_pixel(t_scene *scene, mlx_image_t *image,
 							uint32_t x, uint32_t y);
 
 void					get_cylinder_normal(t_hit *hit, t_object *obj,
-							t_cylinder *cyl, t_ray ray);
+						t_cylinder *cyl, t_ray ray);
 int						hit_cylinder(t_ray ray, t_object *obj,
-							t_cylinder *cyl, double *obj_distance);
+						t_cylinder *cyl, double *obj_distance);
+
+/* TRANSFORMATIONS - src/functions/transformations.c */
+t_vec					apply_translation(t_vec point, double tx,
+						double ty, double tz);
+t_vec					apply_rotation_x(t_vec vec, double angle);
+t_vec					apply_rotation_y(t_vec vec, double angle);
+t_vec					apply_rotation_z(t_vec vec, double angle);
+t_vec					apply_rotations(t_vec vec, double rot_x,
+						double rot_y, double rot_z);
+t_vec					transform_point(t_vec point, double rot_x,
+						double rot_y, double rot_z, double tx,
+						double ty, double tz);
+t_vec					transform_normal(t_vec normal, double rot_x,
+						double rot_y, double rot_z);
 
 #endif

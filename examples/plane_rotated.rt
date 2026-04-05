@@ -1,0 +1,18 @@
+# Plane Rotation Test - Planes rotated in different directions
+A 0.3 255,255,255
+C -50,-20,30 0,0,1 70
+L -40,0,30 0.7 255,255,255
+
+# Base ground plane
+pl 0,0,-10 0,1.0,0 150,150,150
+
+# Wall plane - rotated 90 on X to be vertical
+# This rotates the normal from pointing up to pointing forward
+pl 0,-30,20 0,1.0,0 255,0,0 90,0,0
+
+# Wall plane - rotated 90 on Y to be vertical perpendicular to first wall
+pl -30,0,20 0,1.0,0 0,255,0 0,90,0
+
+# Complex rotated plane with translation
+# Rotated and then translated
+pl 0,0,20 0,1.0,0 0,0,255 45,45,0 5,5,5
