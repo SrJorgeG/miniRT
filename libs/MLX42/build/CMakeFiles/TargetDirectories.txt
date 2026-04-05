@@ -1,7 +1,7 @@
-/home/krusty/42Course/miniRTIA/libs/MLX42/build/CMakeFiles/mlx42.dir
-/home/krusty/42Course/miniRTIA/libs/MLX42/build/CMakeFiles/edit_cache.dir
-/home/krusty/42Course/miniRTIA/libs/MLX42/build/CMakeFiles/rebuild_cache.dir
-/home/krusty/42Course/miniRTIA/libs/MLX42/build/CMakeFiles/list_install_components.dir
-/home/krusty/42Course/miniRTIA/libs/MLX42/build/CMakeFiles/install.dir
-/home/krusty/42Course/miniRTIA/libs/MLX42/build/CMakeFiles/install/local.dir
-/home/krusty/42Course/miniRTIA/libs/MLX42/build/CMakeFiles/install/strip.dir
+/home/dcid-san/42Course/miniRTEntrega/libs/MLX42/build/CMakeFiles/mlx42.dir
+/home/dcid-san/42Course/miniRTEntrega/libs/MLX42/build/CMakeFiles/edit_cache.dir
+/home/dcid-san/42Course/miniRTEntrega/libs/MLX42/build/CMakeFiles/rebuild_cache.dir
+/home/dcid-san/42Course/miniRTEntrega/libs/MLX42/build/CMakeFiles/list_install_components.dir
+/home/dcid-san/42Course/miniRTEntrega/libs/MLX42/build/CMakeFiles/install.dir
+/home/dcid-san/42Course/miniRTEntrega/libs/MLX42/build/CMakeFiles/install/local.dir
+/home/dcid-san/42Course/miniRTEntrega/libs/MLX42/build/CMakeFiles/install/strip.dir
