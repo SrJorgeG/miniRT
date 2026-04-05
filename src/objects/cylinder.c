@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krusty <krusty@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by krusty            #+#    #+#             */
-/*   Updated: 2026/04/05 00:00:00 by krusty           ###   ########.fr       */
+/*   Updated: 2026/04/05 19:38:51 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,5 @@ t_cylinder	*create_cylinder(char **args)
 		return (perror("Error. Invalid range for cylinder diameter."), NULL);
 	if (cylinder->height <= 0.0)
 		return (perror("Error. Invalid range for cylinder height."), NULL);
-	cylinder->rot_x = 0.0;
-	cylinder->rot_y = 0.0;
-	cylinder->rot_z = 0.0;
-	cylinder->trans_x = 0.0;
-	cylinder->trans_y = 0.0;
-	cylinder->trans_z = 0.0;
 	return (cylinder);
 }

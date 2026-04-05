@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krusty <krusty@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by krusty            #+#    #+#             */
-/*   Updated: 2026/04/05 00:00:00 by krusty           ###   ########.fr       */
+/*   Updated: 2026/04/05 19:39:42 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,5 @@ t_sphere	*create_sphere(char **args)
 	sphere->radius = sphere->diameter / 2;
 	if (sphere->diameter <= 0.0)
 		return (free_object(sphere), NULL);
-	sphere->trans_x = 0.0;
-	sphere->trans_y = 0.0;
-	sphere->trans_z = 0.0;
 	return (sphere);
 }

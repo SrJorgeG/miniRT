@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hits.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krusty <krusty@student.42madrid.com>       +#+  +:+       +#+        */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/25 19:12:05 by krusty            #+#    #+#             */
-/*   Updated: 2026/03/25 19:12:05 by krusty           ###   ########.fr       */
+/*   Created: 2026/04/05 20:14:21 by dcid-san          #+#    #+#             */
+/*   Updated: 2026/04/05 20:55:40 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,21 @@ int	hit_sphere(t_ray ray, t_sphere *sphere, double *obj_distance)
 	t_vec	equation;
 	double	discriminant;
 	double	sqrt_disc;
-	t_vec	transformed_center;
+	t_vec2	data;
 
-	transformed_center.x = sphere->center.x + sphere->trans_x;
-	transformed_center.y = sphere->center.y + sphere->trans_y;
-	transformed_center.z = sphere->center.z + sphere->trans_z;
-	oc = vector_rest(ray.origin, transformed_center);
+	oc = vector_rest(ray.origin, sphere->center);
 	equation.y = 2.0 * vector_dot_prod(oc, ray.direction);
 	equation.z = vector_dot_prod(oc, oc) - sphere->radius * sphere->radius;
 	discriminant = equation.y * equation.y - 4.0 * equation.z;
 	if (discriminant < 0)
 		return (0);
 	sqrt_disc = sqrt(discriminant);
-	if ((-equation.y - sqrt_disc) / 2.0 > 0.0001)
-	{
-		*obj_distance = (-equation.y - sqrt_disc) / 2.0;
-		return (1);
-	}
-	if ((-equation.y + sqrt_disc) / 2.0 > 0.0001)
-	{
-		*obj_distance = (-equation.y + sqrt_disc) / 2.0;
-		return (1);
-	}
+	data.x = (-equation.y - sqrt_disc) / 2.0;
+	data.y = (-equation.y + sqrt_disc) / 2.0;
+	if (data.x > 0.0001)
+		return (*obj_distance = data.x, 1);
+	if (data.y > 0.0001)
+		return (*obj_distance = data.y, 1);
 	return (0);
 }
 
@@ -48,21 +41,13 @@ int	hit_plane(t_ray ray, t_plane *plane, double *obj_distance)
 	double	denom;
 	double	t;
 	double	eps;
-	t_vec	temp;
-	t_vec	transformed_point;
-	t_vec	transformed_normal;
 
 	eps = 1e-6;
-	transformed_point.x = plane->point.x + plane->trans_x;
-	transformed_point.y = plane->point.y + plane->trans_y;
-	transformed_point.z = plane->point.z + plane->trans_z;
-	transformed_normal = transform_normal(plane->vector, plane->rot_x,
-			plane->rot_y, plane->rot_z);
-	denom = vector_dot_prod(ray.direction, transformed_normal);
+	denom = vector_dot_prod(ray.direction, plane->vector);
 	if (fabs(denom) > eps)
 	{
-		temp = vector_rest(transformed_point, ray.origin);
-		t = vector_dot_prod(temp, transformed_normal) / denom;
+		t = vector_dot_prod(vector_rest(plane->point, ray.origin),
+				plane->vector) / denom;
 		if (t > eps)
 		{
 			*obj_distance = t;

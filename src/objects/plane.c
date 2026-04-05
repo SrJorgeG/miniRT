@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krusty <krusty@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 00:00:00 by krusty            #+#    #+#             */
-/*   Updated: 2026/04/05 00:00:00 by krusty           ###   ########.fr       */
+/*   Updated: 2026/04/05 19:39:05 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,5 @@ t_plane	*create_plane(char **args)
 		return (NULL);
 	plane->point = create_vector(args[1]);
 	plane->vector = create_vector(args[2]);
-	plane->rot_x = 0.0;
-	plane->rot_y = 0.0;
-	plane->rot_z = 0.0;
-	plane->trans_x = 0.0;
-	plane->trans_y = 0.0;
-	plane->trans_z = 0.0;
 	return (plane);
 }

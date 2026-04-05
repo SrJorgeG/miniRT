@@ -112,6 +112,7 @@ AI tools were utilized strategically to enhance productivity while maintaining c
 - **Vector Mathematics**: AI generated boilerplate vector operation functions (add, subtract, normalize) which were verified mathematically and integrated after peer review.
 - **Debugging Optimization**: AI suggestions for structuring debug output and memory leak detection using Valgrind.
 - **README**: AI was used to create a README.md template that match our project requirements and we edit it with our ideas.
+
 All AI-generated code was critically examined, tested for correctness, and adapted to ensure it met 42 Norm standards and project requirements. No code was used without full understanding and validation.
 
 ## Project Structure

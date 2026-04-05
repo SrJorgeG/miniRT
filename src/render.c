@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 13:05:17 by dcid-san          #+#    #+#             */
-/*   Updated: 2026/03/27 21:02:34 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/04/05 21:06:00 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ static void	render_pixel_row(t_scene *scene, mlx_image_t *img, int y)
 			mlx_put_pixel(img, x, y,
 				color_to_int_no_alpha(calculate_lighting(&hit, scene)));
 		else
-			mlx_put_pixel(img, x, y,
-				color_to_int_no_alpha((t_color){0, 0, 0}));
+			mlx_put_pixel(img, x, y, color_to_int_no_alpha((t_color){0, 0, 0}));
 		if (hit.hit)
 			add_pixel_to_cache(&scene->pixel_cache[hit.object->id], x, y);
 		x++;
@@ -58,7 +57,6 @@ void	render(t_scene *scene, mlx_t *mlx, mlx_image_t *img)
 	scene->image_center = vector_sum(scene->map->camera.view_point,
 			orientation_normal);
 	render_scanlines(scene, img);
-	printf("Termino de dibujar la imagen\n");
 	if (mlx_image_to_window(mlx, img, 0, 0) < 0)
 		exit_error("Error. mlx_image_to_window\n", scene);
 	scene->is_rendered = 1;

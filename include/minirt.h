@@ -6,7 +6,7 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:37 by jgomez-d          #+#    #+#             */
-/*   Updated: 2026/03/29 22:25:47 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/04/05 21:06:24 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,6 @@ typedef struct s_camera
 	int					fov;
 	unsigned int		focal;
 	double				radial_fov;
-	double				rot_x;
-	double				rot_y;
-	double				rot_z;
 }						t_camera;
 
 typedef struct s_light
@@ -93,9 +90,6 @@ typedef struct s_light
 	t_vec				light_point;
 	float				brightness;
 	t_color				color_range;
-	double				trans_x;
-	double				trans_y;
-	double				trans_z;
 }						t_light;
 
 typedef struct s_sphere
@@ -103,21 +97,12 @@ typedef struct s_sphere
 	t_vec				center;
 	double				diameter;
 	double				radius;
-	double				trans_x;
-	double				trans_y;
-	double				trans_z;
 }						t_sphere;
 
 typedef struct s_plane
 {
 	t_vec				point;
 	t_vec				vector;
-	double				rot_x;
-	double				rot_y;
-	double				rot_z;
-	double				trans_x;
-	double				trans_y;
-	double				trans_z;
 }						t_plane;
 
 typedef struct s_cylinder
@@ -125,13 +110,10 @@ typedef struct s_cylinder
 	t_vec				center;
 	t_vec				axis;
 	double				diameter;
+	double				radius;
+	double				half_h;
+
 	double				height;
-	double				rot_x;
-	double				rot_y;
-	double				rot_z;
-	double				trans_x;
-	double				trans_y;
-	double				trans_z;
 }						t_cylinder;
 
 typedef struct s_cone
@@ -140,12 +122,6 @@ typedef struct s_cone
 	t_vec				axis;
 	double				diameter;
 	double				height;
-	double				rot_x;
-	double				rot_y;
-	double				rot_z;
-	double				trans_x;
-	double				trans_y;
-	double				trans_z;
 }						t_cone;
 
 typedef struct s_object
@@ -221,6 +197,23 @@ typedef struct s_hit
 	t_object			*object;
 }						t_hit;
 
+typedef struct s_hit_cyl_caps_data
+{
+	double				denom;
+	double				t;
+	double				dist;
+	double				closest;
+	t_vec				hit;
+	t_vec				cap_center;
+}						t_hit_cyl_caps_data;
+
+typedef struct s_hit_cyl_body_data
+{
+	double				discriminant;
+	double				h;
+	t_vec				coords;
+}						t_hit_cyl_body_data;
+
 void					exit_error(char *err_msg, t_scene *free_data);
 
 /* STRING UTILLS */
@@ -253,17 +246,14 @@ int						hit_sphere(t_ray ray, t_sphere *sphere,
 							double *obj_distance);
 int						hit_plane(t_ray ray, t_plane *plane,
 							double *obj_distance);
-int						hit_cone(t_ray ray, t_object *obj,
-							t_cone *cone, double *obj_distance);
-void					get_cone_normal(t_hit *hit, t_object *obj,
-							t_cone *cone, t_ray ray);
+int						hit_cone(t_ray ray, t_object *obj, t_cone *cone,
+							double *obj_distance);
+void					get_cone_normal(t_hit *hit, t_object *obj, t_cone *cone,
+							t_ray ray);
 t_hit					get_hits(t_scene *scene, t_ray ray);
-int						is_in_shadow(t_scene *scene, t_ray shadow_ray,
-						double light_distance);
-t_ray					get_ray_from_pixel(t_scene *scene,
-							t_vec image_center, t_vec pixel_center);
-t_vec					find_pixel_on_viewport(int x, int y,
-							t_scene *scene);
+t_ray					get_ray_from_pixel(t_scene *scene, t_vec image_center,
+							t_vec pixel_center);
+t_vec					find_pixel_on_viewport(int x, int y, t_scene *scene);
 /* COLOR UTILS - src/utils/color.c */
 int						ft_str_is_color(char *str);
 
@@ -315,8 +305,8 @@ void					debug_object(t_object *obj);
 
 /* Object functions */
 t_sphere				*create_sphere(char **args);
-t_object				*create_object(int obj_type, void *object,
-							size_t id, char *texture_path[2]);
+t_object				*create_object(int obj_type, void *object, size_t id,
+							char *texture_path[2]);
 t_plane					*create_plane(char **args);
 t_cylinder				*create_cylinder(char **args);
 t_cone					*create_cone(char **args);
@@ -344,14 +334,12 @@ void					free_object(void *object);
 void					custom_key_hook(mlx_key_data_t keydata, void *param);
 void					object_selector_hook(int32_t x, int32_t y,
 							modifier_key_t mods, t_hook_data *data);
-void					custom_mouse_hook(mouse_key_t button,
-							action_t action, modifier_key_t mods,
-							void *data);
+void					custom_mouse_hook(mouse_key_t button, action_t action,
+							modifier_key_t mods, void *data);
 
 int						rotate_object(mlx_key_data_t keydata,
 							t_hook_data *data);
-int						move_object(mlx_key_data_t keydata,
-							t_hook_data *data);
+int						move_object(mlx_key_data_t keydata, t_hook_data *data);
 int						resize_object(mlx_key_data_t keydata,
 							t_hook_data *data);
 
@@ -361,8 +349,7 @@ void					deselect_object(t_scene *scene, t_object *object,
 							mlx_image_t *image);
 
 void					resize_helper(t_object *obj, int is_bigger);
-void					move_helper(t_object *obj, double x_val,
-							double y_val);
+void					move_helper(t_object *obj, double x_val, double y_val);
 void					clamp_orientation(t_vec *orientation);
 void					brighten_pixel(mlx_image_t *image, uint32_t x,
 							uint32_t y);
@@ -370,22 +357,18 @@ void					restore_pixel(t_scene *scene, mlx_image_t *image,
 							uint32_t x, uint32_t y);
 
 void					get_cylinder_normal(t_hit *hit, t_object *obj,
-						t_cylinder *cyl, t_ray ray);
-int						hit_cylinder(t_ray ray, t_object *obj,
-						t_cylinder *cyl, double *obj_distance);
-
-/* TRANSFORMATIONS - src/functions/transformations.c */
-t_vec					apply_translation(t_vec point, double tx,
-						double ty, double tz);
-t_vec					apply_rotation_x(t_vec vec, double angle);
-t_vec					apply_rotation_y(t_vec vec, double angle);
-t_vec					apply_rotation_z(t_vec vec, double angle);
-t_vec					apply_rotations(t_vec vec, double rot_x,
-						double rot_y, double rot_z);
-t_vec					transform_point(t_vec point, double rot_x,
-						double rot_y, double rot_z, double tx,
-						double ty, double tz);
-t_vec					transform_normal(t_vec normal, double rot_x,
-						double rot_y, double rot_z);
+							t_cylinder *cyl, t_ray ray);
+int						hit_cylinder(t_ray ray, t_object *obj, t_cylinder *cyl,
+							double *obj_distance);
+int						is_in_shadow(t_scene *scene, t_ray shadow_ray,
+							double light_distance);
+double					hit_cylinder_caps(t_ray ray, t_object *obj);
+void					hit_caps_aux(t_hit_cyl_caps_data *data, t_object *obj,
+							t_ray *ray);
+void					get_hit_normal(t_hit *hit, t_ray ray);
+void					fill_hit_info(t_hit *closest, double obj_distance,
+							t_object *last_hit);
+int						hit_object(t_ray ray, t_object *object,
+							double *obj_distance);
 
 #endif
