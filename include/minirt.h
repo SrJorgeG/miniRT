@@ -18,12 +18,22 @@
 # include "../libs/libft/libft.h"
 # include <fcntl.h>
 # include <math.h>
+# include <pthread.h>
 # include <memory.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 /* 				MLX DEFINES				*/
 # define WIDTH 600
+# ifndef DEBUG
+#  define DEBUG 0
+# endif
+# define NTHREADS 8
+# define PREVIEW_STEP 4
+# define REFINE_DELAY 0.25
+# define SPEC_SHINE 32.0
+# define SPEC_STRENGTH 0.5
+# define CHECKER_SIZE 4.0
 # define HEIGHT 600
 # define TITLE "MiniRT - De tu padre"
 
@@ -134,6 +144,7 @@ typedef struct s_object
 	mlx_texture_t		*texture;
 	t_color				color_range;
 	size_t				id;
+	int					checker;
 }						t_object;
 
 typedef struct s_obj_cache
@@ -177,6 +188,9 @@ typedef struct s_scene
 	int					has_amb_light;
 	mlx_t				*mlx;
 	mlx_image_t			*img;
+	int					needs_full;
+	double				last_input;
+	int					on_window;
 }						t_scene;
 
 typedef struct s_hook_data
@@ -185,6 +199,15 @@ typedef struct s_hook_data
 	mlx_t				*mlx;
 	mlx_image_t			*image;
 }						t_hook_data;
+
+typedef struct s_rjob
+{
+	t_scene				*scene;
+	mlx_image_t			*img;
+	int					*ids;
+	int					id;
+	int					step;
+}						t_rjob;
 
 /* Struct usado para guardar informacion del choque de un t_ray */
 typedef struct s_hit
@@ -370,5 +393,15 @@ void					fill_hit_info(t_hit *closest, double obj_distance,
 							t_object *last_hit);
 int						hit_object(t_ray ray, t_object *object,
 							double *obj_distance);
+
+/* PARSER CHECKS, RENDER THREADS, PREVIEW */
+void					check_object_args(char **args, t_scene *scene);
+int						strip_checker(char **args);
+void					apply_checker(char **args, t_scene *scene);
+void					render_frame(t_scene *scene, mlx_t *mlx,
+							mlx_image_t *img, int step);
+void					refine_hook(void *param);
+void					prepare_objects(t_scene *scene);
+void					request_preview(t_hook_data *data);
 
 #endif

@@ -34,6 +34,6 @@ t_vec	find_pixel_on_viewport(int x, int y, t_scene *scene)
 
 	u = (x + 0.5) / (t_real)scene->screen_w;
 	v = (y + 0.5) / (t_real)scene->screen_h;
-	return ((t_vec){(u - 0.5) * scene->viewport_w,
-		(v - 0.5) * scene->viewport_h, 0});
+	return ((t_vec){(0.5 - u) * scene->viewport_w,
+		(0.5 - v) * scene->viewport_h, 0});
 }

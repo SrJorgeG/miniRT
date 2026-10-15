@@ -60,6 +60,7 @@ void	parse_line(char *line, t_scene *scene)
 {
 	char	**args;
 	char	delim[2];
+	int		checker;
 
 	delim[0] = '\t';
 	delim[1] = ' ';
@@ -67,8 +68,12 @@ void	parse_line(char *line, t_scene *scene)
 	args = scene->args;
 	free(line);
 	if (!args || !args[0])
-		return (scene->args = NULL, ft_free_split(scene->args));
+		return (ft_free_split(args), (void)(scene->args = NULL));
+	checker = strip_checker(args);
+	check_object_args(args, scene);
 	parse_line_aux(args, scene);
+	if (checker)
+		apply_checker(args, scene);
 	ft_free_split(scene->args);
 	scene->args = NULL;
 }
@@ -109,6 +114,6 @@ int	parser(char *filename, t_scene *scene)
 	close(fd);
 	if (!scene->map->has_amb_light || !scene->map->has_camera
 		|| !scene->map->has_lights)
-		exit_error("Missing required data", scene);
+		exit_error("Error. Scene needs exactly one A, one C and one L\n", scene);
 	return (1);
 }

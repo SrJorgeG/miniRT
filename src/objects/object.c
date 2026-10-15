@@ -39,6 +39,7 @@ t_object	*create_object(int obj_type, void *object, size_t id, char *args[2])
 	if (!obj)
 		return (NULL);
 	obj->texture_path = NULL;
+	obj->checker = 0;
 	obj->texture = NULL;
 	if (args[0])
 	{

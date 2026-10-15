@@ -2,6 +2,13 @@
 
 ## Description
 
+![showcase](docs/showcase.png)
+
+| All shapes | Textured spheres | Textured plane | Transformations |
+|---|---|---|---|
+| ![](docs/all_shapes.png) | ![](docs/sphere_textured.png) | ![](docs/plane.png) | ![](docs/translation_rotation.png) |
+
+
 miniRT is a ray tracing engine written in C as part of the 42 curriculum. The project introduces the fundamentals of ray tracing—a rendering technique that simulates light propagation to generate photorealistic 3D images. Unlike rasterization used in modern graphics engines, ray tracing is computationally more expensive but produces superior visual quality by accurately modeling light interactions.
 
 The goal of miniRT is to demonstrate the ability to implement complex mathematical and physical formulas while maintaining clean, normalized C code. The engine supports multiple geometric objects (spheres, planes, and cylinders), realistic lighting calculations (ambient and diffuse), shadow casting, and object transformations.
@@ -84,10 +91,44 @@ sp 0,0,20 20 255,0,0
 cy 50,0,20.6 0,0,1 14.2 21.42 10,0,255
 ```
 
+### Optional keywords
+
+- `checker` at the end of an `sp`, `pl`, `cy` or `co` row draws a checkerboard
+  (object colour + its complement), e.g. `pl 0,0,0 0,1,0 200,200,200 checker`
+- `spt`, `plt`, `cyt`, `cot` take a PNG texture path as the last field
+
 ### Controls
 
-- **ESC**: Close the window and exit
-- **Mouse Click**: Window close button exits the application
+| Input | Action |
+|---|---|
+| Arrows | Move the camera (no object selected) |
+| Left click | Select / deselect an object (it gets highlighted) |
+| W A S D / arrows | Move the selected object |
+| Ctrl + arrows, Ctrl + W/S | Rotate the selected object |
+| Keypad + / - | Resize the selected object |
+| Q | Deselect |
+| ESC / window close | Quit |
+
+While you move the camera or an object, a low-resolution preview (1 sample per
+4x4 block) is drawn immediately; the full-resolution image is rendered
+automatically 0.25 s after the last key press.
+
+### Rendering features
+
+- Ambient + diffuse (Lambert) + specular (Phong) lighting, hard shadows
+- Multithreaded rendering (8 pthreads, interleaved rows)
+- Checkerboard pattern and PNG textures
+- Every parse error prints `Error` followed by the offending element and field,
+  e.g. `cy: invalid diameter (must be > 0): '-2'`
+
+### Debug build and tests
+
+```bash
+make re DEBUG=1           # print the parsed tokens and scene summary
+tests/run_scenes.sh       # render every examples/*.rt and check examples/invalid/*.rt
+HEADLESS=1 tests/run_scenes.sh              # same, inside its own Xvfb
+make re EXTRA=-g && VALGRIND=1 HEADLESS=1 tests/run_scenes.sh   # under valgrind
+```
 
 ## Resources
 

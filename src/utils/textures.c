@@ -78,6 +78,20 @@ void	get_object_uv(t_vec hit, t_object *obj, double *u, double *v)
 	}
 }
 
+static t_color	checker_color(t_hit *hit)
+{
+	long	sum;
+	t_color	c;
+
+	sum = (long)floor(hit->p.x / CHECKER_SIZE + 1e-6)
+		+ (long)floor(hit->p.y / CHECKER_SIZE + 1e-6)
+		+ (long)floor(hit->p.z / CHECKER_SIZE + 1e-6);
+	c = hit->object->color_range;
+	if (sum % 2 == 0)
+		return (c);
+	return ((t_color){255 - c.r, 255 - c.g, 255 - c.b});
+}
+
 t_color	textures_handler(t_hit *hit, t_scene *scene)
 {
 	double	u;
@@ -85,6 +99,8 @@ t_color	textures_handler(t_hit *hit, t_scene *scene)
 
 	u = 0;
 	v = 0;
+	if (hit->object->checker)
+		return (checker_color(hit));
 	if (hit->object->texture_path != NULL)
 	{
 		get_object_uv(hit->p, hit->object, &u, &v);

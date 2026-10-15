@@ -19,17 +19,19 @@ int	get_rgba(int r, int g, int b, int a)
 
 static void	init_mlx_and_render(t_scene *scene, char *title)
 {
+	t_hook_data	hook_data;
+
 	scene->mlx = mlx_init(WIDTH, HEIGHT, title, 0);
 	if (!scene->mlx)
 		exit_error("Error. mlx_init\n", scene);
 	scene->img = mlx_new_image(scene->mlx, WIDTH, HEIGHT);
 	if (!scene->img)
 		exit_error("Error. mlx_new_image\n", scene);
+	hook_data = (t_hook_data){scene, scene->mlx, scene->img};
 	render(scene, scene->mlx, scene->img);
-	mlx_key_hook(scene->mlx, custom_key_hook,
-		&(t_hook_data){scene, scene->mlx, scene->img});
-	mlx_mouse_hook(scene->mlx, custom_mouse_hook,
-		&(t_hook_data){scene, scene->mlx, scene->img});
+	mlx_key_hook(scene->mlx, custom_key_hook, &hook_data);
+	mlx_mouse_hook(scene->mlx, custom_mouse_hook, &hook_data);
+	mlx_loop_hook(scene->mlx, refine_hook, &hook_data);
 	mlx_loop(scene->mlx);
 	mlx_delete_image(scene->mlx, scene->img);
 	mlx_terminate(scene->mlx);
@@ -44,6 +46,9 @@ static void	init_scene_and_camera(t_scene *scene, char *filename)
 	scene->img = NULL;
 	scene->pixel_cache = NULL;
 	scene->args = NULL;
+	scene->needs_full = 0;
+	scene->on_window = 0;
+	scene->last_input = 0;
 	parser(filename, scene);
 	setup_camera(&scene->map->camera);
 	setup_scene(scene, &scene->map->camera);

@@ -91,8 +91,6 @@ int	hit_cylinder(t_ray ray, t_object *obj, t_cylinder *cyl,
 	double	t_cap;
 
 	oc = vector_rest(ray.origin, cyl->center);
-	cyl->radius = cyl->diameter / 2.0;
-	cyl->half_h = cyl->height / 2.0;
 	t_body = hit_cylinder_body(ray, obj, oc, cyl);
 	t_cap = hit_cylinder_caps(ray, obj);
 	if (t_body > 0 && t_cap > 0)

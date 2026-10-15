@@ -43,7 +43,7 @@ void	setup_scene(t_scene *scene, t_camera *camera)
 	scene->is_rendered = 0;
 	scene->aspect = (t_real)scene->screen_w / (t_real)scene->screen_h;
 	scene->viewport = 0.0;
-	scene->viewport_w = 2.0 * tan(camera->radial_fov * 2.0);
+	scene->viewport_w = 2.0 * tan(camera->radial_fov / 2.0);
 	scene->viewport_h = scene->viewport_w / scene->aspect;
 	scene->mlx = NULL;
 	scene->img = NULL;

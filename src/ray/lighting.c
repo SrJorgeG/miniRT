@@ -20,6 +20,24 @@ void	add_ambient_light(t_color *final_color, t_hit *hit,
 	*final_color = color_scale(*final_color, scene->map->amb_ligt.amb_ratio);
 }
 
+static t_color	specular(t_hit *hit, t_scene *scene, t_light *light,
+		t_vec light_dir)
+{
+	t_vec	view_dir;
+	t_vec	reflect;
+	double	r_dot_v;
+
+	view_dir = vector_normalize(vector_rest(scene->map->camera.view_point,
+				hit->p));
+	reflect = vector_rest(vector_multiplication(hit->normal, 2.0
+				* vector_dot_prod(hit->normal, light_dir)), light_dir);
+	r_dot_v = vector_dot_prod(reflect, view_dir);
+	if (r_dot_v <= 0 || vector_dot_prod(hit->normal, light_dir) <= 0)
+		return ((t_color){0, 0, 0});
+	return (color_scale(light->color_range, light->brightness
+			* SPEC_STRENGTH * pow(r_dot_v, SPEC_SHINE)));
+}
+
 static void	apply_light(t_color c[2], t_hit *hit,
 		t_scene *scene, t_light *current_light)
 {
@@ -44,6 +62,7 @@ static void	apply_light(t_color c[2], t_hit *hit,
 		diffuse = color_scale(diffuse,
 				current_light->brightness * diffuse_factor);
 		c[0] = color_add(c[0], diffuse);
+		c[0] = color_add(c[0], specular(hit, scene, current_light, light_dir));
 	}
 }
 

@@ -45,10 +45,9 @@ t_hit	get_hits(t_scene *scene, t_ray ray)
 
 	closest.hit = 0;
 	closest.t = INFINITY;
-	check_all_hits(scene, ray, &closest, scene->map->last_hit);
+	check_all_hits(scene, ray, &closest, NULL);
 	if (closest.hit)
 	{
-		scene->map->last_hit = closest.object;
 		closest.p = vector_sum(ray.origin,
 				vector_multiplication(ray.direction, closest.t));
 		get_hit_normal(&closest, ray);
