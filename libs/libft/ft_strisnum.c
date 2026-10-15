@@ -14,7 +14,6 @@
 
 int	ft_strisnum(char *str)
 {
-
 	if (!str)
 		return (0);
 	if (*str == '-' || *str == '+')

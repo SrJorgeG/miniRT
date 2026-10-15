@@ -285,7 +285,7 @@ int		ft_strisdbl(char *str);
 *- Comprueba si un string representa un numero válido
 *- Devuelve 1 si lo es, 0 si no
 */
-int	ft_strisnum(char *str);
+int		ft_strisnum(char *str);
 /*
 *- Cuenta el número de strings en un array char **
 *- Devuelve la cantidad de punteros no NULL
@@ -382,9 +382,7 @@ void	ft_lstsort_int(int *lst, int size);
 */
 void	*ft_lstfind_cmp(void *lst, void *target, int (*cmp)(void *, void *));
 
-
 char	**ft_lst_to_strlist(t_list *first);
-
 
 /* ************************************************************************* */
 /*                           FUNCIONES STACK                                 */
@@ -412,7 +410,7 @@ void	ft_stack_clear(t_stack *lst, void (*del)(void *));
 void	ft_free_split(char **arr);
 
 /*
-*- Calcula el numero de elementos en un array de strings (como los generados por split)
+*- Calcula el numero de elementos en un array de strings
 *- Devuelve un size_t con el tamaño encontrado.
 */
 size_t	ft_strlst_len(char **strlst);

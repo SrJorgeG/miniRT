@@ -6,11 +6,19 @@
 /*   By: dcid-san <dcid-san@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 15:39:18 by dcid-san          #+#    #+#             */
-/*   Updated: 2026/01/04 16:15:35 by dcid-san         ###   ########.fr       */
+/*   Updated: 2026/03/29 22:49:42 by dcid-san         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
+
+void	free_cone(void *cone)
+{
+	t_cone	*cn;
+
+	cn = (t_cone *)cone;
+	free(cn);
+}
 
 void	free_cache(t_scene *scene)
 {
@@ -32,9 +40,17 @@ void	free_cache(t_scene *scene)
 
 void	free_scene(t_scene *scene)
 {
-	if (!scene)
-		return ;
-	free_cache(scene);
-	free_map(&scene->map);
-	free(scene);
+	if (scene)
+	{
+		free_cache(scene);
+		if (scene->map)
+			free_map(scene->map);
+		if (scene->img)
+			mlx_delete_image(scene->mlx, scene->img);
+		if (scene->mlx)
+			mlx_terminate(scene->mlx);
+		if (scene->args)
+			ft_free_split(scene->args);
+		free(scene);
+	}
 }
