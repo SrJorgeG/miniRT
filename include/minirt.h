@@ -228,7 +228,6 @@ t_vec					vector_cross_prod(t_vec v1, t_vec v2);
 /*	 Hit functionss 	*/
 int	hit_sphere(t_ray ray, t_sphere *sphere, double *obj_distance);
 int hit_plane(t_ray ray, t_plane *plane, double *obj_distance);
-int hit_cylinder(t_ray ray, t_cylinder *cylinder, double *obj_distance);
 
 /*		Hit functionss 	*/
 int						hit_sphere(t_ray ray, t_sphere *sphere,
@@ -312,6 +311,7 @@ void	free_sphere(void *sphere);
 void	free_cylinder(void *sphere);
 void	free_plane(void *sphere);
 void	free_cone(void *cone);
+void	check_object_args(char **args, t_scene *scene);
 void	free_object(void *object);
 
 /* MLX HOOKS */

@@ -23,6 +23,6 @@ t_sphere	*create_sphere(char **args)
 	sphere->diameter = ft_atodbl(args[2]);
 	sphere->radius = sphere->diameter / 2;
 	if (sphere->diameter <= 0.0)
-		return (free_object(sphere), NULL);
+		return (free(sphere), NULL);
 	return (sphere);
 }

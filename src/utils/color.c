@@ -19,12 +19,14 @@ u_int8_t	create_color(char *color_str, t_color *color)
 	long	rgb[3];
 
 	split = ft_split(color_str, ',');
+	if (!split || !split[0] || !split[1] || !split[2] || split[3])
+		return (ft_free_split(split), 0);
 	rgb[0] = ft_atol(split[0]);
 	rgb[1] = ft_atol(split[1]);
 	rgb[2] = ft_atol(split[2]);
 	ft_free_split(split);
-	if ((rgb[0] > 255 || rgb[0] < 0) && (rgb[1] > 255 || rgb[1] < 0)
-		&& (rgb[2] > 255 || rgb[2] < 0))
+	if ((rgb[0] > 255 || rgb[0] < 0) || (rgb[1] > 255 || rgb[1] < 0)
+		|| (rgb[2] > 255 || rgb[2] < 0))
 		return (0);
 	color->r = (unsigned char)rgb[0];
 	color->g = (unsigned char)rgb[1];

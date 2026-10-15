@@ -24,10 +24,10 @@ t_cone	*create_cone(char **args)
 	cone->diameter = ft_atodbl(args[3]);
 	cone->height = ft_atodbl(args[4]);
 	if (!is_normalized_vec(cone->axis))
-		return (perror("Error. Invalid range for cone orientation."), NULL);
+		return (free(cone), NULL);
 	if (cone->diameter <= 0.0)
-		return (perror("Error. Invalid range for cone diameter."), NULL);
+		return (free(cone), NULL);
 	if (cone->height <= 0.0)
-		return (perror("Error. Invalid range for cone height."), NULL);
+		return (free(cone), NULL);
 	return (cone);
 }

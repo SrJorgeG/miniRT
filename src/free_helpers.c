@@ -42,6 +42,12 @@ void	free_map(t_map *map)
 	{
 		ft_stack_clear(map->objects, free_object);
 		free(map->objects);
+		map->objects = NULL;
 	}
-	free(map);
+	if (map->lights)
+	{
+		ft_stack_clear(map->lights, free);
+		free(map->lights);
+		map->lights = NULL;
+	}
 }

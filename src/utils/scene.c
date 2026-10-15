@@ -29,6 +29,7 @@ void	setup_camera(t_camera *camera)
 	cross = vector_cross_prod(camera->orientation_nor, *world_up);
 	camera->right = vector_normalize(cross);
 	camera->up = vector_cross_prod(camera->right, camera->orientation_nor);
+	free(world_up);
 }
 
 void	setup_scene(t_scene *scene, t_camera *camera)

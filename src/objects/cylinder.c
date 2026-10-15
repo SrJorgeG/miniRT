@@ -24,10 +24,10 @@ t_cylinder	*create_cylinder(char **args)
 	cylinder->diameter = ft_atodbl(args[3]);
 	cylinder->height = ft_atodbl(args[4]);
 	if (!is_normalized_vec(cylinder->axis))
-		return (perror("Error. Invalid range for cylinder orientation."), NULL);
+		return (free(cylinder), NULL);
 	if (cylinder->diameter <= 0.0)
-		return (perror("Error. Invalid range for cylinder diameter."), NULL);
+		return (free(cylinder), NULL);
 	if (cylinder->height <= 0.0)
-		return (perror("Error. Invalid range for cylinder height."), NULL);
+		return (free(cylinder), NULL);
 	return (cylinder);
 }

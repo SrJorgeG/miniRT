@@ -51,7 +51,9 @@ int	main(int ac, char *av[])
 
 	if (ac != 2)
 		exit_error("Error, invalid number of arguments\n", NULL);
-	scene = malloc(sizeof(t_scene));
+	scene = ft_calloc(1, sizeof(t_scene));
+	if (!scene)
+		exit_error("Error. malloc\n", NULL);
 	init_scene_and_camera(scene, av[1]);
 	init_mlx_and_render(scene, TITLE);
 	free_scene(scene);

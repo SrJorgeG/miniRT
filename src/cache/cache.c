@@ -22,7 +22,7 @@ void	init_cache(t_scene *scene)
 	scene->pixel_cache = malloc(scene->map.objects->size
 			* sizeof(t_obj_cache));
 	if (!scene->pixel_cache)
-		exit_error("Error pixel_cache. malloc\n", NULL);
+		exit_error("Error pixel_cache. malloc\n", scene);
 	while (i < scene->map.objects->size)
 	{
 		scene->pixel_cache[i].capacity = 1024;
@@ -30,7 +30,10 @@ void	init_cache(t_scene *scene)
 		scene->pixel_cache[i].pixels = malloc(
 				scene->pixel_cache[i].capacity * sizeof(int) * 2);
 		if (!scene->pixel_cache[i].pixels)
+		{
+			scene->cache_count = i;
 			exit_error("Error pixel_cache->pixels. malloc\n", scene);
+		}
 		i++;
 	}
 	scene->cache_count = i;

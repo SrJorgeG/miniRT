@@ -75,6 +75,7 @@ void	parse_line(char *line, t_scene *scene)
 	i = -1;
 	while (args[++i])
 		printf("%s\n", args[i]);
+	check_object_args(args, scene);
 	parse_line_dispatcher(args, scene);
 	ft_free_split(args);
 }
@@ -103,10 +104,14 @@ int	parser(char *filename, t_scene *scene)
 	while (line)
 	{
 		trim_new_line(line);
-		if (line && ft_strlen(line) > 0)
+		if (ft_strlen(line) > 0)
 			parse_line(line, scene);
+		else
+			free(line);
 		line = get_next_line(fd);
 	}
 	close(fd);
+	if (!scene->map.has_camera)
+		exit_error("Error. Missing camera (C) in scene\n", scene);
 	return (1);
 }

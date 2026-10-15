@@ -14,10 +14,15 @@
 
 void	exit_error(char *err_msg, void *free_data)
 {
+	ft_putstr_fd("Error\n", STDERR_FILENO);
+	if (!ft_strncmp(err_msg, "Error", 5))
+		err_msg += 5;
+	while (*err_msg == '.' || *err_msg == ',' || *err_msg == ' ')
+		err_msg++;
 	ft_putstr_fd(err_msg, STDERR_FILENO);
+	if (*err_msg && err_msg[ft_strlen(err_msg) - 1] != '\n')
+		ft_putstr_fd("\n", STDERR_FILENO);
 	if (free_data)
-	{
-		free_map(free_data);
-	}
+		free_scene(free_data);
 	exit(1);
 }

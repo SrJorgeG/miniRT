@@ -27,7 +27,14 @@ t_object	*create_object(int obj_type, void *object, size_t id, char *args[2])
 	obj->texture_path = NULL;
 	obj->texture = NULL;
 	if (args[0])
+	{
 		obj->orientation = create_vector(args[0]);
+		if (obj_type != SPHERE && vector_dot_prod(obj->orientation,
+				obj->orientation) < 1e-12)
+			return (free(obj), NULL);
+		if (obj_type != SPHERE)
+			obj->orientation = vector_normalize(obj->orientation);
+	}
 	if (args[1])
 	{
 		texture_fd = open(args[1], O_RDONLY);
@@ -37,7 +44,7 @@ t_object	*create_object(int obj_type, void *object, size_t id, char *args[2])
 		obj->texture_path = ft_strdup(args[1]);
 	}
 	if (!load_texture(obj))
-		return (free(obj), NULL);
+		return (free(obj->texture_path), free(obj), NULL);
 	obj->object = object;
 	obj->type = obj_type;
 	obj->id = id;
@@ -59,5 +66,7 @@ void	free_object(void *object)
 		free_cylinder(obj->object);
 	if (obj->type == PLANE)
 		free_plane(obj->object);
+	if (obj->type == CONE)
+		free_cone(obj->object);
 	free(obj);
 }
